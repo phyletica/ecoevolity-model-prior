@@ -4,9 +4,6 @@ set -e
 
 ecoevolity_commit="932c358ce"
 
-# Load modules
-source ./modules-to-load.sh >/dev/null 2>&1 || echo "No modules loaded..."
-
 # Get path to directory of this script
 project_dir="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
@@ -24,10 +21,14 @@ echo "    Created \"$bash_project_config_path\""
 echo "Appending lines to .bashrc to source project config file..."
 if [ -z "$(grep "bash_ecoevolity_model_prior_project" "$bashrc_path")" ]
 then
-    echo 'if [ -f "~/.bash_ecoevolity_model_prior_project" ]; then' >> "$bashrc_path"
-    echo '    source "~/.bash_ecoevolity_model_prior_project"' >> "$bashrc_path"
+    echo 'if [ -f "${HOME}/.bash_ecoevolity_model_prior_project" ]; then' >> "$bashrc_path"
+    echo '    source "${HOME}/.bash_ecoevolity_model_prior_project"' >> "$bashrc_path"
     echo 'fi' >> "$bashrc_path"
 fi
+
+# Load modules
+echo "Loading modules..."
+source ./modules-to-load.sh >/dev/null 2>&1 || echo "    No modules loaded"
 
 echo "Cloning and building ecoevolity..."
 git clone https://github.com/phyletica/ecoevolity.git
