@@ -1,0 +1,105 @@
+---
+event_model_prior:
+    uniform:
+        # Prior mean number of categories = 4.5
+        parameters:
+            split_weight:
+                value: 2.37
+                estimate: true
+                prior:
+                    gamma_distribution:
+                        shape: 1.0
+                        scale: 2.37
+
+event_time_prior:
+    gamma_distribution:
+        shape: 1.0
+        scale: 0.05
+
+mcmc_settings:
+    chain_length: 75000
+    sample_frequency: 50
+
+operator_settings:
+    auto_optimize: true
+    auto_optimize_delay: 1000
+    operators:
+        ModelOperator:
+            weight: 15.0
+            number_of_auxiliary_categories: 3
+        TimeRootSizeMixer:
+            weight: 8.0
+            scale: 0.05
+        TimeSizeRateMixer:
+            weight: 8.0
+            scale: 0.05
+        TimeSizeRateScaler:
+            weight: 2.0
+            scale: 0.1
+        EventTimeScaler:
+            weight: 1.0
+            scale: 0.05
+        ConcentrationScaler:
+            weight: 5.0
+            scale: 2.0
+
+global_comparison_settings:
+    ploidy: 2
+    constant_sites_removed: false
+    equal_population_sizes: false
+    parameters:
+        population_size:
+            value: 0.001
+            estimate: true
+            prior:
+                gamma_distribution:
+                    shape: 20.0
+                    scale: 0.00005
+        root_relative_population_size:
+            value: 1.0
+            estimate: true
+            prior:
+                gamma_distribution:
+                    shape: 50.0
+                    scale: 0.02
+        freq_1:
+            value: 0.5
+            estimate: false
+
+        mutation_rate:
+            value: 1.0
+            estimate: false
+    operators:
+        TimeSizeRateMixer:
+            weight: 0
+        TimeSizeRateScaler:
+            weight: 0
+        EventTimeScaler:
+            weight: 0
+        RootPopulationSizeScaler:
+            weight: 1.0
+            scale: 0.1
+        LeafPopulationSizeScaler:
+            weight: 1.0
+            scale: 0.1
+        TimeRootSizeMixer:
+            weight: 1.0
+            scale: 0.05
+
+comparisons:
+- comparison:
+    path: "../data/comp01-2species-4genomes-500000chars.txt"
+- comparison:
+    path: "../data/comp02-2species-4genomes-500000chars.txt"
+- comparison:
+    path: "../data/comp03-2species-4genomes-500000chars.txt"
+- comparison:
+    path: "../data/comp04-2species-4genomes-500000chars.txt"
+- comparison:
+    path: "../data/comp05-2species-4genomes-500000chars.txt"
+- comparison:
+    path: "../data/comp06-2species-4genomes-500000chars.txt"
+- comparison:
+    path: "../data/comp07-2species-4genomes-500000chars.txt"
+- comparison:
+    path: "../data/comp08-2species-4genomes-500000chars.txt"
