@@ -30,4 +30,4 @@ qsub_set_up_script_path="${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/scripts/set-up-ec
 
 mkdir -p "$output_dir"
 
-$exe_path --seed="$rng_seed" -n "$number_of_reps" -o "$output_dir" "$config_path" && $config_set_up_script "$output_dir" && $qsub_set_up_script_path "$output_dir"
+$exe_path --seed="$rng_seed" -n "$number_of_reps" -o "$output_dir" "$config_path" && $config_set_up_script_path "$output_dir" && $qsub_set_up_script_path "$output_dir"
