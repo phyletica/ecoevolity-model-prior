@@ -23,7 +23,7 @@ def write_qsub(config_path,
     assert(not os.path.exists(qsub_path))
     with open(qsub_path, 'w') as out:
         out.write(project_util.PBS_HEADER)
-        out.write("exe_path=\"${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/simcoevolity\"\n\n")
+        out.write("exe_path=\"${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/ecoevolity\"\n\n")
         if relax_missing_sites:
             out.write("$exe_path --seed {0} --prefix run-{1}- --relax-constant-sites --relax-missing-sites {2} 1>{3} 2>&1\n".format(
                     seed,
