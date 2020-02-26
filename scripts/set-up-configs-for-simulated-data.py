@@ -39,7 +39,6 @@ def main_cli():
 
     parser.add_argument('sim_dir',
             metavar = 'SIMCOEVOLITY-OUTPUT-DIR',
-            nargs = 1,
             type = project_util.arg_is_dir,
             help = ('Path to directory with simcoevolity output files.'))
 
