@@ -49,24 +49,23 @@ fi
 """
 
 
-def file_path_iter(directories, regex_pattern):
-    for directory in directories:
-        for dir_path, dir_names, file_names in os.walk(directory):
-            for f_name in file_names:
-                if regex_pattern.match(f_name):
-                    path = os.path.join(dir_path, f_name)
-                    yield path
+def file_path_iter(directory, regex_pattern):
+    for dir_path, dir_names, file_names in os.walk(directory):
+        for f_name in file_names:
+            if regex_pattern.match(f_name):
+                path = os.path.join(dir_path, f_name)
+                yield path
 
-def simcoevolity_config_iter(sim_directories = None):
-    if sim_directories is None:
-        sim_directories = [SIM_DIR]
-    for path in file_path_iter(sim_directories, SIMCOEVOLITY_CONFIG_NAME_PATTERN):
+def simcoevolity_config_iter(sim_directory = None):
+    if sim_directory is None:
+        sim_directory = SIM_DIR
+    for path in file_path_iter(sim_directory, SIMCOEVOLITY_CONFIG_NAME_PATTERN):
         yield path
 
-def sim_configs_to_use_iter(sim_directories = None):
-    if sim_directories is None:
-        sim_directories = [SIM_DIR]
-    for path in file_path_iter(sim_directories, SIM_CONFIG_TO_USE_PATTERN):
+def sim_configs_to_use_iter(sim_directory = None):
+    if sim_directory is None:
+        sim_directory = SIM_DIR
+    for path in file_path_iter(sim_directory, SIM_CONFIG_TO_USE_PATTERN):
         yield path
 
 # Utility functions for argparse

@@ -41,11 +41,11 @@ def write_qsub(config_path,
 def main_cli():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('sim_dirs',
+    parser.add_argument('sim_dir',
             metavar = 'SIMCOEVOLITY-OUTPUT-DIR',
-            nargs = '+',
+            nargs = 1,
             type = project_util.arg_is_dir,
-            help = ('Paths to directories with simcoevolity output files.'))
+            help = ('Path to directory with simcoevolity output files.'))
     parser.add_argument('--number-of-runs',
             action = 'store',
             type = int,
@@ -54,7 +54,7 @@ def main_cli():
 
     args = parser.parse_args()
 
-    for config_path in project_util.sim_configs_to_use_iter(args.sim_dirs):
+    for config_path in project_util.sim_configs_to_use_iter(args.sim_dir):
         for i in range(args.number_of_runs):
             write_qsub(config_path = config_path,
                     run_number = i + 1,

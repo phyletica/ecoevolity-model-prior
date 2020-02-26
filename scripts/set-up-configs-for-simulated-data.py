@@ -37,11 +37,11 @@ def copy_data_paths(cfg_to_modify, cfg_to_copy):
 def main_cli():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('sim_dirs',
+    parser.add_argument('sim_dir',
             metavar = 'SIMCOEVOLITY-OUTPUT-DIR',
-            nargs = '+',
+            nargs = 1,
             type = project_util.arg_is_dir,
-            help = ('Paths to directories with simcoevolity output files.'))
+            help = ('Path to directory with simcoevolity output files.'))
 
     args = parser.parse_args()
 
@@ -59,7 +59,7 @@ def main_cli():
         configs_to_use["var-only-" + config_name] = var_only_cfg
         
     simco_config_path_iter = project_util.simcoevolity_config_iter(
-            args.sim_dirs)
+            args.sim_dir)
     for simco_config_path in simco_config_path_iter:
         dir_path = os.path.dirname(simco_config_path)
         simco_config_file = os.path.basename(simco_config_path)
