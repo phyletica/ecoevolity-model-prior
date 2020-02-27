@@ -144,7 +144,7 @@ do
     fi
 done
 
-if [ ! "${#reruns[*]}" = 0 ]
+if [ "${#reruns[*]}" = 0 ]
 then
     echo "All analyses appear complete and clean!"
     exit 0
