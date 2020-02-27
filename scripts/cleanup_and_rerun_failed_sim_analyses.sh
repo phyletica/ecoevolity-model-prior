@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 usage () {
     echo ""
     echo "Usage:"
@@ -141,6 +143,12 @@ do
         continue
     fi
 done
+
+if [ ! "${#reruns[*]}" = 0 ]
+then
+    echo "All analyses appear complete and clean!"
+    exit 0
+fi
 
 for qsub_path in "${reruns[@]}"
 do
