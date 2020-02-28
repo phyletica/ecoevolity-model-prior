@@ -45,6 +45,7 @@ do
     shift
 done
 
+# Make sure there is exactly one positional argument
 if [ ! "${#extra_args[*]}" = 1 ]
 then
     echo "ERROR: One argument must be provided; a path to a sim directory"
@@ -52,8 +53,12 @@ then
     exit 1
 fi
 
+# Path to the batch directory should be the only argument
 batch_dir="${extra_args[0]}"
+# Remove any trailing slashes from the path
+batch_dir="$(echo "$batch_dir" | sed 's:/*$::')"
 
+# Make sure the argument is a valid directory
 if [ ! -d "$batch_dir" ]
 then
     echo "ERROR: Path is not a valid directory: $batch_dir"
@@ -61,7 +66,8 @@ then
     exit 1
 fi
 
-if [ ! "$(echo "$batch_dir" | grep -c -E "batch[0-9]{1,4}[/]{0,1}$")" -gt 0 ]
+# Make sure the directory is a batch directory
+if [ ! "$(echo "$batch_dir" | grep -c -E "batch[0-9]{1,4}$")" -gt 0 ]
 then
     echo "ERROR: The path provided doesn't seem to be a sim batch directory:"
     echo "    $batch_dir"
@@ -70,8 +76,9 @@ then
 fi
 
 
+echo "Beginning to vet and consolidate sim analysis files..."
 reruns=()
-for qsub_path in ${batch_dir}/*-pairs-*-sim-*-config-run-*-qsub.sh
+for qsub_path in ${batch_dir}/*pairs-*-sim-*-config-run-*-qsub.sh
 do
     to_run="${qsub_path/-qsub.sh/}"
     run_number="${to_run##*-}"
@@ -114,8 +121,8 @@ do
         continue
     fi
 
-    runtime_line="$(grep "Runtime:" "$out_file")"
-    if [ -z "$runtime_line" ]
+    runtime_line_count="$(grep -c "Runtime:" "$out_file")"
+    if [ "$runtime_line_count" != 1 ]
     then 
         echo "Incomplete stdout: $qsub_path" 
         reruns+=( "$qsub_path" )
@@ -146,10 +153,11 @@ done
 
 if [ "${#reruns[*]}" = 0 ]
 then
-    echo "All analyses appear complete and clean!"
+    echo "All analyses are complete and clean!"
     exit 0
 fi
 
+echo "Re-starting failed analyses..."
 for qsub_path in "${reruns[@]}"
 do
     dir_path="$(dirname "$qsub_path")"
