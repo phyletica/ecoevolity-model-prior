@@ -127,10 +127,10 @@ def get_sim_state_log_paths(sim_directory = None):
         run_number = match.group("run_num")
         config_name = match.group("config_name")
         dummy_run_number = int(match.group("dummy_run_num"))
-        if dummy_run_num != 1:
-            sys.std.err(
+        if dummy_run_number != 1:
+            sys.stderr.write(
                     "ERROR: Unexpected second run number '{0}' in state "
-                    "log '{1}'\n".format(dummy_run_num, path))
+                    "log '{1}'\n".format(dummy_run_number, path))
             raise Exception("Unexpected second run number in state log path")
         is_var_only = bool(match.group("var_only"))
         if is_var_only:
