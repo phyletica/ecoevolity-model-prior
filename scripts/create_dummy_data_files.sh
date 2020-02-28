@@ -18,7 +18,7 @@ do
         comp_str="$i"
     fi
     outfile="${data_dir}/comp${comp_str}-${nspecies}species-${ngenomes}genomes-${nchars}chars.txt"
-    ./generate-dummy-data-file.py \
+    ./generate_dummy_data_file.py \
         --nspecies "$nspecies" \
         --ngenomes "$ngenomes" \
         --ncharacters "$nchars" \
