@@ -51,7 +51,7 @@ fi
         rm *.sh.o*
         break
     fi; done
-    for p in *.qsub.sh; do if [ -e "$p" ]; then
+    for p in *qsub.sh; do if [ -e "$p" ]; then
         echo "Archiving and removing qsub scripts..."
         tar czf sim-files-qsub-scripts.tar.gz *qsub.sh && rm *qsub.sh
         break
