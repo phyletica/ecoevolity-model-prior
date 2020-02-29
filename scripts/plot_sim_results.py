@@ -402,12 +402,10 @@ def plot_gamma(shape = 1.0,
             bottom = pad_bottom,
             top = pad_top)
 
-    if not os.path.exists(plot_dir):
-        os.mkdir(plot_dir)
     plot_path = os.path.join(plot_dir,
             "{0}-gamma.pdf".format(plot_file_prefix))
     plt.savefig(plot_path)
-    _LOG.info("Plot written to {0!r}\n".format(plot_path))
+    _LOG.info("Plot written to {0!r}".format(plot_path))
 
 def get_sequence_iter(start = 0.0, stop = 1.0, n = 10):
     assert(stop > start)
@@ -703,12 +701,10 @@ def generate_scatter_plot_grid(
             bottom = pad_bottom,
             top = pad_top)
 
-    if not os.path.exists(plot_dir):
-        os.mkdir(plot_dir)
     plot_path = os.path.join(plot_dir,
             "{0}-scatter.pdf".format(plot_file_prefix))
     plt.savefig(plot_path, dpi=600)
-    _LOG.info("Plots written to {0!r}\n".format(plot_path))
+    _LOG.info("Plots written to {0!r}".format(plot_path))
 
 def generate_scatter_plot(
         data,
@@ -901,12 +897,10 @@ def generate_scatter_plot(
             bottom = pad_bottom,
             top = pad_top)
 
-    if not os.path.exists(plot_dir):
-        os.mkdir(plot_dir)
     plot_path = os.path.join(plot_dir,
             "{0}-scatter.pdf".format(plot_file_prefix))
     plt.savefig(plot_path, dpi=600)
-    _LOG.info("Plots written to {0!r}\n".format(plot_path))
+    _LOG.info("Plots written to {0!r}".format(plot_path))
 
 
 def generate_box_plot(
@@ -977,15 +971,13 @@ def generate_box_plot(
             bottom = pad_bottom,
             top = pad_top)
 
-    if not os.path.exists(plot_dir):
-        os.mkdir(plot_dir)
     plot_path = os.path.join(plot_dir,
             "{0}-box.pdf".format(plot_file_prefix))
     if rasterized:
         plt.savefig(plot_path, dpi=600)
     else:
         plt.savefig(plot_path)
-    _LOG.info("Box plot written to {0!r}\n".format(plot_path))
+    _LOG.info("Box plot written to {0!r}".format(plot_path))
 
 
 def generate_histogram_grid(
@@ -1174,12 +1166,10 @@ def generate_histogram_grid(
             bottom = pad_bottom,
             top = pad_top)
 
-    if not os.path.exists(plot_dir):
-        os.mkdir(plot_dir)
     plot_path = os.path.join(plot_dir,
             "{0}-histograms.pdf".format(plot_file_prefix))
     plt.savefig(plot_path)
-    _LOG.info("Plots written to {0!r}\n".format(plot_path))
+    _LOG.info("Plots written to {0!r}".format(plot_path))
 
 
 def generate_histogram(
@@ -1273,12 +1263,10 @@ def generate_histogram(
             bottom = pad_bottom,
             top = pad_top)
 
-    if not os.path.exists(plot_dir):
-        os.mkdir(plot_dir)
     plot_path = os.path.join(plot_dir,
             "{0}-histogram.pdf".format(plot_file_prefix))
     plt.savefig(plot_path)
-    _LOG.info("Plots written to {0!r}\n".format(plot_path))
+    _LOG.info("Plots written to {0!r}".format(plot_path))
 
 
 def generate_model_plot_grid(
@@ -1499,8 +1487,6 @@ def generate_model_plot_grid(
             bottom = pad_bottom,
             top = pad_top)
 
-    if not os.path.exists(plot_dir):
-        os.mkdir(plot_dir)
     if plot_file_prefix:
         plot_path = os.path.join(plot_dir,
                 "{0}-nevents.pdf".format(plot_file_prefix))
@@ -1784,8 +1770,6 @@ def generate_model_plot(
             bottom = pad_bottom,
             top = pad_top)
 
-    if not os.path.exists(plot_dir):
-        os.mkdir(plot_dir)
     plot_path = os.path.join(plot_dir,
             "{0}-nevents.pdf".format(plot_file_prefix))
     plt.savefig(plot_path)
@@ -1808,6 +1792,13 @@ def get_data_grid(data_dict, template):
 
 
 def main_cli(argv = sys.argv):
+    try:
+        os.makedirs(project_util.PLOT_DIR)
+    except OSError as e:
+        if e.errno == errno.EEXIST:
+            pass
+        else:
+            raise
 
     brooks_gelman_1998_recommended_psrf = 1.2
 
@@ -1838,8 +1829,8 @@ def main_cli(argv = sys.argv):
             tuple((row, col) for col in analysis_config_names 
                 ) for row in sim_config_names)
     
-    column_labels = (cfg_to_label[c] for c in analysis_config_names)
-    row_labels = (cfg_to_label[c] for c in sim_config_names)
+    column_labels = tuple(cfg_to_label[c] for c in analysis_config_names)
+    row_labels = tuple(cfg_to_label[c] for c in sim_config_names)
 
     header = None
     results = {}
@@ -1850,35 +1841,35 @@ def main_cli(argv = sys.argv):
         sim_dir = os.path.join(project_util.SIM_DIR, sim_cfg)
         batch_dirs = tuple(project_util.batch_dir_iter(sim_dir))
         for analysis_cfg in analysis_config_names:
-            result_paths = (
+            result_paths = [
                     os.path.join(
                         bd,
                         analysis_cfg + "-results.tsv"
                         ) for bd in batch_dirs
-                    )
-            results[sim_cfg][analysis_cfg] = parse_results(results_paths)
+                    ]
+            results[sim_cfg][analysis_cfg] = parse_results(result_paths)
             header = sorted(results[sim_cfg][analysis_cfg])
             var_only_analysis_cfg = "var-only-" + analysis_cfg
-            var_only_result_paths = (
+            var_only_result_paths = [
                     os.path.join(
                         bd,
                         var_only_analysis_cfg + "-results.tsv"
                         ) for bd in batch_dirs
-                    )
+                    ]
             var_only_results[sim_cfg][analysis_cfg] = parse_results(
-                    var_only_results_paths)
+                    var_only_result_paths)
 
     results_grid = get_data_grid(results, cfg_grid)
     var_only_results_grid = get_data_grid(var_only_results, cfg_grid)
 
-    height_parameters = (
-            h.strip("true_") for h in header if h.startswith("true_root_height_c")
+    height_parameters = tuple(
+            h[5:] for h in header if h.startswith("mean_root_height_c")
     )
-    root_size_parameters = (
-            h.strip("true_") for h in header if h.startswith("true_pop_size_root_c")
+    root_size_parameters = tuple(
+            h[5:] for h in header if h.startswith("mean_pop_size_root_c")
     )
-    leaf_size_parameters = (
-            h.strip("true_") for h in header if h.startswith("true_pop_size_c")
+    leaf_size_parameters = tuple(
+            h[5:] for h in header if h.startswith("mean_pop_size_c")
     )
 
 
@@ -1948,7 +1939,7 @@ def main_cli(argv = sys.argv):
         data_grid = get_data_grid(data, cfg_grid)
         var_only_data_grid = get_data_grid(var_only_data, cfg_grid)
 
-        prefix = "infer-columns-by-data-rows-"
+        prefix = "infer-columns-by-data-rows-" + parameter
         generate_scatter_plot_grid(
                 data_grid = data_grid,
                 plot_file_prefix = prefix,
@@ -2000,7 +1991,7 @@ def main_cli(argv = sys.argv):
                 include_error_bars = True,
                 plot_dir = project_util.PLOT_DIR)
 
-    prefix = "infer-columns-by-data-rows-"
+    prefix = "infer-columns-by-data-rows"
     generate_model_plot_grid(
             results_grid = results_grid,
             column_labels = column_labels,
@@ -2039,7 +2030,7 @@ def main_cli(argv = sys.argv):
     alpha = 0.5
     for sim_cfg in results:
         for analysis_cfg in results[sim_cfg]:
-            prefix = "{0}-{1}-".format(sim_cfg, analysis_cfg)
+            prefix = "{0}-{1}".format(sim_cfg, analysis_cfg)
             r = results[sim_cfg][analysis_cfg]
             vo_r = var_only_results[sim_cfg][analysis_cfg]
             nshared_v_abs_error, nshared_v_ci_width = BoxData.init_time_v_sharing(
@@ -2124,7 +2115,7 @@ def main_cli(argv = sys.argv):
 
     histograms_to_plot = {
             "n-var-sites": {
-                    "headers": (
+                    "headers": tuple(
                             h for h in header if h.startswith("n_var_sites_c")
                             ),
                     "label": "Number of variable sites",
@@ -2142,7 +2133,7 @@ def main_cli(argv = sys.argv):
                     "center_key": "mean",
             },
             "ess-div-time": {
-                    "headers": (
+                    "headers": tuple(
                             h for h in header if h.startswith("ess_sum_root_height_c")
                             ),
                     "label": "Effective sample size of event time",
@@ -2151,7 +2142,7 @@ def main_cli(argv = sys.argv):
                     "center_key": "mean",
             },
             "ess-root-pop-size": {
-                    "headers": (
+                    "headers": tuple(
                             h for h in header if h.startswith("ess_sum_pop_size_root_c")
                             ),
                     "label": "Effective sample size of ancestral population size",
@@ -2169,7 +2160,7 @@ def main_cli(argv = sys.argv):
                     "center_key": "mean",
             },
             "psrf-div-time": {
-                    "headers": (
+                    "headers": tuple(
                             h for h in header if h.startswith("psrf_root_height_c")
                             ),
                     "label": "PSRF of event time",
@@ -2207,7 +2198,7 @@ def main_cli(argv = sys.argv):
         data_grid = get_data_grid(data, cfg_grid)
         var_only_data_grid = get_data_grid(var_only_data, cfg_grid)
 
-        prefix = "infer-columns-by-data-rows-"
+        prefix = "infer-columns-by-data-rows-" + parameter
         generate_histogram_grid(
                 data_grid = data_grid,
                 plot_file_prefix = prefix,

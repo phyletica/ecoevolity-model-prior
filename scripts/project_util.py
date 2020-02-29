@@ -112,8 +112,8 @@ def sim_configs_to_use_iter(sim_directory = None):
         yield path
 
 def batch_dir_iter(directory = None):
-    if sim_directory is None:
-        sim_directory = SIM_DIR
+    if directory is None:
+        directory = SIM_DIR
     for path in dir_path_iter(directory, BATCH_DIR_PATTERN):
         yield path
 
