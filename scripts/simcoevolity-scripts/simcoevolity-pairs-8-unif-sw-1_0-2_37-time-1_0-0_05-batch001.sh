@@ -1,5 +1,14 @@
 #! /bin/bash
 
+if [ -f "${HOME}/.bash_ecoevolity_model_prior_project" ]
+then
+    source "${HOME}/.bash_ecoevolity_model_prior_project"
+else
+    echo "ERROR: File '~/.bash_ecoevolity_model_prior_project' does not exist."
+    echo "       You probably need to run the project setup script."
+    exit 1
+fi
+
 if [ -z "$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR" ]
 then
     echo "ERROR: ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR is not set"

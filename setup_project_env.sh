@@ -17,15 +17,6 @@ echo "export ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR=\"${project_dir}\"" > "$bash_pro
 echo "export ECOEVOLITY_MODEL_PRIOR_BIN_DIR=\"${project_dir}/bin\"" >> "$bash_project_config_path"
 echo "    Created \"$bash_project_config_path\""
 
-# Append .bashrc to source the hidden config file
-echo "Appending lines to .bashrc to source project config file..."
-if [ -z "$(grep "bash_ecoevolity_model_prior_project" "$bashrc_path")" ]
-then
-    echo 'if [ -f "${HOME}/.bash_ecoevolity_model_prior_project" ]; then' >> "$bashrc_path"
-    echo '    source "${HOME}/.bash_ecoevolity_model_prior_project"' >> "$bashrc_path"
-    echo 'fi' >> "$bashrc_path"
-fi
-
 # Load modules
 echo "Loading modules..."
 source ./modules-to-load.sh >/dev/null 2>&1 || echo "    No modules loaded"
