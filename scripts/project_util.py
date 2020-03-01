@@ -58,12 +58,25 @@ fi
 if [ -z "$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR" ]
 then
     echo "ERROR: ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR is not set"
+    echo "       You probably need to run the project setup script."
+    exit 1
+elif [ ! -d "$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR" ]
+then
+    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR is not a valid directory:"
+    echo "       '$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR'"
+    echo "       You probably need to run the project setup script."
     exit 1
 fi
 
 if [ -z "$ECOEVOLITY_MODEL_PRIOR_BIN_DIR" ]
 then
     echo "ERROR: ECOEVOLITY_MODEL_PRIOR_BIN_DIR is not set"
+    exit 1
+elif [ ! -d "$ECOEVOLITY_MODEL_PRIOR_BIN_DIR" ]
+then
+    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_BIN_DIR is not a valid directory:"
+    echo "       '$ECOEVOLITY_MODEL_PRIOR_BIN_DIR'"
+    echo "       You probably need to run the project setup script."
     exit 1
 fi
 
