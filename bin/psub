@@ -1,0 +1,111 @@
+#!/bin/bash
+
+usage() {
+    echo ""
+    echo "usage: $0 [-h|--help] [-n|--nodes <N>] [-p|--ppn <N>] [-t|--walltime <HHH:MM:SS>] [-r|--restrict] SHELL-SCRIPT-PATH"
+    echo "  -n|--nodes      Number of nodes requested."
+    echo "                  Default: 1."
+    echo "  -p|--ppn        Number of processors per node requested."
+    echo "                  Default: 1."
+    echo "  -t|--walltime   Max time limit for job."
+    echo "                  Default: 01:00:00."
+    echo "  -m|--memory     Requested physical memory for job. E.g., '-m 2gb'."
+    echo "                  Default: Not specified."
+    echo "  -r|--restrict   Restrict job to lab nodes."
+    echo "  --priority      Priority value. Default: None."
+    echo "  -h|--help       Show help message and exit."
+    echo ""
+}
+
+positional_args=()
+nnodes="1"
+restrict_nodes=""
+memory=""
+priority=""
+nprocessors="1"
+wtime="01:00:00"
+mygroup="${mygroup:-jro0014_lab}"
+myreservation="${myreservation:-jro0014_lab}"
+myqueue="${myqueue:-general}"
+
+if [ "$(echo "$@" | grep -c "=")" -gt 0 ]
+then
+    echo "ERROR: Do not use '=' for arguments. For example, use"
+    echo "'--ppn 4'"
+    echo "instead of"
+    echo "'--ppn=4'."
+    exit 1
+fi
+
+while [[ "$#" -gt 0 ]]
+do
+    key="$1"
+    case $key in
+        -h| --help)
+            usage
+            exit
+            ;;
+        -n| --nodes)
+            shift
+            nnodes="$1"
+            shift
+            ;;
+        -p| --ppn)
+            shift
+            nprocessors="$1"
+            shift
+            ;;
+        -t| --walltime)
+            shift
+            wtime="$1"
+            shift
+            ;;
+        -m| --memory)
+            shift
+            memory="$1"
+            shift
+            ;;
+        -r| --restrict)
+            shift
+            restrict_nodes=1
+            ;;
+        --priority)
+            shift
+            priority="$1"
+            shift
+            ;;
+        *)
+            positional_args+=("$1")
+            shift
+            ;;
+    esac
+done
+
+set -- "${positional_args[@]}" # restore positional arguments
+
+if [ ! "$#" -eq 1 ]
+then
+    echo "ERROR: Only one positional argument allowed,"
+    echo "       the path to the shell script"
+    exit 1
+fi
+
+qsub_flags="-q ${myqueue} -j oe"
+
+if [ -n "$priority" ]
+then
+    qsub_flags="${qsub_flags} -p ${priority}"
+fi
+if [ -n "$restrict_nodes" ]
+then
+    qsub_flags="${qsub_flags} -W group_list=${mygroup} -W x=FLAGS:ADVRES:${myreservation}"
+fi
+
+qsub_flags="${qsub_flags} -l nodes=${nnodes}:ppn=${nprocessors},walltime=${wtime}"
+if [ -n "$memory" ]
+then
+    qsub_flags="${qsub_flags},mem=${memory}"
+fi
+
+echo "qsub $qsub_flags $@"
+qsub $qsub_flags $@

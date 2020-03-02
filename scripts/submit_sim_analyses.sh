@@ -2,6 +2,40 @@
 
 set -e
 
+if [ -f "${HOME}/.bash_ecoevolity_model_prior_project" ]
+then
+    source "${HOME}/.bash_ecoevolity_model_prior_project"
+else
+    echo "ERROR: File '~/.bash_ecoevolity_model_prior_project' does not exist."
+    echo "       You probably need to run the project setup script."
+    exit 1
+fi
+
+if [ -z "$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR" ]
+then
+    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR is not set"
+    echo "       You probably need to run the project setup script."
+    exit 1
+elif [ ! -d "$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR" ]
+then
+    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR is not a valid directory:"
+    echo "       '$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR'"
+    echo "       You probably need to run the project setup script."
+    exit 1
+fi
+
+if [ -z "$ECOEVOLITY_MODEL_PRIOR_BIN_DIR" ]
+then
+    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_BIN_DIR is not set"
+    exit 1
+elif [ ! -d "$ECOEVOLITY_MODEL_PRIOR_BIN_DIR" ]
+then
+    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_BIN_DIR is not a valid directory:"
+    echo "       '$ECOEVOLITY_MODEL_PRIOR_BIN_DIR'"
+    echo "       You probably need to run the project setup script."
+    exit 1
+fi
+
 usage () {
     echo ""
     echo "Usage:"
@@ -12,14 +46,19 @@ usage () {
     echo "                   analyses of data sets simulated with simcoevolity."
     echo "Optional arguments:"
     echo "  -h|--help        Show help message and exit."
-    echo "  -l|--nlines      The number of lines expected in each state log file."
-    echo "                   Default: 1502"
+    echo "  -t|--walltime   Max time limit for job."
+    echo "                  Default: 00:30:00."
+    echo "  -r|--restrict   Restrict job to lab nodes."
+    echo "  --nsub          Use 'nsub' submission script."
+    echo "                  Default is to use 'psub' script."
     echo ""
 }
 
 # process args
-expected_nlines=1502
+submission_executable="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/psub"
 extra_args=()
+restrict_nodes=''
+wtime='00:30:00'
 
 if [ "$(echo "$@" | grep -c "=")" -gt 0 ]
 then
@@ -35,11 +74,20 @@ do
             usage
             exit
             ;;
-        -l| --nlines)
+        -t| --walltime)
             shift
-            expected_nlines="$1"
+            wtime="$1"
+            shift
             ;;
-        * )
+        -r| --restrict)
+            shift
+            restrict_nodes=1
+            ;;
+        --nsub)
+            shift
+            submission_executable="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/nsub"
+            ;;
+        *)
             extra_args+=( "$1" )
     esac
     shift
@@ -75,6 +123,11 @@ then
     exit 1
 fi
 
+psub_flags="-t ${wtime}"
+if [ -n "$restrict_nodes" ]
+then
+    psub_flags="-r ${psub_flags}"
+fi
 
 echo "Beginning to vet and consolidate sim analysis files..."
 reruns=()
@@ -157,7 +210,7 @@ then
     exit 0
 fi
 
-echo "Re-starting failed analyses..."
+echo "Submitting analyses to queue..."
 for qsub_path in "${reruns[@]}"
 do
     dir_path="$(dirname "$qsub_path")"
@@ -190,6 +243,6 @@ do
             rm "$stdout_file"
         fi
 
-        psub -t "01:20:00" "$file_name"
+        $submission_executable $psub_flags "$file_name"
     )
 done
