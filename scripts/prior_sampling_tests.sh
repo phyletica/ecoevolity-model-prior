@@ -42,6 +42,11 @@ then
     source "${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/modules-to-load.sh" 
 fi
 
+if [ -n "$(command -v conda)" ]
+then
+    conda activate ecoevolity-model-prior-project
+fi
+
 if [ "$#" -gt 1 ]
 then
     echo "ERROR: At most one argument allowed; number of extra zeros for chain length"
