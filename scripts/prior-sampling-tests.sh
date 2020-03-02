@@ -72,8 +72,10 @@ echo $extra_zeros
 
 sim_exe_path="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/simcoevolity"
 eco_exe_path="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/ecoevolity"
+sum_exe_path="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/sumcoevolity"
 
-for cfg_path in ${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/ecoevolity-configs/*.yml
+# for cfg_path in ${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/ecoevolity-configs/*.yml
+for cfg_path in ${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/ecoevolity-configs/*dpp-conc*.yml
 do
     cfg_file="$(basename "$cfg_path")"
     cfg_name="${cfg_file%.*}"
@@ -84,7 +86,18 @@ do
     mkdir -p "$output_dir"
 
     $sim_exe_path --seed="$rng_seed" -n "$number_of_reps" -o "$output_dir" "$cfg_path"
+
     sim_cfg_path="${output_dir}/simcoevolity-sim-0-config.yml"
     sed -i "s/chain_length: *[0-9]\+/&$extra_zeros/g" "$sim_cfg_path"
+
     $eco_exe_path --seed="$rng_seed" --ignore-data "$sim_cfg_path"
+
+    state_log_path="${output_dir}/simcoevolity-sim-0-config-state-run-1.log"
+
+    $sum_exe_path --seed="$rng_seed" -b 101 -c "$cfg_path" -n 100000 "$state_log_path"
+    if [ -n "$(command -v pyco-sumevents)" ]
+    then
+        pyco-sumevents -f "${output_dir}/sumcoevolity-results-nevents.txt"
+    fi
+
 done
