@@ -44,6 +44,7 @@ fi
 
 if [ -n "$(command -v conda)" ]
 then
+    eval "$(conda shell.bash hook)"
     conda activate ecoevolity-model-prior-project
 fi
 

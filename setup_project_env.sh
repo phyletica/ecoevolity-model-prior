@@ -33,6 +33,7 @@ git clone https://github.com/phyletica/ecoevolity.git
 
 if [ -n "$(command -v conda)" ]
 then
+    eval "$(conda shell.bash hook)"
     conda env create -f conda-environment.yml
     conda activate ecoevolity-model-prior-project
 fi
