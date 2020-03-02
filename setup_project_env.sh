@@ -30,3 +30,9 @@ git clone https://github.com/phyletica/ecoevolity.git
     echo "    Commit $ecoevolity_commit of ecoevolity successfully built and installed"
     cd ..
 )
+
+if [ -n "$(command -v conda)" ]
+then
+    conda env create -f conda-environment.yml
+    conda activate ecoevolity-model-prior-project
+fi
