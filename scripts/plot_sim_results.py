@@ -2219,6 +2219,26 @@ def main_cli(argv = sys.argv):
                 force_shared_y_range = True,
                 force_shared_spines = True,
                 plot_dir = project_util.PLOT_DIR)
+        generate_histogram_grid(
+                data_grid = var_only_data_grid,
+                plot_file_prefix = "var-only-" + prefix,
+                column_labels = column_labels,
+                row_labels = row_labels,
+                parameter_label = p_info["label"],
+                range_key = "range",
+                center_key = p_info["center_key"],
+                number_of_digits = p_info["ndigits"],
+                plot_width = plot_width,
+                plot_height = plot_height,
+                pad_left = pad_left,
+                pad_right = pad_right,
+                pad_bottom = pad_bottom,
+                pad_top = pad_top,
+                force_shared_x_range = True,
+                force_shared_bins = True,
+                force_shared_y_range = True,
+                force_shared_spines = True,
+                plot_dir = project_util.PLOT_DIR)
 
 
 if __name__ == "__main__":
