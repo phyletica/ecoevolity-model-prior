@@ -54,6 +54,7 @@ then
     case "$1" in
         ''|*[!0-9]*)
             echo "ERROR: Argument is not an integer"
+            exit 1
             ;;
         *)
             num_extra_zeros="$1"
@@ -73,31 +74,43 @@ echo $extra_zeros
 sim_exe_path="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/simcoevolity"
 eco_exe_path="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/ecoevolity"
 sum_exe_path="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/sumcoevolity"
+plot_script_path="${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/scripts/plot_prior_samples.py"
 
-# for cfg_path in ${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/ecoevolity-configs/*.yml
-for cfg_path in ${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/ecoevolity-configs/*dpp-conc*.yml
+for cfg_path in ${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/ecoevolity-configs/*.yml
 do
     cfg_file="$(basename "$cfg_path")"
     cfg_name="${cfg_file%.*}"
     output_dir="../prior-sampling-tests/${cfg_name}"
     rng_seed=1
-    number_of_reps=1
     
     mkdir -p "$output_dir"
 
-    $sim_exe_path --seed="$rng_seed" -n "$number_of_reps" -o "$output_dir" "$cfg_path"
+    # Generate a single simulated dataset under the model specified in the
+    # config
+    $sim_exe_path --seed="$rng_seed" -n 1 -o "$output_dir" "$cfg_path"
 
+    # Increase the number of MCMC samples from the prior by adding zeros to the
+    # 'chain_length' setting in the config file output by simcoevolity
     sim_cfg_path="${output_dir}/simcoevolity-sim-0-config.yml"
     sed -i "s/chain_length: *[0-9]\+/&$extra_zeros/g" "$sim_cfg_path"
 
+    # Sample from the prior using ecoevolity
     $eco_exe_path --seed="$rng_seed" --ignore-data "$sim_cfg_path"
 
     state_log_path="${output_dir}/simcoevolity-sim-0-config-state-run-1.log"
 
-    $sum_exe_path --seed="$rng_seed" -b 101 -c "$cfg_path" -n 100000 "$state_log_path"
+    # Use sumcoevolity to compare model prior expectations to samples 
+    sum_output_prefix="${output_dir}/"
+    $sum_exe_path --seed="$rng_seed" -p "$sum_output_prefix" -b 101 -c "$cfg_path" -n 1000000 "$state_log_path"
     if [ -n "$(command -v pyco-sumevents)" ]
     then
-        pyco-sumevents -f "${output_dir}/sumcoevolity-results-nevents.txt"
+        (
+            cd "$output_dir"
+            pyco-sumevents -f "sumcoevolity-results-nevents.txt"
+        )
     fi
 
+    # Use custom plotting script to compare prior expectations to samples for
+    # all other parameters
+    $plot_script_path -b 101 "$cfg_path" "$state_log_path"
 done

@@ -2,6 +2,7 @@
 
 import os
 import sys
+import argparse
 import numpy
 import scipy.stats
 import matplotlib as mpl
@@ -23,7 +24,7 @@ def almost_equal(x, y,
         proportional_tolerance = 1e-6):
     abs_tol = max(math.fabs(x), math.fabs(y)) * proportional_tolerance
     diff = math.fabs(x - y)
-    if (diff > abs_tol)
+    if (diff > abs_tol):
         return False
     return True
 
@@ -60,7 +61,7 @@ def get_distribution(prior_settings):
         scale = 1.0 / float(prior_parameters["rate"])
         dist = scipy.stats.gamma(1.0, scale = scale)
         return dist
-    if prior_name = "beta_distribution":
+    if prior_name == "beta_distribution":
         a = float(prior_parameters["alpha"])
         b = float(prior_parameters["beta"])
         dist = scipy.stats.beta(a = a, b = b)
@@ -68,7 +69,7 @@ def get_distribution(prior_settings):
     raise Exception("Unexpected prior distribution: {0}".format(prior_name))
 
 def process_parameter(
-        parameter_name
+        parameter_name,
         parameter_settings,
         posterior_samples,
         output_dir):
@@ -93,8 +94,6 @@ def main_cli():
 
     parser.add_argument('config_path',
             metavar = 'ECOEVOLITY-CONFIG-PATH',
-            type = project_util.arg_is_file,
-            nargs = 1,
             type = project_util.arg_is_file,
             help = ('Path to ecoevolity configuration file that was used to '
                     'to sample from the prior.'))
