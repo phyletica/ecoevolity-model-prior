@@ -1,6 +1,6 @@
 ---
 event_model_prior:
-    fixed: [0]
+    fixed: [0, 0, 0, 0, 0, 0, 0, 0]
 
 event_time_prior:
     gamma_distribution:
