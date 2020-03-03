@@ -47,8 +47,8 @@ rng_seed=1
 number_of_reps=10
 
 exe_path="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/simcoevolity"
-config_set_up_script_path="${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/scripts/set-up-configs-for-simulated-data.py"
-qsub_set_up_script_path="${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/scripts/set-up-ecoevolity-qsubs.py"
+config_set_up_script_path="${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/scripts/set_up_configs_for_simulated_data.py"
+qsub_set_up_script_path="${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/scripts/set_up_ecoevolity_qsubs.py"
 
 mkdir -p "$output_dir"
 
