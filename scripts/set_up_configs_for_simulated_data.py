@@ -45,9 +45,9 @@ def main_cli():
     args = parser.parse_args()
 
     configs_to_use_names = [
-            "pairs-8-dpp-conc-4_0-0_97-time-1_0-0_05",
-            "pairs-8-pyp-conc-4_0-0_643-disc-1_0-4_0-time-1_0-0_05",
-            "pairs-8-unif-sw-1_0-2_37-time-1_0-0_05",
+            "pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05",
+            "pairs-10-pyp-conc-2_0-1_79-disc-1_0-4_0-time-1_0-0_05",
+            "pairs-10-unif-sw-0_55-7_32-time-1_0-0_05",
             ]
     configs_to_use = {}
     for config_name in configs_to_use_names:
