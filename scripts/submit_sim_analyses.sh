@@ -46,11 +46,13 @@ usage () {
     echo "                   analyses of data sets simulated with simcoevolity."
     echo "Optional arguments:"
     echo "  -h|--help        Show help message and exit."
-    echo "  -t|--walltime   Max time limit for job."
-    echo "                  Default: 00:30:00."
-    echo "  -r|--restrict   Restrict job to lab nodes."
-    echo "  --nsub          Use 'nsub' submission script."
-    echo "                  Default is to use 'psub' script."
+    echo "  -t|--walltime    Max time limit for job."
+    echo "                   Default: 00:30:00."
+    echo "  -r|--restrict    Restrict job to lab nodes."
+    echo "  --nsub           Use 'nsub' submission script."
+    echo "                   Default is to use 'psub' script."
+    echo "  -l|--nlines      Expected number of lines in ecoevolity state log"
+    echo "                   files. Default: 1502."
     echo ""
 }
 
@@ -59,6 +61,7 @@ submission_executable="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/psub"
 extra_args=()
 restrict_nodes=''
 wtime='00:30:00'
+expected_nlines=1502
 
 if [ "$(echo "$@" | grep -c "=")" -gt 0 ]
 then
@@ -86,6 +89,11 @@ do
         --nsub)
             shift
             submission_executable="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/nsub"
+            ;;
+        -l| --nlines)
+            shift
+            expected_nlines="$1"
+            shift
             ;;
         *)
             extra_args+=( "$1" )

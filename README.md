@@ -1,6 +1,7 @@
 # Table of Contents
 
 -   [Overview](#overview)
+-   [Background](#background)
 -   [Acknowledgements](#acknowledgements)
 -   [License](#license)
 
@@ -11,9 +12,12 @@ This repository serves as an [open-science
 notebook](http://en.wikipedia.org/wiki/Open_notebook_science) for research
 conducted by the [Phyletica Lab](http://phyletica.org) to assess the
 performance new model priors implemented in the software package,
-[Ecoevolity](https://github.com/phyletica/ecoevolity).
+[Ecoevolity](http://phyletica.org/ecoevolity).
 
-[Ecoevolity](https://github.com/phyletica/ecoevolity)
+
+# Background
+
+[Ecoevolity](http://phyletica.org/ecoevolity)
 is a software package for full-likelihood Bayesian comparative phylogeographic
 analyses.
 It compares the timing of evolutionary events across an arbitrary number of
@@ -23,16 +27,20 @@ These evolutionary events can comprise the divergence between two populations
 or species, or the change in the effective size of a population.
 
 To do this, 
-[ecoevolity](https://github.com/phyletica/ecoevolity)
+[ecoevolity](http://phyletica.org/ecoevolity)
 uses Bayesian model choice to approximate the posterior probability of all
-possible ways the taxa can partitioned into event time categories.
+possible ways the taxa can be partitioned into event time categories.
 Each possible partitioning of the taxa is a unique model of evolutionary
 events, or "event model."
 To do this, we must specify the probability of each possible event model
 *a priori*.
 
+For more background about 
+[ecoevolity](http://phyletica.org/ecoevolity),
+please see <http://phyletica.org/ecoevolity/background.html>.
+
 Initially, 
-[ecoevolity](https://github.com/phyletica/ecoevolity)
+[ecoevolity](http://phyletica.org/ecoevolity),
 used a Dirichlet process (DP) as a mathematically convenient and flexible way to
 assign the prior probability of every possible event model.
 We have since implemented a
