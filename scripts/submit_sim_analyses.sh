@@ -51,8 +51,8 @@ usage () {
     echo "  -r|--restrict    Restrict job to lab nodes."
     echo "  --nsub           Use 'nsub' submission script."
     echo "                   Default is to use 'psub' script."
-    echo "  -l|--nlines      Expected number of lines in ecoevolity state log"
-    echo "                   files. Default: 1502."
+    echo "  -l|--nlines      Expected number of lines in each state log file"
+    echo "                   output by ecoevolity. Default: 1502."
     echo ""
 }
 
