@@ -82,7 +82,7 @@ eco_exe_path="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/ecoevolity"
 sum_exe_path="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/sumcoevolity"
 plot_script_path="${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/scripts/plot_prior_samples.py"
 
-for cfg_path in ${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/ecoevolity-configs/*.yml
+for cfg_path in ${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/ecoevolity-configs/pairs-*.yml
 do
     cfg_file="$(basename "$cfg_path")"
     cfg_name="${cfg_file%.*}"
