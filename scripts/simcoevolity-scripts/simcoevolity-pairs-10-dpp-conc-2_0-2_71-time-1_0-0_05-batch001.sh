@@ -40,7 +40,7 @@ then
     source "${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/modules-to-load.sh" 
 fi
 
-config_name="pairs-8-dpp-conc-4_0-0_97-time-1_0-0_05"
+config_name="pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05"
 config_path="../../ecoevolity-configs/${config_name}.yml"
 output_dir="../../ecoevolity-simulations/${config_name}/batch001"
 rng_seed=1
