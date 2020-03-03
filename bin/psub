@@ -83,9 +83,9 @@ done
 
 set -- "${positional_args[@]}" # restore positional arguments
 
-if [ ! "$#" -eq 1 ]
+if [ "$#" -lt 1 ]
 then
-    echo "ERROR: Only one positional argument allowed,"
+    echo "ERROR: At least one positional argument required,"
     echo "       the path to the shell script"
     exit 1
 fi
@@ -107,5 +107,17 @@ then
     qsub_flags="${qsub_flags},mem=${memory}"
 fi
 
-echo "qsub $qsub_flags $@"
-qsub $qsub_flags $@
+if [ "$#" -gt 1 ]
+then
+    f_args=""
+    for arg in "${@:2}"
+    do
+        f_args="${f_args} \"$arg\""
+    done
+    echo qsub $qsub_flags "$1" -F "$f_args"
+    qsub $qsub_flags "$1" -F "$f_args"
+else
+    echo "qsub $qsub_flags $@"
+    qsub $qsub_flags $@
+fi
+
