@@ -1,15 +1,15 @@
 ---
 event_model_prior:
     uniform:
-        # Prior mean number of categories = 4.5
+        # Prior mean number of categories = 5.5
         parameters:
             split_weight:
-                value: 2.37
+                value: 4.0
                 estimate: true
                 prior:
                     gamma_distribution:
-                        shape: 1.0
-                        scale: 2.37
+                        shape: 0.55
+                        scale: 7.32
 
 event_time_prior:
     gamma_distribution:
@@ -103,3 +103,7 @@ comparisons:
     path: "../data/comp07-2species-4genomes-500000chars.txt"
 - comparison:
     path: "../data/comp08-2species-4genomes-500000chars.txt"
+- comparison:
+    path: "../data/comp09-2species-4genomes-500000chars.txt"
+- comparison:
+    path: "../data/comp10-2species-4genomes-500000chars.txt"

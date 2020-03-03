@@ -1,15 +1,15 @@
 ---
 event_model_prior:
     pitman_yor_process:
-        # Prior mean number of categories = 4.5
+        # Prior mean number of categories = 5.5
         parameters:
             concentration:
-                value: 2.6
+                value: 3.58
                 estimate: true
                 prior:
                     gamma_distribution:
-                        shape: 4.0
-                        scale: 0.643
+                        shape: 2.0
+                        scale: 1.79
             discount:
                 value: 0.2
                 estimate: true
@@ -116,3 +116,7 @@ comparisons:
     path: "../data/comp07-2species-4genomes-500000chars.txt"
 - comparison:
     path: "../data/comp08-2species-4genomes-500000chars.txt"
+- comparison:
+    path: "../data/comp09-2species-4genomes-500000chars.txt"
+- comparison:
+    path: "../data/comp10-2species-4genomes-500000chars.txt"
