@@ -74,17 +74,21 @@ fi
     for p in run-2-*; do if [ -e "$p" ]; then
         echo "Archiving and removing run 2 output files..."
         tar czf sim-files-run-2.tar.gz run-2-* && rm run-2-*
+        break
     fi; done
     for p in run-3-*; do if [ -e "$p" ]; then
         echo "Archiving and removing run 3 output files..."
         tar czf sim-files-run-3.tar.gz run-3-* && rm run-3-*
+        break
     fi; done
     for p in run-4-*; do if [ -e "$p" ]; then
         echo "Archiving and removing run 4 output files..."
         tar czf sim-files-run-4.tar.gz run-4-* && rm run-4-*
+        break
     fi; done
     for p in simcoevolity-sim-*-true-values.txt; do if [ -e "$p" ]; then
         echo "Archiving and removing files with true values..."
         tar czf sim-files-true-values.tar.gz simcoevolity-sim-*-true-values.txt && rm simcoevolity-sim-*-true-values.txt
+        break
     fi; done
 )
