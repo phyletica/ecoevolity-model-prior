@@ -6,5 +6,6 @@ dependencies:
   - numpy=1.18.1
   - pyyaml=5.3
   - pip=20.0.2
+  - texlive-core
   - pip:
       - git+git://github.com/phyletica/pycoevolity.git@master
