@@ -172,7 +172,15 @@ def get_results_from_sim_rep(
                 true_param = "split_weight"
             if parameter not in post_sample.parameter_samples:
                 post_param = "split_weight"
-        true_val = float(true_values[true_param][0])
+        # The constrained models do not output a column for
+        # concentration/split_weight, so we will just set the true value to
+        # zero for these cases.
+        try:
+            true_val = float(true_values[true_param][0])
+        except KeyError:
+            if true_param != "split_weight":
+                raise
+            true_val = 0.0
         true_val_rank = post_sample.get_rank(post_param, true_val)
         ss = pycoevolity.stats.get_summary(
                 post_sample.parameter_samples[post_param])
