@@ -2,36 +2,15 @@
 
 set -e
 
-if [ -f "${HOME}/.bash_ecoevolity_model_prior_project" ]
-then
-    source "${HOME}/.bash_ecoevolity_model_prior_project"
-else
-    echo "ERROR: File '~/.bash_ecoevolity_model_prior_project' does not exist."
-    echo "       You probably need to run the project setup script."
-    exit 1
-fi
+project_dir=".."
+sim_exe_path="${project_dir}/bin/simcoevolity"
+eco_exe_path="${project_dir}/bin/ecoevolity"
+sum_exe_path="${project_dir}/bin/sumcoevolity"
+plot_script_path="${project_dir}/scripts/plot_prior_samples.py"
 
-if [ -z "$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR" ]
+if [ ! -f "$eco_exe_path" ]
 then
-    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR is not set"
-    echo "       You probably need to run the project setup script."
-    exit 1
-elif [ ! -d "$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR" ]
-then
-    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR is not a valid directory:"
-    echo "       '$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR'"
-    echo "       You probably need to run the project setup script."
-    exit 1
-fi
-
-if [ -z "$ECOEVOLITY_MODEL_PRIOR_BIN_DIR" ]
-then
-    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_BIN_DIR is not set"
-    exit 1
-elif [ ! -d "$ECOEVOLITY_MODEL_PRIOR_BIN_DIR" ]
-then
-    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_BIN_DIR is not a valid directory:"
-    echo "       '$ECOEVOLITY_MODEL_PRIOR_BIN_DIR'"
+    echo "ERROR: File '$eco_exe_path' does not exist."
     echo "       You probably need to run the project setup script."
     exit 1
 fi
@@ -39,7 +18,7 @@ fi
 if [ -n "$PBS_JOBNAME" ]
 then
     cd $PBS_O_WORKDIR
-    source "${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/modules-to-load.sh" 
+    source "${project_dir}/modules-to-load.sh" 
 fi
 
 if [ -n "$(command -v conda)" ]
@@ -77,12 +56,7 @@ done
 
 echo $extra_zeros
 
-sim_exe_path="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/simcoevolity"
-eco_exe_path="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/ecoevolity"
-sum_exe_path="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/sumcoevolity"
-plot_script_path="${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/scripts/plot_prior_samples.py"
-
-for cfg_path in ${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/ecoevolity-configs/pairs-*.yml
+for cfg_path in ${project_dir}/ecoevolity-configs/pairs-*.yml
 do
     cfg_file="$(basename "$cfg_path")"
     cfg_name="${cfg_file%.*}"

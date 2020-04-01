@@ -21,21 +21,26 @@ def write_qsub(config_path,
     stdout_path = "run-{0}-{1}.out".format(run_number, config_file)
     seed = run_number
     assert(not os.path.exists(qsub_path))
+    exe_var_name = "exe_path"
     with open(qsub_path, 'w') as out:
-        out.write(project_util.PBS_HEADER)
-        out.write("exe_path=\"${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/ecoevolity\"\n\n")
+        pbs_header = project_util.get_pbs_header(qsub_path,
+                exe_name = "ecoevolity",
+                exe_var_name = exe_var_name)
+        out.write(pbs_header)
         if relax_missing_sites:
-            out.write("$exe_path --seed {0} --prefix run-{1}- --relax-constant-sites --relax-missing-sites {2} 1>{3} 2>&1\n".format(
-                    seed,
-                    run_number,
-                    config_file,
-                    stdout_path))
+            out.write("${exe_name} --seed {seed} --prefix run-{run}- --relax-constant-sites --relax-missing-sites {conf} 1>{opath} 2>&1\n".format(
+                    exe_name = exe_var_name,
+                    seed = seed,
+                    run = run_number,
+                    conf = config_file,
+                    opath = stdout_path))
         else:
-            out.write("$exe_path --seed {0} --prefix run-{1}- --relax-constant-sites {2} 1>{3} 2>&1\n".format(
-                    seed,
-                    run_number,
-                    config_file,
-                    stdout_path))
+            out.write("${exe_name} --seed {seed} --prefix run-{run}- --relax-constant-sites {conf} 1>{opath} 2>&1\n".format(
+                    exe_name = exe_var_name,
+                    seed = seed,
+                    run = run_number,
+                    conf = config_file,
+                    opath = stdout_path))
 
 
 def main_cli():

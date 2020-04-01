@@ -44,38 +44,21 @@ BATCH_DIR_ENDING_PATTERN = re.compile(
             r"^.*" + BATCH_DIR_PATTERN_STR + r"(" + os.sep + r")?$")
 
 
-PBS_HEADER =  """#! /bin/bash
+def get_pbs_header(pbs_script_path,
+        exe_name = "ecoevolity",
+        exe_var_name = "exe_path"):
+    relative_project_dir = os.path.relpath(PROJECT_DIR,
+            os.path.dirname(pbs_script_path))
+    return  """#! /bin/bash
 
-if [ -f "${HOME}/.bash_ecoevolity_model_prior_project" ]
-then
-    source "${HOME}/.bash_ecoevolity_model_prior_project"
-else
-    echo "ERROR: File '~/.bash_ecoevolity_model_prior_project' does not exist."
-    echo "       You probably need to run the project setup script."
-    exit 1
-fi
+set -e
 
-if [ -z "$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR" ]
-then
-    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR is not set"
-    echo "       You probably need to run the project setup script."
-    exit 1
-elif [ ! -d "$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR" ]
-then
-    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR is not a valid directory:"
-    echo "       '$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR'"
-    echo "       You probably need to run the project setup script."
-    exit 1
-fi
+project_dir="{rel_project_dir}"
+{exe_var_name}="${{project_dir}}/bin/{exe_name}"
 
-if [ -z "$ECOEVOLITY_MODEL_PRIOR_BIN_DIR" ]
+if [ ! -x "${exe_var_name}" ]
 then
-    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_BIN_DIR is not set"
-    exit 1
-elif [ ! -d "$ECOEVOLITY_MODEL_PRIOR_BIN_DIR" ]
-then
-    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_BIN_DIR is not a valid directory:"
-    echo "       '$ECOEVOLITY_MODEL_PRIOR_BIN_DIR'"
+    echo "ERROR: No executable '${{{exe_var_name}}}'."
     echo "       You probably need to run the project setup script."
     exit 1
 fi
@@ -83,11 +66,14 @@ fi
 if [ -n "$PBS_JOBNAME" ]
 then
     cd $PBS_O_WORKDIR
-    source "${ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR}/modules-to-load.sh" 
+    source "${{project_dir}}/modules-to-load.sh" 
 fi
 
-"""
-
+""".format(
+        rel_project_dir = relative_project_dir,
+        exe_name = exe_name,
+        exe_var_name = exe_var_name,
+        )
 
 def file_path_iter(directory, regex_pattern, include_match = False):
     for dir_path, dir_names, file_names in os.walk(directory):

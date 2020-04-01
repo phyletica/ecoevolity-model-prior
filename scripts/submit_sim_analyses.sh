@@ -2,39 +2,13 @@
 
 set -e
 
-if [ -f "${HOME}/.bash_ecoevolity_model_prior_project" ]
-then
-    source "${HOME}/.bash_ecoevolity_model_prior_project"
-else
-    echo "ERROR: File '~/.bash_ecoevolity_model_prior_project' does not exist."
-    echo "       You probably need to run the project setup script."
-    exit 1
-fi
-
-if [ -z "$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR" ]
-then
-    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR is not set"
-    echo "       You probably need to run the project setup script."
-    exit 1
-elif [ ! -d "$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR" ]
-then
-    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR is not a valid directory:"
-    echo "       '$ECOEVOLITY_MODEL_PRIOR_PROJECT_DIR'"
-    echo "       You probably need to run the project setup script."
-    exit 1
-fi
-
-if [ -z "$ECOEVOLITY_MODEL_PRIOR_BIN_DIR" ]
-then
-    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_BIN_DIR is not set"
-    exit 1
-elif [ ! -d "$ECOEVOLITY_MODEL_PRIOR_BIN_DIR" ]
-then
-    echo "ERROR: ECOEVOLITY_MODEL_PRIOR_BIN_DIR is not a valid directory:"
-    echo "       '$ECOEVOLITY_MODEL_PRIOR_BIN_DIR'"
-    echo "       You probably need to run the project setup script."
-    exit 1
-fi
+project_dir=".."
+bin_dir="${project_dir}/bin"
+submission_executable="${bin_dir}/psub"
+extra_args=()
+restrict_nodes=''
+wtime='00:30:00'
+expected_nlines=1502
 
 usage () {
     echo ""
@@ -57,11 +31,6 @@ usage () {
 }
 
 # process args
-submission_executable="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/psub"
-extra_args=()
-restrict_nodes=''
-wtime='00:30:00'
-expected_nlines=1502
 
 if [ "$(echo "$@" | grep -c "=")" -gt 0 ]
 then
@@ -88,7 +57,7 @@ do
             ;;
         --nsub)
             shift
-            submission_executable="${ECOEVOLITY_MODEL_PRIOR_BIN_DIR}/nsub"
+            submission_executable="${bin_dir}/nsub"
             ;;
         -l| --nlines)
             shift
@@ -100,6 +69,12 @@ do
     esac
     shift
 done
+
+if [ ! -x "$submission_executable" ]
+then
+    echo "ERROR: No executable '$submission_executable'"
+    exit 1
+fi
 
 # Make sure there is exactly one positional argument
 if [ ! "${#extra_args[*]}" = 1 ]
