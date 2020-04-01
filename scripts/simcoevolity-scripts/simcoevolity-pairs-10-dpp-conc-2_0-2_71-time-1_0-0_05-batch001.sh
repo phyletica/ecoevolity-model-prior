@@ -2,6 +2,11 @@
 
 set -e
 
+if [ -n "$PBS_JOBNAME" ]
+then
+    cd $PBS_O_WORKDIR
+fi
+
 config_name="pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05"
 config_path="../../ecoevolity-configs/${config_name}.yml"
 output_dir="../../ecoevolity-simulations/${config_name}/batch001"
@@ -20,11 +25,7 @@ then
     exit 1
 fi
 
-if [ -n "$PBS_JOBNAME" ]
-then
-    cd $PBS_O_WORKDIR
-    source "${project_dir}/modules-to-load.sh" 
-fi
+source "${project_dir}/modules-to-load.sh" >/dev/null 2>&1 || echo "    No modules loaded"
 
 mkdir -p "$output_dir"
 

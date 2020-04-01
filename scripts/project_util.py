@@ -53,6 +53,11 @@ def get_pbs_header(pbs_script_path,
 
 set -e
 
+if [ -n "$PBS_JOBNAME" ]
+then
+    cd $PBS_O_WORKDIR
+fi
+
 project_dir="{rel_project_dir}"
 {exe_var_name}="${{project_dir}}/bin/{exe_name}"
 
@@ -63,11 +68,7 @@ then
     exit 1
 fi
 
-if [ -n "$PBS_JOBNAME" ]
-then
-    cd $PBS_O_WORKDIR
-    source "${{project_dir}}/modules-to-load.sh" 
-fi
+source "${{project_dir}}/modules-to-load.sh" >/dev/null 2>&1 || echo "    No modules loaded"
 
 """.format(
         rel_project_dir = relative_project_dir,

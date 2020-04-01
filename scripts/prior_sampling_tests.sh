@@ -2,6 +2,11 @@
 
 set -e
 
+if [ -n "$PBS_JOBNAME" ]
+then
+    cd $PBS_O_WORKDIR
+fi
+
 project_dir=".."
 sim_exe_path="${project_dir}/bin/simcoevolity"
 eco_exe_path="${project_dir}/bin/ecoevolity"
@@ -15,11 +20,7 @@ then
     exit 1
 fi
 
-if [ -n "$PBS_JOBNAME" ]
-then
-    cd $PBS_O_WORKDIR
-    source "${project_dir}/modules-to-load.sh" 
-fi
+source "${project_dir}/modules-to-load.sh" >/dev/null 2>&1 || echo "    No modules loaded"
 
 if [ -n "$(command -v conda)" ]
 then
