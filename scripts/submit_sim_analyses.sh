@@ -16,8 +16,8 @@ usage () {
     echo "  $0 [ OPTIONS ] <PATH-TO-SIM-DIR>"
     echo ""
     echo "Required positional argument:"
-    echo "  PATH-TO-SIM-DIR  Path to diretory containing ecoeovlity output of "
-    echo "                   analyses of data sets simulated with simcoevolity."
+    echo "  PATH-TO-SIM-DIR  Path to diretory containing simcoevolity output "
+    echo "                   files to be analyzed with ecoevolity."
     echo "Optional arguments:"
     echo "  -h|--help        Show help message and exit."
     echo "  -t|--walltime    Max time limit for job."
@@ -198,6 +198,7 @@ for qsub_path in "${reruns[@]}"
 do
     dir_path="$(dirname "$qsub_path")"
     file_name="$(basename "$qsub_path")"
+    rel_sub_exe="$(perl -e 'use File::Spec; print File::Spec->abs2rel(@ARGV) . "\n"' $submission_executable $dir_path)"
 
     (
         cd "$dir_path"
@@ -226,6 +227,6 @@ do
             rm "$stdout_file"
         fi
 
-        $submission_executable $psub_flags "$file_name"
+        $rel_sub_exe $psub_flags "$file_name"
     )
 done
