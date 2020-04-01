@@ -157,8 +157,7 @@ do
         continue
     fi
 
-    runtime_line_count="$(grep -c "Runtime:" "$out_file")"
-    if [ "$runtime_line_count" != 1 ]
+    if [ "$(grep -c "Runtime:" "$out_file")" != 1 ]
     then 
         echo "Incomplete stdout: $qsub_path" 
         reruns+=( "$qsub_path" )
