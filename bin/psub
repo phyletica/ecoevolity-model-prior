@@ -13,6 +13,8 @@ usage() {
     echo "                  Default: Not specified."
     echo "  -r|--restrict   Restrict job to lab nodes."
     echo "  --priority      Priority value. Default: None."
+    echo "  -a|--array      Job array parameters (e.g. -a 1-100%10)."
+    echo "                  Default: None (not run as a job array)."
     echo "  -h|--help       Show help message and exit."
     echo ""
 }
@@ -22,6 +24,7 @@ nnodes="1"
 restrict_nodes=""
 memory=""
 priority=""
+array_parameters=""
 nprocessors="1"
 wtime="01:00:00"
 mygroup="${mygroup:-jro0014_lab}"
@@ -74,6 +77,11 @@ do
             priority="$1"
             shift
             ;;
+        -a| --array)
+            shift
+            array_parameters="$1"
+            shift
+            ;;
         *)
             positional_args+=("$1")
             shift
@@ -107,6 +115,11 @@ then
     qsub_flags="${qsub_flags},mem=${memory}"
 fi
 
+if [ -n "$array_parameters" ]
+then
+    qsub_flags="${qsub_flags},-t ${array_parameters}"
+fi
+
 if [ "$#" -gt 1 ]
 then
     f_args=""
@@ -120,4 +133,3 @@ else
     echo "qsub $qsub_flags $@"
     qsub $qsub_flags $@
 fi
-
