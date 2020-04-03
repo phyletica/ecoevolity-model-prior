@@ -319,8 +319,9 @@ def main_cli():
     parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('sim_dir',
+    parser.add_argument('sim_dirs',
             metavar = 'SIMCOEVOLITY-OUTPUT-DIR',
+            nargs = '+',
             type = project_util.arg_is_dir,
             help = ('Path to directory with simcoevolity output files.'))
     parser.add_argument('-s', '--expected-number-of-samples',
@@ -338,27 +339,18 @@ def main_cli():
 
     args = parser.parse_args()
 
-    batch_dir_match = project_util.BATCH_DIR_ENDING_PATTERN.match(args.sim_dir)
-    
-    if batch_dir_match:
-        _LOG.info("Parsing sim results in '{0}'".format(args.sim_dir))
+    for sim_dir in args.sim_dirs:
+        batch_dir_match = project_util.BATCH_DIR_ENDING_PATTERN.match(sim_dir)
+        if not batch_dir_match:
+            raise Exception("The following path is not a batch directory\n"
+                    "  {0}".format(sim_dir))
+
+    for sim_dir in args.sim_dirs:
+        _LOG.info("Parsing sim results in '{0}'".format(sim_dir))
         parse_simulation_results(
-                args.sim_dir,
+                sim_dir,
                 expected_number_of_samples = args.expected_number_of_samples,
                 burnin = args.burnin)
-        sys.exit()
-
-    batch_dir_count = 0
-    for batch_dir in project_util.batch_dir_iter(args.sim_dir):
-        _LOG.info("Parsing sim results in '{0}'".format(batch_dir))
-        parse_simulation_results(
-                batch_dir,
-                expected_number_of_samples = args.expected_number_of_samples,
-                burnin = args.burnin)
-        batch_dir_count += 1
-
-    if batch_dir_count < 1:
-        _LOG.warning("No sim batch dirs were found!")
 
 
 if __name__ == "__main__":
