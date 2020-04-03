@@ -5,11 +5,12 @@ set -e
 project_dir=".."
 bin_dir="${project_dir}/bin"
 submission_executable="${bin_dir}/psub"
+array_spawner_executable="${bin_dir}/spawn_job_array"
 extra_args=()
 restrict_nodes=''
 wtime='00:30:00'
 expected_nlines=1502
-max_njobs=200
+max_njobs=100
 
 usage () {
     echo ""
@@ -114,6 +115,14 @@ then
     exit 1
 fi
 
+full_batch_dir="$(cd "$batch_dir" && pwd)"
+if [ ! -d "$full_batch_dir" ]
+then
+    echo "ERROR: Failed to get full path to $batch_dir"
+    usage
+    exit 1
+fi
+
 psub_flags="-t ${wtime}"
 if [ -n "$restrict_nodes" ]
 then
@@ -122,7 +131,7 @@ fi
 
 echo "Beginning to vet and consolidate sim analysis files..."
 reruns=()
-for qsub_path in ${batch_dir}/*pairs-*-sim-*-config-run-*-qsub.sh
+for qsub_path in ${full_batch_dir}/*pairs-*-sim-*-config-run-*-qsub.sh
 do
     to_run="${qsub_path/-qsub.sh/}"
     run_number="${to_run##*-}"
@@ -202,7 +211,10 @@ then
 fi
 
 # Temp file for storing paths to scripts to run
-qsub_path_list="$(mktemp "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXXXXXX")"
+# /tmp dir of head node was not visible to compute nodes, so putting the temp
+# file in working directory
+# qsub_path_list="$(mktemp "${TMPDIR:-/tmp/}$(basename "$array_spawner_executable").XXXXXXXXXXXX")"
+qsub_path_list="$(mktemp "$(pwd)/$(basename "$array_spawner_executable").XXXXXXXXXXXX")"
 
 for qsub_path in "${reruns[@]}"
 do
@@ -241,6 +253,5 @@ then
 else
     psub_flags="${psub_flags} -a 1-${number_of_reruns}%${max_njobs}"
 fi
-echo $submission_executable $psub_flags "${bin_dir}/spawn_job_array" "$qsub_path_list"
-$submission_executable $psub_flags "${bin_dir}/spawn_job_array" "$qsub_path_list"
-rm "$qsub_path_list"
+echo $submission_executable $psub_flags "$array_spawner_executable" "$qsub_path_list"
+$submission_executable $psub_flags "$array_spawner_executable" "$qsub_path_list"

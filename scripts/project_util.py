@@ -47,16 +47,14 @@ BATCH_DIR_ENDING_PATTERN = re.compile(
 def get_pbs_header(pbs_script_path,
         exe_name = "ecoevolity",
         exe_var_name = "exe_path"):
+    script_dir = os.path.dirname(pbs_script_path)
     relative_project_dir = os.path.relpath(PROJECT_DIR,
-            os.path.dirname(pbs_script_path))
+            script_dir)
     return  """#! /bin/bash
 
 set -e
 
-if [ -n "$PBS_JOBNAME" ]
-then
-    cd $PBS_O_WORKDIR
-fi
+cd {script_dir}
 
 project_dir="{rel_project_dir}"
 {exe_var_name}="${{project_dir}}/bin/{exe_name}"
@@ -71,6 +69,7 @@ fi
 source "${{project_dir}}/modules-to-load.sh" >/dev/null 2>&1 || echo "    No modules loaded"
 
 """.format(
+        script_dir = script_dir,
         rel_project_dir = relative_project_dir,
         exe_name = exe_name,
         exe_var_name = exe_var_name,

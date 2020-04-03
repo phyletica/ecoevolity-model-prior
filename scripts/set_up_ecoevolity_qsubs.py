@@ -13,6 +13,7 @@ import project_util
 def write_qsub(config_path,
         run_number = 1,
         relax_missing_sites = False):
+    config_path = os.path.abspath(config_path)
     qsub_prefix = os.path.splitext(config_path)[0]
     qsub_path = "{0}-run-{1}-qsub.sh".format(qsub_prefix, run_number)
     if os.path.exists(qsub_path):
