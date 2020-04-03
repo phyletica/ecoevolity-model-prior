@@ -13,6 +13,11 @@ usage () {
     echo ""
 }
 
+if [ -n "$PBS_JOBNAME" ]
+then
+    cd $PBS_O_WORKDIR
+fi
+
 # Make sure there is exactly one positional argument
 if [ ! "$#" = 1 ]
 then
