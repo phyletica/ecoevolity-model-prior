@@ -13,7 +13,7 @@ expected_nlines=1502
 usage () {
     echo ""
     echo "Usage:"
-    echo "  $0 [ OPTIONS ] <PATH-TO-SIM-DIR>"
+    echo "  $0 [ OPTIONS ] <PATH-TO-SIM-DIR-1> [ <PATH-TO-SIM-DIR-2> ... ]"
     echo ""
     echo "Required positional argument:"
     echo "  PATH-TO-SIM-DIR  Path to diretory containing simcoevolity output "
@@ -21,12 +21,12 @@ usage () {
     echo "Optional arguments:"
     echo "  -h|--help        Show help message and exit."
     echo "  -t|--walltime    Max time limit for job."
-    echo "                   Default: 00:30:00."
+    echo "                   Default: $wtime."
     echo "  -r|--restrict    Restrict job to lab nodes."
     echo "  --nsub           Use 'nsub' submission script."
     echo "                   Default is to use 'psub' script."
     echo "  -l|--nlines      Expected number of lines in each state log file"
-    echo "                   output by ecoevolity. Default: 1502."
+    echo "                   output by ecoevolity. Default: $expected_nlines."
     echo ""
 }
 
@@ -76,114 +76,117 @@ then
     exit 1
 fi
 
-# Make sure there is exactly one positional argument
-if [ ! "${#extra_args[*]}" = 1 ]
+# Make sure there are positional arguments
+if [ ! "${#extra_args[*]}" -gt 1 ]
 then
-    echo "ERROR: One argument must be provided; a path to a sim directory"
+    echo "ERROR: At least one argument must be provided; paths to a sim directories"
     usage
     exit 1
 fi
 
-# Path to the batch directory should be the only argument
-batch_dir="${extra_args[0]}"
-# Remove any trailing slashes from the path
-batch_dir="$(echo "$batch_dir" | sed 's:/*$::')"
-
-# Make sure the argument is a valid directory
-if [ ! -d "$batch_dir" ]
-then
-    echo "ERROR: Path is not a valid directory: $batch_dir"
-    usage
-    exit 1
-fi
-
-# Make sure the directory is a batch directory
-if [ ! "$(echo "$batch_dir" | grep -c -E "batch[0-9]{1,4}$")" -gt 0 ]
-then
-    echo "ERROR: The path provided doesn't seem to be a sim batch directory:"
-    echo "    $batch_dir"
-    usage
-    exit 1
-fi
-
-psub_flags="-t ${wtime}"
-if [ -n "$restrict_nodes" ]
-then
-    psub_flags="-r ${psub_flags}"
-fi
-
-echo "Beginning to vet and consolidate sim analysis files..."
 reruns=()
-for qsub_path in ${batch_dir}/*pairs-*-sim-*-config-run-*-qsub.sh
+for batch_dir in "${extra_args[@]}"
 do
-    to_run="${qsub_path/-qsub.sh/}"
-    run_number="${to_run##*-}"
-    qsub_file_name="$(basename "$qsub_path")"
-    dir_path="$(dirname "$qsub_path")"
-    base_prefix="${qsub_file_name%-run-*}"
-    file_prefix="run-${run_number}-${base_prefix}"
-    prefix="${dir_path}/${file_prefix}"
-    out_file="${prefix}.yml.out"
-    state_log="${prefix}-state-run-1.log"
-    op_log="${prefix}-operator-run-1.log"
 
-    # Consolidate state logs if run was restarted 
-    extra_run_number=2
-    while [ -e "${prefix}-state-run-${extra_run_number}.log" ]
-    do
-        mv "${prefix}-state-run-${extra_run_number}.log" "$state_log"
-        ((++extra_run_number))
-    done
-
-    # Consolidate operator logs if run was restarted 
-    extra_run_number=2
-    while [ -e "${prefix}-operator-run-${extra_run_number}.log" ]
-    do
-        mv "${prefix}-operator-run-${extra_run_number}.log" "$op_log"
-        ((++extra_run_number))
-    done
-
-    if [ ! -e "$out_file" ] 
-    then
-        echo "No stdout: $qsub_path" 
-        reruns+=( "$qsub_path" )
-        continue
-    fi
-
-    if [ ! -e "$state_log" ] 
-    then
-        echo "No state log: $qsub_path" 
-        reruns+=( "$qsub_path" )
-        continue
-    fi
-
-    if [ "$(grep -c "Runtime:" "$out_file")" != 1 ]
-    then 
-        echo "Incomplete stdout: $qsub_path" 
-        reruns+=( "$qsub_path" )
-        continue
-    fi
-
-    nlines="$(wc -l "$state_log" | awk '{print $1}')"
-    if [ "$nlines" != "$expected_nlines" ] 
-    then
-        echo "Incomplete log: $qsub_path" 
-        reruns+=( "$qsub_path" )
-        continue
-    fi
-
-    seed_line="$(grep "seed" "$qsub_path")"
-    after_seed="${seed_line##*--seed}"
-    expected_seed="$(echo ${after_seed%%--*} | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
-    seed_line="$(grep -i "seed" "$out_file")"
-    seed="$(echo ${seed_line##*:} | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+    # Remove any trailing slashes from the path
+    batch_dir="$(echo "$batch_dir" | sed 's:/*$::')"
     
-    if [ "$expected_seed" != "$seed" ]
+    # Make sure the argument is a valid directory
+    if [ ! -d "$batch_dir" ]
     then
-        echo "Bad seed: $qsub_path"
-        reruns+=( "$qsub_path" )
-        continue
+        echo "ERROR: Path is not a valid directory: $batch_dir"
+        usage
+        exit 1
     fi
+    
+    # Make sure the directory is a batch directory
+    if [ ! "$(echo "$batch_dir" | grep -c -E "batch[0-9]{1,4}$")" -gt 0 ]
+    then
+        echo "ERROR: The path provided doesn't seem to be a sim batch directory:"
+        echo "    $batch_dir"
+        usage
+        exit 1
+    fi
+    
+    psub_flags="-t ${wtime}"
+    if [ -n "$restrict_nodes" ]
+    then
+        psub_flags="-r ${psub_flags}"
+    fi
+    
+    echo "Beginning to vet and consolidate sim analysis files in:"
+    echo "  \'${batch_dir}\'"
+    for qsub_path in ${batch_dir}/*pairs-*-sim-*-config-run-*-qsub.sh
+    do
+        to_run="${qsub_path/-qsub.sh/}"
+        run_number="${to_run##*-}"
+        qsub_file_name="$(basename "$qsub_path")"
+        dir_path="$(dirname "$qsub_path")"
+        base_prefix="${qsub_file_name%-run-*}"
+        file_prefix="run-${run_number}-${base_prefix}"
+        prefix="${dir_path}/${file_prefix}"
+        out_file="${prefix}.yml.out"
+        state_log="${prefix}-state-run-1.log"
+        op_log="${prefix}-operator-run-1.log"
+    
+        # Consolidate state logs if run was restarted 
+        extra_run_number=2
+        while [ -e "${prefix}-state-run-${extra_run_number}.log" ]
+        do
+            mv "${prefix}-state-run-${extra_run_number}.log" "$state_log"
+            ((++extra_run_number))
+        done
+    
+        # Consolidate operator logs if run was restarted 
+        extra_run_number=2
+        while [ -e "${prefix}-operator-run-${extra_run_number}.log" ]
+        do
+            mv "${prefix}-operator-run-${extra_run_number}.log" "$op_log"
+            ((++extra_run_number))
+        done
+    
+        if [ ! -e "$out_file" ] 
+        then
+            echo "No stdout: $qsub_path" 
+            reruns+=( "$qsub_path" )
+            continue
+        fi
+    
+        if [ ! -e "$state_log" ] 
+        then
+            echo "No state log: $qsub_path" 
+            reruns+=( "$qsub_path" )
+            continue
+        fi
+    
+        if [ "$(grep -c "Runtime:" "$out_file")" != 1 ]
+        then 
+            echo "Incomplete stdout: $qsub_path" 
+            reruns+=( "$qsub_path" )
+            continue
+        fi
+    
+        nlines="$(wc -l "$state_log" | awk '{print $1}')"
+        if [ "$nlines" != "$expected_nlines" ] 
+        then
+            echo "Incomplete log: $qsub_path" 
+            reruns+=( "$qsub_path" )
+            continue
+        fi
+    
+        seed_line="$(grep "seed" "$qsub_path")"
+        after_seed="${seed_line##*--seed}"
+        expected_seed="$(echo ${after_seed%%--*} | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+        seed_line="$(grep -i "seed" "$out_file")"
+        seed="$(echo ${seed_line##*:} | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+        
+        if [ "$expected_seed" != "$seed" ]
+        then
+            echo "Bad seed: $qsub_path"
+            reruns+=( "$qsub_path" )
+            continue
+        fi
+    done
 done
 
 if [ "${#reruns[*]}" = 0 ]
