@@ -117,7 +117,7 @@ fi
 
 if [ -n "$array_parameters" ]
 then
-    qsub_flags="${qsub_flags},-t ${array_parameters}"
+    qsub_flags="${qsub_flags} -t ${array_parameters}"
 fi
 
 if [ "$#" -gt 1 ]
