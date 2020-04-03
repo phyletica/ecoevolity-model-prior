@@ -77,7 +77,7 @@ then
 fi
 
 # Make sure there are positional arguments
-if [ ! "${#extra_args[*]}" -gt 1 ]
+if [ ! "${#extra_args[*]}" -gt 0 ]
 then
     echo "ERROR: At least one argument must be provided; paths to a sim directories"
     usage
