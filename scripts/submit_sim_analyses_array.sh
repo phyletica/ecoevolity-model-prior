@@ -132,7 +132,7 @@ do
     fi
     
     echo "Beginning to vet and consolidate sim analysis files in:"
-    echo "  \'${batch_dir}\'"
+    echo "  '${batch_dir}'"
     for qsub_path in ${full_batch_dir}/*pairs-*-sim-*-config-run-*-qsub.sh
     do
         to_run="${qsub_path/-qsub.sh/}"
