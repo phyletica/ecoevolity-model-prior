@@ -66,10 +66,8 @@ script_name="$(basename "$script_path")"
     cd "$script_dir"
     if [ -x "$script_name" ]
     then
-        echo "exe"
         "./${script_name}"
     else
-        echo "not exe"
         bash "${script_name}"
     fi
 )
