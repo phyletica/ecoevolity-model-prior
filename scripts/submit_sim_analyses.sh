@@ -5,10 +5,12 @@ set -e
 project_dir=".."
 bin_dir="${project_dir}/bin"
 submission_executable="${bin_dir}/psub"
+array_spawner_executable="${bin_dir}/spawn_job_array"
 extra_args=()
 restrict_nodes=''
 wtime='00:30:00'
 expected_nlines=1502
+max_njobs=400
 
 usage () {
     echo ""
@@ -27,6 +29,8 @@ usage () {
     echo "                   Default is to use 'psub' script."
     echo "  -l|--nlines      Expected number of lines in each state log file"
     echo "                   output by ecoevolity. Default: $expected_nlines."
+    echo "  -m|--max-njobs   Maximum number of jobs to be run at a time."
+    echo "                   Default: $max_njobs."
     echo ""
 }
 
@@ -62,6 +66,11 @@ do
         -l| --nlines)
             shift
             expected_nlines="$1"
+            shift
+            ;;
+        -m| --max-njobs)
+            shift
+            max_njobs="$1"
             shift
             ;;
         *)
@@ -108,6 +117,14 @@ do
         exit 1
     fi
     
+    full_batch_dir="$(cd "$batch_dir" && pwd)"
+    if [ ! -d "$full_batch_dir" ]
+    then
+        echo "ERROR: Failed to get full path to $batch_dir"
+        usage
+        exit 1
+    fi
+    
     psub_flags="-t ${wtime}"
     if [ -n "$restrict_nodes" ]
     then
@@ -115,8 +132,8 @@ do
     fi
     
     echo "Beginning to vet and consolidate sim analysis files in:"
-    echo "  \'${batch_dir}\'"
-    for qsub_path in ${batch_dir}/*pairs-*-sim-*-config-run-*-qsub.sh
+    echo "  '${batch_dir}'"
+    for qsub_path in ${full_batch_dir}/*pairs-*-sim-*-config-run-*-qsub.sh
     do
         to_run="${qsub_path/-qsub.sh/}"
         run_number="${to_run##*-}"
@@ -189,46 +206,55 @@ do
     done
 done
 
-if [ "${#reruns[*]}" = 0 ]
+number_of_reruns="${#reruns[*]}"
+if [ "$number_of_reruns" = 0 ]
 then
     echo "All analyses are complete and clean!"
     exit 0
 fi
 
-echo "Submitting analyses to queue..."
+# Temp file for storing paths to scripts to run
+# /tmp dir of head node was not visible to compute nodes, so putting the temp
+# file in working directory
+# qsub_path_list="$(mktemp "${TMPDIR:-/tmp/}$(basename "$array_spawner_executable").XXXXXXXXXXXX")"
+qsub_path_list="$(mktemp "$(pwd)/$(basename "$array_spawner_executable").XXXXXXXXXXXX")"
+
 for qsub_path in "${reruns[@]}"
 do
+    echo "$qsub_path" >> "$qsub_path_list"
     dir_path="$(dirname "$qsub_path")"
     file_name="$(basename "$qsub_path")"
-    rel_sub_exe="$(perl -e 'use File::Spec; print File::Spec->abs2rel(@ARGV) . "\n"' $submission_executable $dir_path)"
 
-    (
-        cd "$dir_path"
-        ls "$file_name"
+    prefix="${file_name/-qsub\.sh/}"
+    run_number="${prefix##*run-}"
+    sim_base="${prefix%-run-*}"
 
-        prefix="${file_name/-qsub\.sh/}"
-        run_number="${prefix##*run-}"
-        sim_base="${prefix%-run-*}"
+    op_log_file="${dir_path}/run-${run_number}-${sim_base}-operator-run-1.log"
+    state_log_file="${dir_path}/run-${run_number}-${sim_base}-state-run-1.log"
+    stdout_file="${dir_path}/run-${run_number}-${sim_base}.yml.out"
 
-        op_log_file="run-${run_number}-${sim_base}-operator-run-1.log"
-        state_log_file="run-${run_number}-${sim_base}-state-run-1.log"
-        stdout_file="run-${run_number}-${sim_base}.yml.out"
+    if [ -e "$op_log_file" ]
+    then
+        rm "$op_log_file"
+    fi
 
-        if [ -e "$op_log_file" ]
-        then
-            rm "$op_log_file"
-        fi
+    if [ -e "$state_log_file" ]
+    then
+        rm "$state_log_file"
+    fi
 
-        if [ -e "$state_log_file" ]
-        then
-            rm "$state_log_file"
-        fi
-
-        if [ -e "$stdout_file" ]
-        then
-            rm "$stdout_file"
-        fi
-
-        $rel_sub_exe $psub_flags "$file_name"
-    )
+    if [ -e "$stdout_file" ]
+    then
+        rm "$stdout_file"
+    fi
 done
+
+echo "Submitting analyses to queue..."
+if [ "$max_njobs" -gt "$number_of_reruns" ]
+then
+    psub_flags="${psub_flags} -a 1-${number_of_reruns}"
+else
+    psub_flags="${psub_flags} -a 1-${number_of_reruns}%${max_njobs}"
+fi
+echo $submission_executable $psub_flags "$array_spawner_executable" "$qsub_path_list"
+$submission_executable $psub_flags "$array_spawner_executable" "$qsub_path_list"
