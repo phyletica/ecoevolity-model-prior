@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Background &#8212; Ecoevolity model prior experiments 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="Ecoevolity Model Prior Experiments" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="background">
+<span id="id1"></span><h1>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prior-on-divergence-models">
+<span id="id2"></span><h2>Prior on divergence models<a class="headerlink" href="#prior-on-divergence-models" title="Permalink to this headline">¶</a></h2>
+<p>Ecoevolity treats the divergence model (number of divergence events, and the
+assignment of the taxa to the events) as a random variable under a Dirichlet
+process <a class="bibtex reference internal" href="zbib/references.html#ferguson1973" id="id3">[2]</a><a class="bibtex reference internal" href="zbib/references.html#antoniak1974" id="id4">[1]</a>.
+The basic idea of the Dirichlet process is quite simple; we assign species
+pairs to divergence events one at a time following a very simple rule.
+When assigning the <img class="math" src="_images/math/19caad0fb60a1408dfd5adf1a8ad1dd1a560bb82.svg" alt="n^{th}"/> pair, we assign it to its own
+event (i.e., a new divergence event) with probability</p>
+<div class="math" id="equation-dppnewcat">
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-dppnewcat" title="Permalink to this equation">¶</a></span><img src="_images/math/d06acb2ca9c0f9f7ed55e31d0c70f3bfa40ce909.svg" alt="\frac{\alpha}{\alpha + n -1}"/></p>
+</div><p>or you assign it to an existing event <img class="math" src="_images/math/6bcdbccd26b626541ace17d7914a06e16a2c4b6b.svg" alt="x"/> with probability</p>
+<div class="math" id="equation-dppexistingcat">
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-dppexistingcat" title="Permalink to this equation">¶</a></span><img src="_images/math/7d87c3ac83febf076969593ac1523edf742387a3.svg" alt="\frac{n_x}{\alpha + n -1}"/></p>
+</div><p>where <img class="math" src="_images/math/317d29b2cf7de429807412300c2d18367e3d1b5c.svg" alt="n_x"/> is the number of pairs already assigned to
+event <img class="math" src="_images/math/6bcdbccd26b626541ace17d7914a06e16a2c4b6b.svg" alt="x"/>.
+Let’s walk through an example using our three pairs of lizard species.
+First, we have to assign our first pair (“A”) to a
+divergence event with probability 1.0;
+let’s call this the “blue” divergence event.
+Next we assign the second pair (“B”) to either a new (“red”) divergence
+event with probability <img class="math" src="_images/math/6f288e7561a3ee8a7197a3805177ebcb93370354.svg" alt="\alpha/\alpha + 1"/> or to the same “blue”
+divergence event as the first pair with probability <img class="math" src="_images/math/77faa8d34c93d8b903e529635854058deec0a068.svg" alt="1/\alpha + 1"/>.
+For this example, let’s say it gets assigned to the “blue” event.
+Lastly, we assign the third pair (“C”) to either a new (“red”) divergence
+event with probability <img class="math" src="_images/math/8328fdaffa9210704cbb0c4e1f1d9702b3efbf48.svg" alt="\alpha/\alpha + 2"/> or to the same “blue”
+divergence event as the first two pairs with probability <img class="math" src="_images/math/293f9d979a376cecf712ef7b49af76fa334bacdb.svg" alt="2/\alpha +
+2"/>.</p>
+<p>The GIF below illustrates how the these simple rules determine the
+prior probability of all five possible models.
+Notice toward the end of the animation, as the concentration parameter
+increases we place more probability on the divergence models with more
+independent divergence events (less shared divergences).</p>
+<div class="figure align-center" id="id8" style="width: 90%">
+<span id="dpp-tree"></span><a class="reference internal image-reference" href="_images/dpp-3-example.gif"><img alt="DPP example" src="_images/dpp-3-example.gif" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">An example of the Dirichlet process.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+<p>Notice that the Dirichlet process prior (DPP) is not motivated by any
+biological processes.
+Rather, we use it because it is flexible (we can adjust or estimate the
+concentration parameter), and mathematically convenient; it allows us to use
+Gibbs sampling <a class="bibtex reference internal" href="zbib/references.html#neal2000" id="id5">[3]</a> to sample across divergence models.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Ecoevolity model prior experiments</a></h1>
+
+
+
+<p class="blurb">Experimenting with new comparative phylogeographical models</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=phyletica&repo=ecoevolity-model-prior&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Background</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prior-on-divergence-models">Prior on divergence models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citation.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgments.html">Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zbib/references.html">Literature Cited</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Ecoevolity Model Prior Experiments</a></li>
+      <li>Next: <a href="license.html" title="next chapter">License</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="footer" role="contentinfo" align="center">
+    <a href="https://github.com/phyletica/ecoevolity-model-prior">GitHub</a> &nbsp; | &nbsp; <a href="license.html">License</a> &nbsp; | &nbsp; <a href="citation.html">Citation</a> &nbsp; | &nbsp; <a href="https://groups.google.com/forum/#!forum/ecoevolity-users">Users Forum</a>
+</div>
+
+  </body>
+</html>
