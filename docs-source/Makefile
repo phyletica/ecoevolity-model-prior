@@ -25,8 +25,16 @@ help:
 
 publish: | clean html
 	@echo ""
-	@echo "Copying files to published directory ..."
+	@echo "Copying files to published directory..."
 	@echo ""
 	@mkdir -p "$(PUBLISHDIR)" \
 		&& rsync -ap --progress --delete $(BUILDDIR)/html/. "$(PUBLISHDIR)"
-	# @git add "$(SOURCEDIR)" "$(PUBLISHDIR)"
+	@echo ""
+	@echo "Committing and pushing all changes to source and published html files..."
+	@echo ""
+	@git add "$(SOURCEDIR)" "$(PUBLISHDIR)" \
+		&& git commit \
+			-m "Updating documentation at $$(date -u +"%Y-%m-%d %H:%M:%S")" \
+			-m "This commit was automated by the Sphinx documentation make file." \
+			-m "All changes to source and built/published html files are committed." \
+		&& git push
