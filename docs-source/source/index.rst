@@ -32,6 +32,7 @@ is the |project_repo|_.
    :hidden:
    :name: hometoc
 
+   prerequisites
    background
    license
    citation

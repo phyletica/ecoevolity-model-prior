@@ -103,7 +103,7 @@ html_theme_options = {
         'github_banner': False,
         'description': 'Experimenting with new comparative phylogeographical models',
         'show_powered_by': True,
-        'fixed_sidebar': False,
+        'fixed_sidebar': True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
