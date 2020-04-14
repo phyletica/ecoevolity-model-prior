@@ -311,6 +311,8 @@ rst_epilog = """
 
 .. |git| replace:: Git
 .. _git: http://git-scm.com/
+.. |github| replace:: Git
+.. _github: https://github.com/
 
 .. |yaml| replace:: YAML 
 .. _yaml: http://yaml.org/
