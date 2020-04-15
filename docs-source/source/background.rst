@@ -307,3 +307,14 @@ Split weight :math:`s = \frac{1}{2}`:
     4            1                1                   1            :math:`\frac{1}{49}`
 =========  ==============  ===============  =====================  ====================
 
+
+The Goal
+========
+
+Our primary goal with this project is to compare the performance of the
+Dirichlet-process, Pitman-Yor, and uniform priors when inferring shared
+divergences from comparative genomic data.
+To do this, we will simulate datasets under each of these three models (as well
+as models that violate all three of them) and then analyze each simulated
+dataset under each of these three models to compare the accuracy, precision,
+and robustness of the estimated timing and sharing of divergences.
