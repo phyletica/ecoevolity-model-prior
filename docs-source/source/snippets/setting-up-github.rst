@@ -1,6 +1,6 @@
 If you don't already have an account on |github|_,
 go there and sign up for a free account.
-Login to your |github|_ account, and go to the "Settings" for your account
+Log in to your |github|_ account, and go to the "Settings" for your account
 (there should be a drop down near the top right corner of the |github|_ page,
 with a "Settings" option).
 Along the right side of your settings page, there should be a "SSH and GPG

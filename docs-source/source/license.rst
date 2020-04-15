@@ -23,5 +23,5 @@ Ecoevolity Software
 |Eco|_ is licensed under
 `Version 3 of the GNU General Public License
 <http://www.gnu.org/copyleft/gpl.html>`_,
-and the source code is available on
-`GitHub <https://github.com/phyletica/ecoevolity>`_.
+and the source code is available via a
+`Git repo hosted on GitHub <https://github.com/phyletica/ecoevolity>`_.

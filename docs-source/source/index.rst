@@ -15,11 +15,12 @@ Ecoevolity Model Prior Experiments
    :name: hometoc
 
    about
-   prerequisites
    background
-   license
-   citation
+   prerequisites
+   getting-started
    acknowledgments
+   citation
+   license
    glossary
    zbib/references
 

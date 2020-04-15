@@ -1,0 +1,147 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Getting started &#8212; Ecoevolity model prior experiments 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Acknowledgments" href="acknowledgments.html" />
+    <link rel="prev" title="Before starting" href="prerequisites.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Ecoevolity model prior experiments</a></h1>
+
+
+
+<p class="blurb">Experimenting with new comparative phylogeographical models</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=phyletica&repo=ecoevolity-model-prior&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="background.html">Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Before starting</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgments.html">Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citation.html">Citation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zbib/references.html">Literature Cited</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="prerequisites.html" title="previous chapter">Before starting</a></li>
+      <li>Next: <a href="acknowledgments.html" title="next chapter">Acknowledgments</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="getting-started">
+<span id="id1"></span><h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>If you haven’t already, you should familiarize yourself with the
+<a class="reference internal" href="prerequisites.html#prerequisites"><span class="std std-ref">Before starting</span></a> and <a class="reference internal" href="background.html#background"><span class="std std-ref">Background</span></a> sections of documentation.
+If you are a <a class="reference external" href="http://phyletica.org">Phyletica Lab</a> member, make sure you have done everything in the
+<a class="reference internal" href="prerequisites.html#setting-up"><span class="std std-ref">Getting set up</span></a> section.</p>
+<p>Open up a terminal and navigate to where you want to work on this project.
+For <a class="reference external" href="http://phyletica.org">Phyletica Lab</a>, this means logging in to Hopper:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">YOUR</span><span class="o">-</span><span class="n">AU</span><span class="o">-</span><span class="n">USERNAME</span><span class="nd">@hopper</span><span class="o">.</span><span class="n">auburn</span><span class="o">.</span><span class="n">edu</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">hopper</span>
+</pre></div>
+</div>
+<p>and navigating to your scratch directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">scratch</span><span class="o">/</span><span class="n">YOUR</span><span class="o">-</span><span class="n">AU</span><span class="o">-</span><span class="n">USERNAME</span>
+</pre></div>
+</div>
+<p>Now, clone the <a class="reference external" href="http://git-scm.com/">Git</a> repository for this project:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">phyletica</span><span class="o">/</span><span class="n">ecoevolity</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">prior</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<p>If this command is successful, when you:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ls</span>
+</pre></div>
+</div>
+<p>you should see a directory called <code class="docutils literal notranslate"><span class="pre">ecoevolity-model-prior</span></code> listed.
+Go ahead and <code class="docutils literal notranslate"><span class="pre">cd</span></code> into this directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">ecoevolity</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">prior</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+<div class="footer" role="contentinfo" align="center">
+    <a href="https://github.com/phyletica/ecoevolity-model-prior">GitHub</a> &nbsp; | &nbsp; <a href="license.html">License</a> &nbsp; | &nbsp; <a href="citation.html">Citation</a> &nbsp; | &nbsp; <a href="https://groups.google.com/forum/#!forum/ecoevolity-users">User's Forum</a>
+</div>
+
+  </body>
+</html>

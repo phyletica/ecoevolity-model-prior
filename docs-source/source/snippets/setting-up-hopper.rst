@@ -1,11 +1,11 @@
-Once you have an account on the Hopper cluster, you can login from the command
+Once you have an account on the Hopper cluster, you can log in from the command
 line using (please read the notes below before you try this for the first
 time)::
 
     ssh YOUR-AU-USERNAME@hopper.auburn.edu
 
-.. note:: To login to Hopper you will need to have Duo 2-factor authentication
-    set up.  `See here <https://duo.auburn.edu/>`_ for how to set up Duo.
+.. note:: To log in to Hopper you will need to have Duo 2-factor authentication
+    set up.  `Go here <https://duo.auburn.edu/>`_ for how to set up Duo.
     Also, you will need to have your AU 2-factor authentication configured to
     send you a Duo request by default.  Go to https://auburn.edu/2factor and on
     the left side of the screen, click on "My settings & Devices." For the
@@ -15,16 +15,16 @@ time)::
 .. note:: After entering this command, you will get asked to enter the password
    associated with your AU account.
 
-.. note:: The first time you login you will receive a warning stating something
-    like "the authenticiy of the host cannot be established." This is normal;
-    it just means that the IP address of the server you are logging into is new
-    and hasn't been added to the ``known_hosts`` file on your computer. Simply
-    type ``yes`` and hit enter to log in.
+.. note:: The first time you log in you will receive a warning stating
+    something like "the authenticiy of the host cannot be established." This is
+    normal; it just means that the IP address of the server you are logging
+    in to is new and hasn't been added to the ``known_hosts`` file on your
+    computer. Simply type ``yes`` and hit enter to log in.
 
 .. note:: This will only work if you are either on AU's campus or are connected
     to the AU virtual private network (VPN).
-    `See here <https://libguides.auburn.edu/vpn>`_
-    for how to set up the VPN so that you can login from off campus.
+    `Here's a guide <https://libguides.auburn.edu/vpn>`_
+    for how to set up the VPN so that you can log in from off campus.
 
 To log out of Hopper, simply type::
 
@@ -34,8 +34,8 @@ To log out of Hopper, simply type::
 Setting up passwordless login
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We can login to Hopper more securely and without needing to enter
-our AU password.
+We can log in to Hopper more securely and without needing to enter our AU
+password.
 To do this, we will use SSH authentication keys.
 To see if you have SSH keys on your machine (e.g., your laptop),
 open your terminal and enter::
@@ -72,7 +72,7 @@ We can do this with one command entered on *your* computer::
 
     cat ~/.ssh/id_rsa.pub | ssh YOUR-AU-USERNAME@hopper.auburn.edu "cat >> ~/.ssh/authorized_keys"
 
-Now, after you start a fresh shell session, you should be able to login to
+Now, after you start a fresh shell session, you should be able to log in to
 Hopper without entering your password.
 
 
@@ -86,11 +86,11 @@ If you are having trouble with the VPN and need to access Hopper from
 off campus, we can set up a workaround.
 To do this you will need an account on AU's Venus Linux server.
 
-Once you have an account on Venus, you can login via::
+Once you have an account on Venus, you can log in via::
 
     ssh YOUR-AU-USERNAME@venus2.auburn.edu
 
-When logged into Venus, check to see if you have SSH keys::
+When logged in to Venus, check to see if you have SSH keys::
 
     ls ~/.ssh
 
@@ -99,7 +99,7 @@ keys.
 If you don't see these listed (or the ``.ssh`` directory does not exist),
 you need to create a pair of SSH keys, like we did above, 
 using ``ssh-keygen``.
-Enter (make sure you are logged into Venus for this)::
+Enter (make sure you are logged in to Venus for this)::
 
     ssh-keygen
     
@@ -111,7 +111,7 @@ Now, when you::
 You should see the files ``id_rsa`` and ``id_rsa.pub`` listed.
 Now, we need to add the content of your public SSH key on Venus 
 to your ``authorized_keys`` file on Hopper (again, make sure you are logged
-into Venus for this)::
+in to Venus for this)::
 
     cat ~/.ssh/id_rsa.pub | ssh YOUR-AU-USERNAME@hopper.auburn.edu "cat >> ~/.ssh/authorized_keys"
 
@@ -150,11 +150,24 @@ with your AU username::
         ProxyJump   venus
 
 After saving this content to your SSH config file, and starting a fresh shell session,
-you should be able to login to Hopper using::
+you should be able to log in to Hopper using::
 
     ssh hoppper
 
-This command will use "SSH tunnelling" to log you into Hopper by
+This command will use "SSH tunnelling" to log you in to Hopper by
 using Venus as an intermediary.
 Because Venus is accessible off-campus, this login should work on and off
 campus, regardless of whether you are connected to the AU VPN.
+
+
+Create your scratch directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We will be conducting the analyses for this project from the ``/scratch``
+storage on hopper.
+There is a huge amount of (fast) hard drive space mounted at the ``/scratch``
+directory to which all Hopper users have access.
+Make your own directory in ``/scratch`` using (make sure you are logged in to
+Hopper for this)::
+
+    mkdir /scratch/YOUR-AU-USERNAME

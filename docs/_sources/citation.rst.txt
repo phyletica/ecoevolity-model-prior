@@ -5,15 +5,15 @@ Citation
 ########
 
 
-Citing this site
-================
+Citing this documentation
+=========================
 
 If you make use of the material in
 :doc:`this documentation </index>`
 please cite it as:
 
     Phyletica Lab. Documentation for the Ecoevolity Model Prior Project.
-    Retrieved 9 April 2020, from |project_url|.
+    Retrieved 9 April 2020, from |doc_url|.
    
 
 Citing ecoevolity

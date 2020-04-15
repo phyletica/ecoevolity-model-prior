@@ -282,9 +282,9 @@ rst_epilog = """
 
 .. |project_repo| replace:: project repository 
 .. _project_repo: https://github.com/phyletica/ecoevolity-model-prior
-.. |project_site| replace:: project site 
-.. _project_site: http://phyletica.org/ecoevolity-model-prior
-.. |project_url| replace:: http://phyletica.org/ecoevolity-model-prior
+.. |doc_site| replace:: project site 
+.. _doc_site: http://phyletica.org/ecoevolity-model-prior
+.. |doc_url| replace:: http://phyletica.org/ecoevolity-model-prior
 
 .. |pyco| replace:: pycoevolity 
 .. _pyco: https://github.com/phyletica/pycoevolity
@@ -311,7 +311,7 @@ rst_epilog = """
 
 .. |git| replace:: Git
 .. _git: http://git-scm.com/
-.. |github| replace:: Git
+.. |github| replace:: GitHub
 .. _github: https://github.com/
 
 .. |yaml| replace:: YAML 
