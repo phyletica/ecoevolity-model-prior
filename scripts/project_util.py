@@ -37,7 +37,7 @@ SIM_STATE_LOG_PATTERN_STR = (
 SIM_STATE_LOG_PATTERN = re.compile(
         r"^" + SIM_STATE_LOG_PATTERN_STR + r"$")
 
-BATCH_DIR_PATTERN_STR = r"batch(?P<batch_num>\d+)"
+BATCH_DIR_PATTERN_STR = r"batch-(?P<batch_num>\d+)"
 BATCH_DIR_PATTERN = re.compile(
         r"^" + BATCH_DIR_PATTERN_STR + r"$")
 BATCH_DIR_ENDING_PATTERN = re.compile(

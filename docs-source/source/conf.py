@@ -297,6 +297,12 @@ rst_epilog = """
 .. _Miniconda: https://docs.conda.io/en/latest/miniconda.html
 .. |conda| replace:: ``conda``
 
+.. |docker| replace:: Docker
+.. _docker: https://www.docker.com/
+
+.. |sphinx| replace:: Sphinx
+.. _sphinx: https://www.sphinx-doc.org/en/master/
+
 .. |simco| replace:: ``simcoevolity``
 .. |sumco| replace:: ``sumcoevolity``
 .. |dpprobs| replace:: DPprobs

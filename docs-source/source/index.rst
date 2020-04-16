@@ -18,6 +18,7 @@ Ecoevolity Model Prior Experiments
    background
    prerequisites
    getting-started
+   project-tour
    acknowledgments
    citation
    license

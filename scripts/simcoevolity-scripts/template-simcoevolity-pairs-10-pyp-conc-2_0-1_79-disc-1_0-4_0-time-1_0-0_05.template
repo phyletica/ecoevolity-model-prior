@@ -7,11 +7,12 @@ then
     cd $PBS_O_WORKDIR
 fi
 
-config_name="fixed-pairs-10-simultaneous-time-1_0-0_05"
-config_path="../../ecoevolity-configs/${config_name}.yml"
-output_dir="../../ecoevolity-simulations/${config_name}/batch001"
 rng_seed=1
 number_of_reps=10
+
+config_name="pairs-10-pyp-conc-2_0-1_79-disc-1_0-4_0-time-1_0-0_05"
+config_path="../../ecoevolity-configs/${config_name}.yml"
+output_dir="../../ecoevolity-simulations/${config_name}/batch-${rng_seed}"
 
 project_dir="../.."
 exe_path="${project_dir}/bin/simcoevolity"
