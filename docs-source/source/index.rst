@@ -19,6 +19,8 @@ Ecoevolity Model Prior Experiments
    prerequisites
    getting-started
    project-tour
+   ecoevolity-configs
+   working-on-docs
    acknowledgments
    citation
    license

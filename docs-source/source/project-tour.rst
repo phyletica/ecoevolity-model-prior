@@ -41,20 +41,6 @@ Here's an overview of the contents of the |project_repo|_
     :ref:`when you run the setup_project_env.sh <setup-project>`
     :ref:`(described below) <setup-script>`.
 
-.. _setup-script:
-
-``setup_project_env.sh`` script
-    This is a executable Bash script that will
-
-    1.  Compile and install (locally; within the project directory)
-        |eco|_.
-    2.  Create a ``conda`` Python environment called
-        ``ecoevolity-model-prior-project`` and activeate it (if ``conda``
-        is available on the system).
-
-    See the :ref:`setup-project` section for instructions on using this script
-    to setup the working environment for this project.
-
 ``data`` directory
     This directory contains data files in a file format (YAML) recognized
     by |eco|_.
@@ -93,9 +79,12 @@ Here's an overview of the contents of the |project_repo|_
 
 ``ecoevolity-configs`` directory
     As the name implies, this directory contains all of the configuration files
-    needed for the |ecoevolity|_ tools.
+    needed for the |eco|_ tools.
     These configuration files specify where the data files are located, and all
     of the settings for analysis.
+
+    These configs are a critical component of the project and are covered more
+    thorought in the :ref:`eco-configs` section.
 
 ``modules-to-load.sh`` file
     This file contains the shell commands to load the modules on AU's Hopper
@@ -107,3 +96,21 @@ Here's an overview of the contents of the |project_repo|_
 ``README.md`` file
     This file contains some basic information about the project, and is
     rendered on the GitHub landing page for the |project_repo|_.
+
+``scripts`` directory
+    This contains a number of Bash and Python scripts that will be doing most
+    of the "heavy lifting" for this project.
+
+.. _setup-script:
+
+``setup_project_env.sh`` script
+    This is a executable Bash script that will
+
+    1.  Compile and install (locally; within the project directory)
+        |eco|_.
+    2.  Create a ``conda`` Python environment called
+        ``ecoevolity-model-prior-project`` and activeate it (if ``conda``
+        is available on the system).
+
+    See the :ref:`setup-project` section for instructions on using this script
+    to setup the working environment for this project.

@@ -12,9 +12,7 @@ Unless otherwise noted, all of the content on this site is licensed
 under a
 `Creative Commons Attribution 4.0 License
 <https://creativecommons.org/licenses/by/4.0/>`_.
-The
-:doc:`project website </index>` was generated using
-`Sphinx <http://www.sphinx-doc.org/en/master/index.html>`_.
+The :doc:`project website </index>` was generated using |sphinx|_.
 
 
 Ecoevolity Software

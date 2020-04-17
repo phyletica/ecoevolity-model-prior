@@ -152,7 +152,7 @@ with your AU username::
 After saving this content to your SSH config file, and starting a fresh shell session,
 you should be able to log in to Hopper using::
 
-    ssh hoppper
+    ssh hopper
 
 This command will use "SSH tunnelling" to log you in to Hopper by
 using Venus as an intermediary.

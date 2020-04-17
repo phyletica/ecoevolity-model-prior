@@ -74,3 +74,8 @@ If there are updates available for ``conda`` you will be prompted with::
     Proceed ([y]/n)? y 
 
 Type "y" (for yes) and hit enter to finish the update.
+
+Lastly, I highly recommend that you install the ``conda-bash-completion``
+package that allows you to use tab completion when typing conda commands::
+
+    conda install -c conda-forge conda-bash-completion
