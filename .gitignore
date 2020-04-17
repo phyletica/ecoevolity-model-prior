@@ -21,6 +21,7 @@ bin/nex2yml
 bin/simcoevolity
 bin/sumcoevolity
 bin/swprobs
+ecoevolity/
 *.log
 *.out
 *simcoevolity-sim-*
