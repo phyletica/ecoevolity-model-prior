@@ -25,3 +25,4 @@ ecoevolity/
 *.log
 *.out
 *simcoevolity-sim-*
+prior-sampling-tests/

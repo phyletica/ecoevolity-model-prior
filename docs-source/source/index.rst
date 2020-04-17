@@ -20,6 +20,7 @@ Ecoevolity Model Prior Experiments
    getting-started
    project-tour
    ecoevolity-configs
+   sample-priors
    working-on-docs
    acknowledgments
    citation
