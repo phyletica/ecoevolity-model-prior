@@ -414,7 +414,18 @@ expected gamma prior:
 Summary
 -------
 
-Based on these results, it appears that everything is working as expected.
+These results show that from the output of ``simcoevolity``, ``ecoevolity``
+will sample from the expected prior distribution described in the config files.
+This confirms that we don't have any embarrassing typos in the config files,
+and that the MCMC algorithms of ``ecoeovlity`` are working.
+These tests do not confirm that ``simcoevolity`` will randomly sample datasets
+from the distributions described in the configs (we only simulated one dataset
+from each).
+However, once we simulate lots of datasets from each model, we can check that
+the samples of parameters from which the datasets were simulated from match the
+distributions of the models.
+Also, such checks already exist in the test suite of the |eco|_ software
+package.
 
 
 Cleanup
