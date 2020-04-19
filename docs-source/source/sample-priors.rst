@@ -82,6 +82,37 @@ the cluster's queue by entering::
 
         bash prior_sampling_tests.sh 2
 
+.. note:: If you *are* on the Hopper cluster, you can monitor the progress of
+    the job by using the ``qstat`` command::
+
+        qstat
+
+    When the script is in queue, but hasn't started running yet, the output
+    will look like::
+
+        Job ID                    Name             User            Time Use S Queue
+        ------------------------- ---------------- --------------- -------- - -----
+        1941144.hopper-mgt         ...ling_tests.sh jro0014                0 Q general        
+    
+    The second to last column "S" stands for State of the job, and "Q" means it
+    is waiting in queue.
+    When the script starts running, the output of ``qstat`` will look like::
+
+        Job ID                    Name             User            Time Use S Queue
+        ------------------------- ---------------- --------------- -------- - -----
+        1941144.hopper-mgt         ...ling_tests.sh jro0014         00:00:40 R general        
+
+    and the "R" state stands for Running.
+    When the job finishes, the output will look like::
+
+        Job ID                    Name             User            Time Use S Queue
+        ------------------------- ---------------- --------------- -------- - -----
+        1941144.hopper-mgt         ...ling_tests.sh jro0014         00:03:20 C general        
+    
+    where "C" stands for Complete.
+    However, after showing this state for a few minutes, the job will disappear
+    from the output of ``qstat``.
+    
 In case you're curious the "2" argument tells the script how many extra zeros to
 add to the MCMC chain length specified in the config files.
 The ``chain_length`` in the config files is 75,000 generations.
@@ -132,6 +163,21 @@ as we expect.
 DPP results
 -----------
 
+First, let's look at the plots of the results for the DP model 
+in the
+``../prior-sampling-tests/pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05``
+directory.
+The ``pycoevolity-nevents.pdf`` file shows us the how often each number of
+divergence events was sampled during the ``ecoevolity`` analysis.
+The frequency of samples (dark grey bars) should closely match the expected
+prior probability of each possible number of events under the model (light grey
+bars).
+Note, the dark bars are labeled as "Posterior" in the plot.
+That's because when you ignore the data, the posterior should be the prior.
+So, we want the prior (expected) and posterior (sampled) probabilities of each
+possible number of events to closely match.
+Indeed, they do:
+
 .. figure:: /images/prior-sampling-dpp-pycoevolity-nevents.png
     :align: center
     :width: 600 px
@@ -141,6 +187,11 @@ DPP results
     The expected and sampled prior probabilities of the number of divergence
     events for the DP model.
 
+The ``prior-concentration.pdf`` plot shows the expected gamma prior
+distribution for the concentration parameter (orange line) against a histogram
+of the values sampled for the concentration parameter during the ``ecoevolity``
+analysis.
+It looks like a nice fit:
 
 .. figure:: /images/prior-sampling-dpp-prior-concentration.png
     :align: center
@@ -151,6 +202,10 @@ DPP results
     The expected (orange line) and sampled (histogram) prior distribution on
     the concentration parameter of the DP model.
 
+The ``prior-event_time.pdf`` plot shows the expected exponential prior
+distribution on divergence times (orange line) against a histogram of the
+divergence times sampled during the ``ecoevolity`` analysis.
+It looks like another nice fit:
 
 .. figure:: /images/prior-sampling-dpp-prior-event_time.png
     :align: center
@@ -161,6 +216,11 @@ DPP results
     The expected (orange line) and sampled (histogram) prior distribution on
     divergence times for the DP model.
 
+The ``prior-leaf_population_size.pdf`` plot shows the expected gamma prior
+distribution on the effective size of the descendant populations (orange line)
+against a histogram of the descendant population sizes sampled during the
+``ecoevolity`` analysis.
+Bingo:
 
 .. figure:: /images/prior-sampling-dpp-prior-leaf_population_size.png
     :align: center
@@ -171,6 +231,11 @@ DPP results
     The expected (orange line) and sampled (histogram) prior distribution on
     the effective size of the descendant populations for the DP model.
 
+The ``prior-root_relative_population_size.pdf`` plot shows the expected gamma
+prior distribution on the relative effective size of the ancestral population
+(orange line) against a histogram of the relative ancestral population sizes
+sampled during the ``ecoevolity`` analysis.
+Spot on:
 
 .. figure:: /images/prior-sampling-dpp-prior-root_relative_population_size.png
     :align: center
@@ -185,6 +250,14 @@ DPP results
 PYP results
 -----------
 
+Next, let's look at the plots of the results for the PYP model in the
+``../prior-sampling-tests/pairs-10-pyp-conc-2_0-1_79-disc-1_0-4_0-time-1_0-0_05``
+directory.
+Just like for the DP model, the ``pycoevolity-nevents.pdf`` file shows
+us the prior (expected) and posterior (sampled) probabilities of each
+possible number of divergence events.
+Again, they match nicely:
+
 .. figure:: /images/prior-sampling-pyp-pycoevolity-nevents.png
     :align: center
     :width: 600 px
@@ -194,6 +267,9 @@ PYP results
     The expected and sampled prior probabilities of the number of divergence
     events for the PYP model.
 
+As with the DP model, the ``prior-concentration.pdf`` plot shows us that the
+expected (orange line) and sampled (blue histogram) distribution for the
+concentration parameter are a close fit:
 
 .. figure:: /images/prior-sampling-pyp-prior-concentration.png
     :align: center
@@ -204,6 +280,10 @@ PYP results
     The expected (orange line) and sampled (histogram) prior distribution on
     the concentration parameter of the PYP model.
 
+The ``prior-discount.pdf`` plot shows the expected beta prior on the discount
+parameter of the PYP model (orange line) to a histogram of the sampled values
+for the discount parameter.
+Another nice fit:
 
 .. figure:: /images/prior-sampling-pyp-prior-discount.png
     :align: center
@@ -214,6 +294,9 @@ PYP results
     The expected (orange line) and sampled (histogram) prior distribution on
     the discount parameter of the PYP model.
 
+The ``prior-event_time.pdf`` plot confirms the distribution of sampled
+divergence times closely matches the expected exponential prior distribution on
+divergence times (orange line):
 
 .. figure:: /images/prior-sampling-pyp-prior-event_time.png
     :align: center
@@ -224,6 +307,9 @@ PYP results
     The expected (orange line) and sampled (histogram) prior distribution on
     divergence times for the PYP model.
 
+The ``prior-leaf_population_size.pdf`` plot confirms the distribution of
+sampled descendant population sizes closely matches the expected gamma prior
+distribution:
 
 .. figure:: /images/prior-sampling-pyp-prior-leaf_population_size.png
     :align: center
@@ -234,6 +320,9 @@ PYP results
     The expected (orange line) and sampled (histogram) prior distribution on
     the effective size of the descendant populations for the PYP model.
 
+The ``prior-root_relative_population_size.pdf`` plot confirms the distribution
+of relative sizes of the ancestral populations collected during the
+``ecoevolity`` analysis closely matches the expected gamma prior distribution:
 
 .. figure:: /images/prior-sampling-pyp-prior-root_relative_population_size.png
     :align: center
@@ -248,6 +337,14 @@ PYP results
 SW results
 ----------
 
+Lastly, let's look at the plots of the results for the SW model in the
+``../prior-sampling-tests/pairs-10-unif-sw-0_55-7_32-time-1_0-0_05``
+directory.
+
+Just like for the other models, the ``pycoevolity-nevents.pdf`` plot confirms
+that the prior (expected) and posterior (sampled) probabilities of each
+possible number of divergence events closely match:
+
 .. figure:: /images/prior-sampling-unif-pycoevolity-nevents.png
     :align: center
     :width: 600 px
@@ -257,6 +354,9 @@ SW results
     The expected and sampled prior probabilities of the number of divergence
     events for the SW model.
 
+It's difficult to tell if the distribution of the split-weight parameter
+approximated by the ``ecoevolity`` analysis is a good match to the expected
+gamma prior distribution:
 
 .. figure:: /images/prior-sampling-unif-prior-split_weight.png
     :align: center
@@ -267,6 +367,15 @@ SW results
     The expected (orange line) and sampled (histogram) prior distribution on
     the split-weight parameter of the SW model.
 
+This is because it is difficult to approximate a gamma distribution with a
+shape of 0.55 with a histogram.
+However, comparing the moments of the distributions confirm a close match.
+The expected mean of the gamma prior is 4.026, and the mean of the sample
+collected by ``ecoevolity`` is 4.043
+The expected variance is 29.47, and the sample variance is 29.50.
+
+The ``prior-event_time.pdf`` plot confirms the distribution of sampled
+divergence times closely matches the expected exponential prior (orange line):
 
 .. figure:: /images/prior-sampling-unif-prior-event_time.png
     :align: center
@@ -277,6 +386,8 @@ SW results
     The expected (orange line) and sampled (histogram) prior distribution on
     divergence times for the SW model.
 
+The ``prior-leaf_population_size.pdf`` plot confirms the distribution of
+sampled descendant population sizes closely matches the expected gamma prior:
 
 .. figure:: /images/prior-sampling-unif-prior-leaf_population_size.png
     :align: center
@@ -287,6 +398,9 @@ SW results
     The expected (orange line) and sampled (histogram) prior distribution on
     the effective size of the descendant populations for the SW model.
 
+The ``prior-root_relative_population_size.pdf`` plot confirms the sampled
+distribution of relative ancestral population sizes  closely matches the
+expected gamma prior:
 
 .. figure:: /images/prior-sampling-unif-prior-root_relative_population_size.png
     :align: center
@@ -296,6 +410,11 @@ SW results
 
     The expected (orange line) and sampled (histogram) prior distribution on
     the relative effective size of the ancestral population for the SW model.
+
+Summary
+-------
+
+Based on these results, it appears that everything is working as expected.
 
 
 Cleanup
