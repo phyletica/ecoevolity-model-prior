@@ -87,7 +87,10 @@ def main_cli():
                     sys.stderr.write(
                             "ERROR: problem converting '{0}'".format(sim_path))
                     raise
-
+        sys.stdout.write("Script written to '{0}'\n".format(out_path))
+    sys.stdout.write("\nSimcoevolity scripts successfully written.\n")
+    sys.stdout.write("\nBatch ID:\n")
+    sys.stdout.write("\t{0}\n".format(batch_num_str))
 
 if __name__ == "__main__":
     main_cli()
