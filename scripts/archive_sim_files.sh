@@ -40,7 +40,7 @@ then
 fi
 
 # Make sure the directory is a batch directory
-if [ ! "$(echo "$batch_dir" | grep -c -E "batch[0-9]{1,12}$")" -gt 0 ]
+if [ ! "$(echo "$batch_dir" | grep -c -E "batch-[0-9]{1,12}$")" -gt 0 ]
 then
     echo "ERROR: The path provided doesn't seem to be a sim batch directory:"
     echo "    $batch_dir"
