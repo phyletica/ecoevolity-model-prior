@@ -73,6 +73,10 @@ what the documentation website will look like with your changes.
 
 As you work on the files in ``docs-source/source``, I encourage you to use
 ``git add``, ``git commit``, and ``git push`` often to keep track of your work.
+Also, remember to use ``git pull`` often to make sure your copy of the project
+repository is up to date as you work.
+A lot of version-control misery can be avoided by committing/pushing and pulling
+often!
 
 Once you are happy with your changes and want them to appear on the
 |doc_site|_, you can enter the following command form within the ``docs-source``

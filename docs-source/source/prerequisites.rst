@@ -20,14 +20,20 @@ For learning basic Bash skills,
 `Software Carpentry <https://software-carpentry.org/>`_
 has a nice lesson:
 
-*  http://swcarpentry.github.io/shell-novice/
+*   http://swcarpentry.github.io/shell-novice/
 
 
 For learning basic |git|_ skills, 
 `Software Carpentry <https://software-carpentry.org/>`_
 has a nice lesson for that as well:
 
-*  http://swcarpentry.github.io/git-novice/
+*   http://swcarpentry.github.io/git-novice/
+
+If you are a member of the |phyleticalab|_, you will be doing most of the work
+for the project on Auburn University's Hopper cluster.
+The guide for using the Hopper cluster is here:
+
+*   https://wp.auburn.edu/hpc/?document=auburn-university-hopper-hpcc-users-guide
 
 
 Required software

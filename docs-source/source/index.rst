@@ -3,9 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Ecoevolity Model Prior Experiments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Ecoevolity Model Prior Project
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 .. include:: about.rst
 
@@ -21,6 +21,7 @@ Ecoevolity Model Prior Experiments
    project-tour
    ecoevolity-configs
    sample-priors
+   sim-analyses
    working-on-docs
    acknowledgments
    citation

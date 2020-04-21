@@ -48,20 +48,22 @@ Setup our environment
 =====================
 
 Before anything else, navigate to the project directory (if you are not already
-there).
-For me, this is::
+there)::
 
-    cd /scratch/jro0014/ecoevolity-model-prior
+    cd /path/to/your/copy/of/ecoevolity-model-prior
 
-Your path will be different.
+If you are working on AU's Hopper cluster, this will be::
+
+    cd /scratch/YOUR-AU-USERNAME/ecoevolity-model-prior
+
 If you haven't already, let's activate the Python environment for this project::
 
     conda activate ecoevolity-model-prior-project
 
-and (if you are working on this project on the AU Hopper cluster) source the
-file that loads all the necessary modules::
-
-    source source modules-to-load.sh
+.. and (if you are working on this project on the AU Hopper cluster) source the
+   file that loads all the necessary modules::
+   
+       source modules-to-load.sh
 
 
 Run the analyses
