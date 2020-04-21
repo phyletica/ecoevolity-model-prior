@@ -157,12 +157,5 @@ This helps ensure that all of the details of the project are open, clear, and
 can be repeated.
 
 
-Sample from the model priors
-============================
-
-The most important part of the project is the contents of the |eco|_
-configuration files in the ``ecoevolity-confgis`` directory.
-These files specify the models we will be using to simulate and analyze genomic
-datasets.
-
-Read the :ref:`eco-configs` section to become familiar with these models.
+Next, let's go to the :ref:`sample-priors` section to get started
+with anayses!

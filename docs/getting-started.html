@@ -1,19 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Getting started &#8212; Ecoevolity model prior experiments 0.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -56,11 +54,12 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#cloning-the-project-repo">Cloning the project repo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-the-project">Setting up the project</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#sample-from-the-model-priors">Sample from the model priors</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="project-tour.html">Project Tour</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ecoevolity-configs.html">The ecoevolity configs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-priors.html">Sampling the model priors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sim-analyses.html">Simulation-based analyses</a></li>
 <li class="toctree-l1"><a class="reference internal" href="working-on-docs.html">Working on project docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgments.html">Acknowledgments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citation.html">Citation</a></li>
@@ -79,17 +78,15 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -154,7 +151,7 @@ directory. It will also create the <code class="docutils literal notranslate"><s
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>On AU’s Hopper cluster the script sometimes hangs at this point in
 setting up the conda environment:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Collecting</span> <span class="n">package</span> <span class="n">metadata</span> <span class="p">(</span><span class="n">repodata</span><span class="o">.</span><span class="n">json</span><span class="p">):</span> \
@@ -165,7 +162,7 @@ setting up the conda environment:</p>
 during the conda setup will not affect any other aspect of the setup
 script.
 Now, you can setup the conda environment manually:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">env</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">conda</span><span class="o">-</span><span class="n">environment</span><span class="o">.</span><span class="n">yml</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">env</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">conda</span><span class="o">-</span><span class="n">environment</span><span class="o">.</span><span class="n">yml</span>
 </pre></div>
 </div>
 </div>
@@ -236,8 +233,8 @@ remove it:</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The extra long path in the above command is to help ensure you are
+<p class="admonition-title">Note</p>
+<p>The extra long path in the above command is to help ensure you are
 where you think you are on the file system and don’t blow away anything you
 didn’t intend to.</p>
 </div>
@@ -252,15 +249,9 @@ environment for running the ancillary scripts to parse, summarize, and plot the
 results of these analyses.
 This helps ensure that all of the details of the project are open, clear, and
 can be repeated.</p>
+<p>Next, let’s go to the <a class="reference internal" href="sample-priors.html#sample-priors"><span class="std std-ref">Sampling the model priors</span></a> section to get started
+with anayses!</p>
 </div>
-</div>
-<div class="section" id="sample-from-the-model-priors">
-<h2>Sample from the model priors<a class="headerlink" href="#sample-from-the-model-priors" title="Permalink to this headline">¶</a></h2>
-<p>The most important part of the project is the contents of the <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a>
-configuration files in the <code class="docutils literal notranslate"><span class="pre">ecoevolity-confgis</span></code> directory.
-These files specify the models we will be using to simulate and analyze genomic
-datasets.</p>
-<p>Read the <a class="reference internal" href="ecoevolity-configs.html#eco-configs"><span class="std std-ref">The ecoevolity configs</span></a> section to become familiar with these models.</p>
 </div>
 </div>
 
