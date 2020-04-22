@@ -1,19 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Before starting &#8212; Ecoevolity model prior experiments 0.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -81,17 +79,15 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -122,19 +118,19 @@ For this documentation, we assume you are using the Bash shell specifically.</p>
 <a class="reference external" href="https://software-carpentry.org/">Software Carpentry</a>
 has a nice lesson:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://swcarpentry.github.io/shell-novice/">http://swcarpentry.github.io/shell-novice/</a></li>
+<li><p><a class="reference external" href="http://swcarpentry.github.io/shell-novice/">http://swcarpentry.github.io/shell-novice/</a></p></li>
 </ul>
 <p>For learning basic <a class="reference external" href="http://git-scm.com/">Git</a> skills,
 <a class="reference external" href="https://software-carpentry.org/">Software Carpentry</a>
 has a nice lesson for that as well:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://swcarpentry.github.io/git-novice/">http://swcarpentry.github.io/git-novice/</a></li>
+<li><p><a class="reference external" href="http://swcarpentry.github.io/git-novice/">http://swcarpentry.github.io/git-novice/</a></p></li>
 </ul>
 <p>If you are a member of the <a class="reference external" href="http://phyletica.org">Phyletica Lab</a>, you will be doing most of the work
 for the project on Auburn University’s Hopper cluster.
 The guide for using the Hopper cluster is here:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://wp.auburn.edu/hpc/?document=auburn-university-hopper-hpcc-users-guide">https://wp.auburn.edu/hpc/?document=auburn-university-hopper-hpcc-users-guide</a></li>
+<li><p><a class="reference external" href="https://wp.auburn.edu/hpc/?document=auburn-university-hopper-hpcc-users-guide">https://wp.auburn.edu/hpc/?document=auburn-university-hopper-hpcc-users-guide</a></p></li>
 </ul>
 </div>
 <div class="section" id="required-software">
@@ -190,8 +186,8 @@ time):</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">To log in to Hopper you will need to have Duo 2-factor authentication
+<p class="admonition-title">Note</p>
+<p>To log in to Hopper you will need to have Duo 2-factor authentication
 set up.  <a class="reference external" href="https://duo.auburn.edu/">Go here</a> for how to set up Duo.
 Also, you will need to have your AU 2-factor authentication configured to
 send you a Duo request by default.  Go to <a class="reference external" href="https://auburn.edu/2factor">https://auburn.edu/2factor</a> and on
@@ -200,21 +196,21 @@ the left side of the screen, click on “My settings &amp; Devices.” For the
 Push.”</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">After entering this command, you will get asked to enter the password
+<p class="admonition-title">Note</p>
+<p>After entering this command, you will get asked to enter the password
 associated with your AU account.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The first time you log in you will receive a warning stating
+<p class="admonition-title">Note</p>
+<p>The first time you log in you will receive a warning stating
 something like “the authenticiy of the host cannot be established.” This is
 normal; it just means that the IP address of the server you are logging
 in to is new and hasn’t been added to the <code class="docutils literal notranslate"><span class="pre">known_hosts</span></code> file on your
 computer. Simply type <code class="docutils literal notranslate"><span class="pre">yes</span></code> and hit enter to log in.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This will only work if you are either on AU’s campus or are connected
+<p class="admonition-title">Note</p>
+<p>This will only work if you are either on AU’s campus or are connected
 to the AU virtual private network (VPN).
 <a class="reference external" href="https://libguides.auburn.edu/vpn">Here’s a guide</a>
 for how to set up the VPN so that you can log in from off campus.</p>
@@ -249,12 +245,12 @@ have a pair of SSH keys, skip this step):</p>
 </pre></div>
 </div>
 <p>You should see the files <code class="docutils literal notranslate"><span class="pre">id_rsa</span></code> and <code class="docutils literal notranslate"><span class="pre">id_rsa.pub</span></code> listed.</p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">id_rsa</span></code></dt>
-<dd>This is the private component of your SSH key pair; do not share it with
-anyone.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">id_rsa.pub</span></code></dt>
-<dd>This is the public component of your SSH key pair and can be safely shared.</dd>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">id_rsa</span></code></dt><dd><p>This is the private component of your SSH key pair; do not share it with
+anyone.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">id_rsa.pub</span></code></dt><dd><p>This is the public component of your SSH key pair and can be safely shared.</p>
+</dd>
 </dl>
 <p>Now, we need to put the contents of <code class="docutils literal notranslate"><span class="pre">id_rsa.pub</span></code> into the
 <code class="docutils literal notranslate"><span class="pre">.ssh/authorized_keys</span></code> file in your home directory on Hopper.
@@ -500,6 +496,11 @@ Hopper.</p>
 </div>
 <p>or, if you have SSH-tunnelling setup:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">hopper</span>
+</pre></div>
+</div>
+<p>To avoid library conflicts, let’s deactivate <code class="docutils literal notranslate"><span class="pre">conda</span></code> before we build
+<code class="docutils literal notranslate"><span class="pre">git</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">deactivate</span>
 </pre></div>
 </div>
 <p><em>On hopper</em>, download an archive of the <a class="reference external" href="http://git-scm.com/">Git</a> source code:</p>
