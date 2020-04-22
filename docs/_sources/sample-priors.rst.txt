@@ -44,8 +44,8 @@ Hence, this is a nice sanity check to make sure everything is working as we
 expect.
 
 
-Setup our environment
-=====================
+Run the analyses
+================
 
 Before anything else, navigate to the project directory (if you are not already
 there)::
@@ -55,19 +55,6 @@ there)::
 If you are working on AU's Hopper cluster, this will be::
 
     cd /scratch/YOUR-AU-USERNAME/ecoevolity-model-prior
-
-If you haven't already, let's activate the Python environment for this project::
-
-    conda activate ecoevolity-model-prior-project
-
-.. and (if you are working on this project on the AU Hopper cluster) source the
-   file that loads all the necessary modules::
-   
-       source modules-to-load.sh
-
-
-Run the analyses
-================
 
 Now, lets ``cd`` into the project's ``scripts`` directory::
 
@@ -79,12 +66,12 @@ the cluster's queue by entering::
 
     ../bin/psub prior_sampling_tests.sh 2
 
-.. note:: If you are not on the Hopper cluster, you can simply run this
+.. note:: If you are **not** on the Hopper cluster, you can simply run this
     directly::
 
         bash prior_sampling_tests.sh 2
 
-.. note:: If you *are* on the Hopper cluster, you can monitor the progress of
+.. note:: If you **are** on the Hopper cluster, you can monitor the progress of
     the job by using the ``qstat`` command::
 
         qstat
@@ -157,7 +144,7 @@ should reveal::
 
 Inside of these you will find the dataset simulated by ``simcoevolity`` (10
 data files; 1 for each pair of populations), the output of ``ecoevolity`` (the
-.log files) and a bunch of plots (.pdf files).
+``.log`` files) and a bunch of plots (``.pdf`` files).
 
 Let's take a look at the plots from each model and make sure everything looks
 as we expect.

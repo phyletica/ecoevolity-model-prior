@@ -1,17 +1,19 @@
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Before starting &#8212; Ecoevolity model prior experiments 0.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -79,15 +81,17 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
+  <h3>Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script type="text/javascript">$('#searchbox').show(0);</script>
 
 
 
@@ -118,19 +122,19 @@ For this documentation, we assume you are using the Bash shell specifically.</p>
 <a class="reference external" href="https://software-carpentry.org/">Software Carpentry</a>
 has a nice lesson:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="http://swcarpentry.github.io/shell-novice/">http://swcarpentry.github.io/shell-novice/</a></p></li>
+<li><a class="reference external" href="http://swcarpentry.github.io/shell-novice/">http://swcarpentry.github.io/shell-novice/</a></li>
 </ul>
 <p>For learning basic <a class="reference external" href="http://git-scm.com/">Git</a> skills,
 <a class="reference external" href="https://software-carpentry.org/">Software Carpentry</a>
 has a nice lesson for that as well:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="http://swcarpentry.github.io/git-novice/">http://swcarpentry.github.io/git-novice/</a></p></li>
+<li><a class="reference external" href="http://swcarpentry.github.io/git-novice/">http://swcarpentry.github.io/git-novice/</a></li>
 </ul>
 <p>If you are a member of the <a class="reference external" href="http://phyletica.org">Phyletica Lab</a>, you will be doing most of the work
 for the project on Auburn University’s Hopper cluster.
 The guide for using the Hopper cluster is here:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://wp.auburn.edu/hpc/?document=auburn-university-hopper-hpcc-users-guide">https://wp.auburn.edu/hpc/?document=auburn-university-hopper-hpcc-users-guide</a></p></li>
+<li><a class="reference external" href="https://wp.auburn.edu/hpc/?document=auburn-university-hopper-hpcc-users-guide">https://wp.auburn.edu/hpc/?document=auburn-university-hopper-hpcc-users-guide</a></li>
 </ul>
 </div>
 <div class="section" id="required-software">
@@ -143,6 +147,16 @@ If you are not sure what this is, please try out
 <a class="reference external" href="http://swcarpentry.github.io/shell-novice/">this Software Carpentry lesson</a>.</p>
 <p>Folks in the <a class="reference external" href="http://phyletica.org">Phyletica Lab</a> will be using Bash on
 Auburn University’s Hopper cluster.</p>
+</div>
+<div class="section" id="git">
+<h3>Git<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h3>
+<p>This project requires <a class="reference external" href="http://git-scm.com/">Git</a>.
+If you want to contribute to the project, you should also have the
+<a class="reference external" href="https://git-lfs.github.com/">Git Large File Storage</a>
+extension to Git.
+<a class="reference external" href="https://git-lfs.github.com/">Git LFS</a>
+is not required to replicate our analyses, but <a class="reference external" href="http://phyletica.org">Phyletica Lab</a> members will be
+using it to add large archives of simulation files to the project repository.</p>
 </div>
 <div class="section" id="conda">
 <h3>Conda<a class="headerlink" href="#conda" title="Permalink to this headline">¶</a></h3>
@@ -176,8 +190,8 @@ time):</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>To log in to Hopper you will need to have Duo 2-factor authentication
+<p class="first admonition-title">Note</p>
+<p class="last">To log in to Hopper you will need to have Duo 2-factor authentication
 set up.  <a class="reference external" href="https://duo.auburn.edu/">Go here</a> for how to set up Duo.
 Also, you will need to have your AU 2-factor authentication configured to
 send you a Duo request by default.  Go to <a class="reference external" href="https://auburn.edu/2factor">https://auburn.edu/2factor</a> and on
@@ -186,21 +200,21 @@ the left side of the screen, click on “My settings &amp; Devices.” For the
 Push.”</p>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>After entering this command, you will get asked to enter the password
+<p class="first admonition-title">Note</p>
+<p class="last">After entering this command, you will get asked to enter the password
 associated with your AU account.</p>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The first time you log in you will receive a warning stating
+<p class="first admonition-title">Note</p>
+<p class="last">The first time you log in you will receive a warning stating
 something like “the authenticiy of the host cannot be established.” This is
 normal; it just means that the IP address of the server you are logging
 in to is new and hasn’t been added to the <code class="docutils literal notranslate"><span class="pre">known_hosts</span></code> file on your
 computer. Simply type <code class="docutils literal notranslate"><span class="pre">yes</span></code> and hit enter to log in.</p>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This will only work if you are either on AU’s campus or are connected
+<p class="first admonition-title">Note</p>
+<p class="last">This will only work if you are either on AU’s campus or are connected
 to the AU virtual private network (VPN).
 <a class="reference external" href="https://libguides.auburn.edu/vpn">Here’s a guide</a>
 for how to set up the VPN so that you can log in from off campus.</p>
@@ -235,12 +249,12 @@ have a pair of SSH keys, skip this step):</p>
 </pre></div>
 </div>
 <p>You should see the files <code class="docutils literal notranslate"><span class="pre">id_rsa</span></code> and <code class="docutils literal notranslate"><span class="pre">id_rsa.pub</span></code> listed.</p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">id_rsa</span></code></dt><dd><p>This is the private component of your SSH key pair; do not share it with
-anyone.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">id_rsa.pub</span></code></dt><dd><p>This is the public component of your SSH key pair and can be safely shared.</p>
-</dd>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">id_rsa</span></code></dt>
+<dd>This is the private component of your SSH key pair; do not share it with
+anyone.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">id_rsa.pub</span></code></dt>
+<dd>This is the public component of your SSH key pair and can be safely shared.</dd>
 </dl>
 <p>Now, we need to put the contents of <code class="docutils literal notranslate"><span class="pre">id_rsa.pub</span></code> into the
 <code class="docutils literal notranslate"><span class="pre">.ssh/authorized_keys</span></code> file in your home directory on Hopper.
@@ -470,6 +484,163 @@ After logging back in, update <code class="docutils literal notranslate"><span c
 package that allows you to use tab completion when typing conda commands:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">conda</span><span class="o">-</span><span class="n">bash</span><span class="o">-</span><span class="n">completion</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="setting-up-git-on-hopper">
+<h3>Setting up Git on Hopper<a class="headerlink" href="#setting-up-git-on-hopper" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="installing-git">
+<span id="id2"></span><h4>Installing Git<a class="headerlink" href="#installing-git" title="Permalink to this headline">¶</a></h4>
+<p>The system-wide version of <a class="reference external" href="http://git-scm.com/">Git</a> on Hopper is too old for our needs, and the
+version of <a class="reference external" href="http://git-scm.com/">Git</a> that is available as a module was not built correctly.
+So, each of us will install our own version of <a class="reference external" href="http://git-scm.com/">Git</a> to our home directory on
+Hopper.</p>
+<p>Log in to Hopper using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">YOUR</span><span class="o">-</span><span class="n">AU</span><span class="o">-</span><span class="n">USERNAME</span><span class="nd">@hopper</span><span class="o">.</span><span class="n">auburn</span><span class="o">.</span><span class="n">edu</span>
+</pre></div>
+</div>
+<p>or, if you have SSH-tunnelling setup:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">hopper</span>
+</pre></div>
+</div>
+<p><em>On hopper</em>, download an archive of the <a class="reference external" href="http://git-scm.com/">Git</a> source code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">edge</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">software</span><span class="o">/</span><span class="n">scm</span><span class="o">/</span><span class="n">git</span><span class="o">/</span><span class="n">git</span><span class="o">-</span><span class="mf">2.26</span><span class="o">.</span><span class="mf">2.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>After this command finishes, extract the archive:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="n">xzf</span> <span class="n">git</span><span class="o">-</span><span class="mf">2.26</span><span class="o">.</span><span class="mf">2.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>and then <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the directory with the <a class="reference external" href="http://git-scm.com/">Git</a> source code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">git</span><span class="o">-</span><span class="mf">2.26</span><span class="o">.</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>Compile the source code using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span>
+</pre></div>
+</div>
+<p>This will build the <code class="docutils literal notranslate"><span class="pre">git</span></code> executables from the source code.
+This will take a few minutes.
+When it finishes, install the <code class="docutils literal notranslate"><span class="pre">git</span></code> executables into a <code class="docutils literal notranslate"><span class="pre">bin</span></code>
+directory within your Hopper home directory using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>After it finishes, you can <code class="docutils literal notranslate"><span class="pre">cd</span></code> back out of the directory with the <a class="reference external" href="http://git-scm.com/">Git</a>
+source code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">..</span>
+</pre></div>
+</div>
+<p>and then cleanup by removing everything you downloaded and extracted:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rm</span> <span class="o">-</span><span class="n">r</span> <span class="n">git</span><span class="o">-</span><span class="mf">2.26</span><span class="o">.</span><span class="mi">2</span><span class="o">*</span>
+</pre></div>
+</div>
+<p>Next, you need to add the <code class="docutils literal notranslate"><span class="pre">bin</span></code> directory in your home folder to your PATH
+variable so that Bash knows where to find the <code class="docutils literal notranslate"><span class="pre">git</span></code> executable when you type
+<code class="docutils literal notranslate"><span class="pre">git</span></code> at the command line.
+To do this, we will use <code class="docutils literal notranslate"><span class="pre">echo</span></code> and redirection (<code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>) to append a knew line
+to the hidden Bash configuration file called <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="s1">&#39;export PATH=&quot;$</span><span class="si">{HOME}</span><span class="s1">/bin:$</span><span class="si">{PATH}</span><span class="s1">&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">bashrc</span>
+</pre></div>
+</div>
+<p>Now, log off Hopper with <code class="docutils literal notranslate"><span class="pre">exit</span></code> and then log back in.
+After logging back in, when you type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">which</span> <span class="n">git</span>
+</pre></div>
+</div>
+<p>you should get the output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">~/</span><span class="nb">bin</span><span class="o">/</span><span class="n">git</span>
+</pre></div>
+</div>
+<p>and when you enter:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="o">--</span><span class="n">version</span>
+</pre></div>
+</div>
+<p>you should see:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">version</span> <span class="mf">2.26</span><span class="o">.</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-git">
+<span id="id3"></span><h4>Configuring Git<a class="headerlink" href="#configuring-git" title="Permalink to this headline">¶</a></h4>
+<p>Next, we will set some configuration settings for <code class="docutils literal notranslate"><span class="pre">git</span></code>.
+The latest versions of <code class="docutils literal notranslate"><span class="pre">git</span></code> issue an annoying warning when
+you <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code>.
+Historically, the <code class="docutils literal notranslate"><span class="pre">pull</span></code> command was simply a shortcut to <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span></code>
+followed by <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">merge</span></code>.
+However, you can also replace the <code class="docutils literal notranslate"><span class="pre">merge</span></code> step with <code class="docutils literal notranslate"><span class="pre">rebase</span></code>.
+We do <strong>not</strong> want to use <code class="docutils literal notranslate"><span class="pre">rebase</span></code>, so we will tell <code class="docutils literal notranslate"><span class="pre">git</span></code>
+to use <code class="docutils literal notranslate"><span class="pre">merge</span></code> when we <code class="docutils literal notranslate"><span class="pre">pull</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="k">global</span> <span class="n">pull</span><span class="o">.</span><span class="n">rebase</span> <span class="n">false</span>
+</pre></div>
+</div>
+<p>If you haven’t configured <code class="docutils literal notranslate"><span class="pre">git</span></code> on Hopper with your name and email, go ahead
+and do that now using the following 2 commands (just change my name and email
+to yours):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="k">global</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="s2">&quot;Jamie R. Oaks&quot;</span>
+<span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="k">global</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span> <span class="s2">&quot;joaks1@gmail.com&quot;</span>
+</pre></div>
+</div>
+<p>When you <code class="docutils literal notranslate"><span class="pre">commit</span></code> content to a git repository, git will open a text editor
+for you to write a message to accompany your commit.
+By default, it will open <code class="docutils literal notranslate"><span class="pre">vim</span></code>. So, if you are not confortable using <code class="docutils literal notranslate"><span class="pre">vim</span></code>
+(if you don’t know what <code class="docutils literal notranslate"><span class="pre">vim</span></code> is, then you won’t be comfortable using it),
+then configure <code class="docutils literal notranslate"><span class="pre">git</span></code> to open <code class="docutils literal notranslate"><span class="pre">nano</span></code> instead:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="k">global</span> <span class="n">core</span><span class="o">.</span><span class="n">editor</span> <span class="s2">&quot;nano -w&quot;</span>
+</pre></div>
+</div>
+<p>Next, tell <code class="docutils literal notranslate"><span class="pre">git</span></code> to use pretty colors when it gives you messages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="k">global</span> <span class="n">color</span><span class="o">.</span><span class="n">ui</span> <span class="s2">&quot;true&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-git-lfs">
+<span id="id4"></span><h4>Installing git-lfs<a class="headerlink" href="#installing-git-lfs" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference external" href="http://git-scm.com/">Git</a> is great at tracking the contents of “raw” text files.
+In this project, we will produce some large, compressed archives of files.
+We do not want <a class="reference external" href="http://git-scm.com/">Git</a> to try to track the contents of these files, because it
+will slow things down a lot, and blow up the size of the <a class="reference external" href="http://git-scm.com/">Git</a> database in our
+project.
+Luckily, there is a really nice extension for <a class="reference external" href="http://git-scm.com/">Git</a> for handling large files
+called <a class="reference external" href="https://git-lfs.github.com/">Git Large File Storage (LFS)</a>.
+This extension allows us to add large files to out git repo, but prevents
+<code class="docutils literal notranslate"><span class="pre">git</span></code> from trying to track the content of these files “line-by-line”.</p>
+<p>So, let’s install Git LFS.
+Use the next three commands to navigate to your home directory, create a new
+directory called <code class="docutils literal notranslate"><span class="pre">git-lfs</span></code>, and then <code class="docutils literal notranslate"><span class="pre">cd</span></code> into it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~</span>
+</pre></div>
+</div>
+<p>Next, download an archive of the Git LFS software using <code class="docutils literal notranslate"><span class="pre">wget</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">git</span><span class="o">-</span><span class="n">lfs</span><span class="o">/</span><span class="n">git</span><span class="o">-</span><span class="n">lfs</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">v2</span><span class="o">.</span><span class="mf">10.0</span><span class="o">/</span><span class="n">git</span><span class="o">-</span><span class="n">lfs</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">-</span><span class="n">v2</span><span class="o">.</span><span class="mf">10.0</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>When the download finishes, make a new directory called <code class="docutils literal notranslate"><span class="pre">git-lfs-files</span></code> and
+then extract the files from the archive into the this new directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">git</span><span class="o">-</span><span class="n">lfs</span><span class="o">-</span><span class="n">files</span>
+<span class="n">tar</span> <span class="n">xzf</span> <span class="n">git</span><span class="o">-</span><span class="n">lfs</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">-</span><span class="n">v2</span><span class="o">.</span><span class="mf">10.0</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">C</span> <span class="n">git</span><span class="o">-</span><span class="n">lfs</span><span class="o">-</span><span class="n">files</span>
+</pre></div>
+</div>
+<p>Then, <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">git-lfs-files</span></code> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">git</span><span class="o">-</span><span class="n">lfs</span><span class="o">-</span><span class="n">files</span>
+</pre></div>
+</div>
+<p>Now, set the <code class="docutils literal notranslate"><span class="pre">PREFIX</span></code> variable to tell the installation script where
+to put <code class="docutils literal notranslate"><span class="pre">git-lfs</span></code>, and then run the installation script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">PREFIX</span><span class="o">=</span><span class="s2">&quot;$HOME&quot;</span>
+<span class="n">bash</span> <span class="n">install</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>Move back out of the <code class="docutils literal notranslate"><span class="pre">git-lfs</span></code> and cleanup by removing everything
+we downloaded and extracted:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">..</span>
+<span class="n">rm</span> <span class="o">-</span><span class="n">r</span> <span class="n">git</span><span class="o">-</span><span class="n">lfs</span><span class="o">*</span>
+</pre></div>
+</div>
+<p>Lastly, run the following command to configure <code class="docutils literal notranslate"><span class="pre">git-lfs</span></code> for your Hopper
+account:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">lfs</span> <span class="n">install</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>

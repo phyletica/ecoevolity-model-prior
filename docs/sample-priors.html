@@ -1,17 +1,19 @@
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Sampling the model priors &#8212; Ecoevolity model prior experiments 0.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -55,7 +57,6 @@
 <li class="toctree-l1"><a class="reference internal" href="project-tour.html">Project Tour</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ecoevolity-configs.html">The ecoevolity configs</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Sampling the model priors</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#setup-our-environment">Setup our environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#run-the-analyses">Run the analyses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#checkout-the-results">Checkout the results</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cleanup">Cleanup</a></li>
@@ -80,15 +81,17 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
+  <h3>Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script type="text/javascript">$('#searchbox').show(0);</script>
 
 
 
@@ -108,12 +111,12 @@
   <div class="section" id="sampling-the-model-priors">
 <span id="sample-priors"></span><h1>Sampling the model priors<a class="headerlink" href="#sampling-the-model-priors" title="Permalink to this headline">¶</a></h1>
 <div class="admonition important">
-<p class="admonition-title">Important</p>
+<p class="first admonition-title">Important</p>
 <p>The most important part of the project is the contents of the
 <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a> configuration files in the <code class="docutils literal notranslate"><span class="pre">ecoevolity-configs</span></code> directory.  These
 files specify the models we will be using to simulate and analyze genomic
 datasets.</p>
-<p>Read the <a class="reference internal" href="background.html#background"><span class="std std-ref">Background</span></a> and <a class="reference internal" href="ecoevolity-configs.html#eco-configs"><span class="std std-ref">The ecoevolity configs</span></a> sections to become
+<p class="last">Read the <a class="reference internal" href="background.html#background"><span class="std std-ref">Background</span></a> and <a class="reference internal" href="ecoevolity-configs.html#eco-configs"><span class="std std-ref">The ecoevolity configs</span></a> sections to become
 familiar with these models.</p>
 </div>
 <p>As described in the
@@ -121,17 +124,17 @@ familiar with these models.</p>
 we will be analyzing simulated data under three different priors
 on divergence models:</p>
 <ol class="arabic simple">
-<li><p>Dirichlet-process (DP) prior</p></li>
-<li><p>Pitman-Yor process (PYP) prior</p></li>
-<li><p>Uniform distribution with a split-weight parameter (SW)</p></li>
+<li>Dirichlet-process (DP) prior</li>
+<li>Pitman-Yor process (PYP) prior</li>
+<li>Uniform distribution with a split-weight parameter (SW)</li>
 </ol>
 <p>The settings for these models are contained in three <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a> configuration files
 in the <code class="docutils literal notranslate"><span class="pre">ecoevolity-configs</span></code> directory of the project. These
 are, respectively:</p>
 <ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05.yml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pairs-10-pyp-conc-2_0-1_79-disc-1_0-4_0-time-1_0-0_05.yml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pairs-10-unif-sw-0_55-7_32-time-1_0-0_05.yml</span></code></p></li>
+<li><code class="docutils literal notranslate"><span class="pre">pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05.yml</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">pairs-10-pyp-conc-2_0-1_79-disc-1_0-4_0-time-1_0-0_05.yml</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">pairs-10-unif-sw-0_55-7_32-time-1_0-0_05.yml</span></code></li>
 </ol>
 <p>Before we do anything else, we should validate that these modes are what we
 think we are.
@@ -145,8 +148,8 @@ By analyzing it while ignoring the data, the distribution that <code class="docu
 samples from should be the very one we specified in the configs.
 Hence, this is a nice sanity check to make sure everything is working as we
 expect.</p>
-<div class="section" id="setup-our-environment">
-<h2>Setup our environment<a class="headerlink" href="#setup-our-environment" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="run-the-analyses">
+<h2>Run the analyses<a class="headerlink" href="#run-the-analyses" title="Permalink to this headline">¶</a></h2>
 <p>Before anything else, navigate to the project directory (if you are not already
 there):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">your</span><span class="o">/</span><span class="n">copy</span><span class="o">/</span><span class="n">of</span><span class="o">/</span><span class="n">ecoevolity</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">prior</span>
@@ -156,13 +159,6 @@ there):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">scratch</span><span class="o">/</span><span class="n">YOUR</span><span class="o">-</span><span class="n">AU</span><span class="o">-</span><span class="n">USERNAME</span><span class="o">/</span><span class="n">ecoevolity</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">prior</span>
 </pre></div>
 </div>
-<p>If you haven’t already, let’s activate the Python environment for this project:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">activate</span> <span class="n">ecoevolity</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">prior</span><span class="o">-</span><span class="n">project</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="run-the-analyses">
-<h2>Run the analyses<a class="headerlink" href="#run-the-analyses" title="Permalink to this headline">¶</a></h2>
 <p>Now, lets <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the project’s <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">scripts</span>
 </pre></div>
@@ -174,16 +170,16 @@ the cluster’s queue by entering:</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you are not on the Hopper cluster, you can simply run this
+<p class="first admonition-title">Note</p>
+<p>If you are <strong>not</strong> on the Hopper cluster, you can simply run this
 directly:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">prior_sampling_tests</span><span class="o">.</span><span class="n">sh</span> <span class="mi">2</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">prior_sampling_tests</span><span class="o">.</span><span class="n">sh</span> <span class="mi">2</span>
 </pre></div>
 </div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you <em>are</em> on the Hopper cluster, you can monitor the progress of
+<p class="first admonition-title">Note</p>
+<p>If you <strong>are</strong> on the Hopper cluster, you can monitor the progress of
 the job by using the <code class="docutils literal notranslate"><span class="pre">qstat</span></code> command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qstat</span>
 </pre></div>
@@ -210,7 +206,7 @@ When the job finishes, the output will look like:</p>
 <span class="mf">1941144.</span><span class="n">hopper</span><span class="o">-</span><span class="n">mgt</span>         <span class="o">...</span><span class="n">ling_tests</span><span class="o">.</span><span class="n">sh</span> <span class="n">jro0014</span>         <span class="mi">00</span><span class="p">:</span><span class="mi">03</span><span class="p">:</span><span class="mi">20</span> <span class="n">C</span> <span class="n">general</span>
 </pre></div>
 </div>
-<p>where “C” stands for Complete.
+<p class="last">where “C” stands for Complete.
 However, after showing this state for a few minutes, the job will disappear
 from the output of <code class="docutils literal notranslate"><span class="pre">qstat</span></code>.</p>
 </div>
@@ -223,13 +219,13 @@ sample.</p>
 <p>What this script will do, is for each of the three model configs listed above,
 it will:</p>
 <ol class="arabic simple">
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code> to simulate one dataset from that config.</p></li>
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code> to analyze that simulated dataset while ignoring the
-data.</p></li>
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">sumcoevolity</span></code> to summarize the results.</p></li>
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">pyco-sumevents</span></code> to plot the results.</p></li>
-<li><p>Run the custom plotting script <code class="docutils literal notranslate"><span class="pre">scripts/plot_prior_samples.py</span></code> to do some
-additional plotting of the results.</p></li>
+<li>Use <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code> to simulate one dataset from that config.</li>
+<li>Use <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code> to analyze that simulated dataset while ignoring the
+data.</li>
+<li>Run <code class="docutils literal notranslate"><span class="pre">sumcoevolity</span></code> to summarize the results.</li>
+<li>Run <code class="docutils literal notranslate"><span class="pre">pyco-sumevents</span></code> to plot the results.</li>
+<li>Run the custom plotting script <code class="docutils literal notranslate"><span class="pre">scripts/plot_prior_samples.py</span></code> to do some
+additional plotting of the results.</li>
 </ol>
 <p>Why run <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code>? I.e., why not just run <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code> straightaway?
 Well the extra step helps to validate that the whole workflow of simulating
@@ -253,7 +249,7 @@ directory (assuming you are still in the <code class="docutils literal notransla
 </div>
 <p>Inside of these you will find the dataset simulated by <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code> (10
 data files; 1 for each pair of populations), the output of <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code> (the
-.log files) and a bunch of plots (.pdf files).</p>
+<code class="docutils literal notranslate"><span class="pre">.log</span></code> files) and a bunch of plots (<code class="docutils literal notranslate"><span class="pre">.pdf</span></code> files).</p>
 <p>Let’s take a look at the plots from each model and make sure everything looks
 as we expect.</p>
 <div class="section" id="dpp-results">
@@ -275,7 +271,7 @@ Indeed, they do:</p>
 <div class="figure align-center" id="id3" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-dpp-pycoevolity-nevents.png"><img alt="DP number of events prior" src="_images/prior-sampling-dpp-pycoevolity-nevents.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected and sampled prior probabilities of the number of divergence
-events for the DP model.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+events for the DP model.</span></p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">prior-concentration.pdf</span></code> plot shows the expected gamma prior
 distribution for the concentration parameter (orange line) against a histogram
@@ -285,7 +281,7 @@ It looks like a nice fit:</p>
 <div class="figure align-center" id="id4" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-dpp-prior-concentration.png"><img alt="DP concentration prior" src="_images/prior-sampling-dpp-prior-concentration.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-the concentration parameter of the DP model.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+the concentration parameter of the DP model.</span></p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">prior-event_time.pdf</span></code> plot shows the expected exponential prior
 distribution on divergence times (orange line) against a histogram of the
@@ -294,7 +290,7 @@ It looks like another nice fit:</p>
 <div class="figure align-center" id="id5" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-dpp-prior-event_time.png"><img alt="DP event-time prior" src="_images/prior-sampling-dpp-prior-event_time.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-divergence times for the DP model.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+divergence times for the DP model.</span></p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">prior-leaf_population_size.pdf</span></code> plot shows the expected gamma prior
 distribution on the effective size of the descendant populations (orange line)
@@ -304,7 +300,7 @@ Bingo:</p>
 <div class="figure align-center" id="id6" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-dpp-prior-leaf_population_size.png"><img alt="DP descendant pop size prior" src="_images/prior-sampling-dpp-prior-leaf_population_size.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-the effective size of the descendant populations for the DP model.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+the effective size of the descendant populations for the DP model.</span></p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">prior-root_relative_population_size.pdf</span></code> plot shows the expected gamma
 prior distribution on the relative effective size of the ancestral population
@@ -314,7 +310,7 @@ Spot on:</p>
 <div class="figure align-center" id="id7" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-dpp-prior-root_relative_population_size.png"><img alt="DP relative ancestral pop size prior" src="_images/prior-sampling-dpp-prior-root_relative_population_size.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-the relative effective size of the ancestral population for the DP model.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+the relative effective size of the ancestral population for the DP model.</span></p>
 </div>
 </div>
 <div class="section" id="pyp-results">
@@ -329,7 +325,7 @@ Again, they match nicely:</p>
 <div class="figure align-center" id="id8" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-pyp-pycoevolity-nevents.png"><img alt="PYP number of events prior" src="_images/prior-sampling-pyp-pycoevolity-nevents.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected and sampled prior probabilities of the number of divergence
-events for the PYP model.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+events for the PYP model.</span></p>
 </div>
 <p>As with the DP model, the <code class="docutils literal notranslate"><span class="pre">prior-concentration.pdf</span></code> plot shows us that the
 expected (orange line) and sampled (blue histogram) distribution for the
@@ -337,7 +333,7 @@ concentration parameter are a close fit:</p>
 <div class="figure align-center" id="id9" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-pyp-prior-concentration.png"><img alt="PYP concentration prior" src="_images/prior-sampling-pyp-prior-concentration.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-the concentration parameter of the PYP model.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+the concentration parameter of the PYP model.</span></p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">prior-discount.pdf</span></code> plot shows the expected beta prior on the discount
 parameter of the PYP model (orange line) to a histogram of the sampled values
@@ -346,7 +342,7 @@ Another nice fit:</p>
 <div class="figure align-center" id="id10" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-pyp-prior-discount.png"><img alt="PYP discount prior" src="_images/prior-sampling-pyp-prior-discount.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-the discount parameter of the PYP model.</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+the discount parameter of the PYP model.</span></p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">prior-event_time.pdf</span></code> plot confirms the distribution of sampled
 divergence times closely matches the expected exponential prior distribution on
@@ -354,7 +350,7 @@ divergence times (orange line):</p>
 <div class="figure align-center" id="id11" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-pyp-prior-event_time.png"><img alt="PYP event-time prior" src="_images/prior-sampling-pyp-prior-event_time.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-divergence times for the PYP model.</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+divergence times for the PYP model.</span></p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">prior-leaf_population_size.pdf</span></code> plot confirms the distribution of
 sampled descendant population sizes closely matches the expected gamma prior
@@ -362,7 +358,7 @@ distribution:</p>
 <div class="figure align-center" id="id12" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-pyp-prior-leaf_population_size.png"><img alt="PYP descendant pop size prior" src="_images/prior-sampling-pyp-prior-leaf_population_size.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-the effective size of the descendant populations for the PYP model.</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+the effective size of the descendant populations for the PYP model.</span></p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">prior-root_relative_population_size.pdf</span></code> plot confirms the distribution
 of relative sizes of the ancestral populations collected during the
@@ -370,7 +366,7 @@ of relative sizes of the ancestral populations collected during the
 <div class="figure align-center" id="id13" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-pyp-prior-root_relative_population_size.png"><img alt="PYP relative ancestral pop size prior" src="_images/prior-sampling-pyp-prior-root_relative_population_size.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-the relative effective size of the ancestral population for the PYP model.</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+the relative effective size of the ancestral population for the PYP model.</span></p>
 </div>
 </div>
 <div class="section" id="sw-results">
@@ -384,7 +380,7 @@ possible number of divergence events closely match:</p>
 <div class="figure align-center" id="id14" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-unif-pycoevolity-nevents.png"><img alt="SW number of events prior" src="_images/prior-sampling-unif-pycoevolity-nevents.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected and sampled prior probabilities of the number of divergence
-events for the SW model.</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+events for the SW model.</span></p>
 </div>
 <p>It’s difficult to tell if the distribution of the split-weight parameter
 approximated by the <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code> analysis is a good match to the expected
@@ -392,7 +388,7 @@ gamma prior distribution:</p>
 <div class="figure align-center" id="id15" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-unif-prior-split_weight.png"><img alt="SW split-weight prior" src="_images/prior-sampling-unif-prior-split_weight.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-the split-weight parameter of the SW model.</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+the split-weight parameter of the SW model.</span></p>
 </div>
 <p>This is because it is difficult to approximate a gamma distribution with a
 shape of 0.55 with a histogram.
@@ -405,14 +401,14 @@ divergence times closely matches the expected exponential prior (orange line):</
 <div class="figure align-center" id="id16" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-unif-prior-event_time.png"><img alt="SW event-time prior" src="_images/prior-sampling-unif-prior-event_time.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-divergence times for the SW model.</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+divergence times for the SW model.</span></p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">prior-leaf_population_size.pdf</span></code> plot confirms the distribution of
 sampled descendant population sizes closely matches the expected gamma prior:</p>
 <div class="figure align-center" id="id17" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-unif-prior-leaf_population_size.png"><img alt="SW descendant pop size prior" src="_images/prior-sampling-unif-prior-leaf_population_size.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-the effective size of the descendant populations for the SW model.</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+the effective size of the descendant populations for the SW model.</span></p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">prior-root_relative_population_size.pdf</span></code> plot confirms the sampled
 distribution of relative ancestral population sizes  closely matches the
@@ -420,7 +416,7 @@ expected gamma prior:</p>
 <div class="figure align-center" id="id18" style="width: 90%">
 <a class="reference internal image-reference" href="_images/prior-sampling-unif-prior-root_relative_population_size.png"><img alt="SW relative ancestral pop size prior" src="_images/prior-sampling-unif-prior-root_relative_population_size.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">The expected (orange line) and sampled (histogram) prior distribution on
-the relative effective size of the ancestral population for the SW model.</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
+the relative effective size of the ancestral population for the SW model.</span></p>
 </div>
 </div>
 <div class="section" id="summary">
