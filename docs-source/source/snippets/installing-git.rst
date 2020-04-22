@@ -97,7 +97,7 @@ to use ``merge`` when we ``pull``::
 
 If you haven't configured ``git`` on Hopper with your name and email, go ahead
 and do that now using the following 2 commands (just change my name and email
-to yours)::
+to yours, and **use the email associated with your** |github|_ **account**)::
 
     git config --global user.name "Jamie R. Oaks"
     git config --global user.email "joaks1@gmail.com"
