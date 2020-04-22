@@ -78,7 +78,9 @@ batch ID::
 
 But, your batch ID number should be different.
 
-**Make a note of your batch ID number, you will need it moving forward.**
+**IMPORTANT: Make a note of your batch ID number, you will need it moving forward.**
+For all of the commands below, use your batch ID number in place of
+``308303035``.
 
 Commit simulation scripts
 -------------------------
@@ -86,7 +88,7 @@ Commit simulation scripts
 Before we run the ``simcoevolity`` scripts, let's add them to the staging area
 of project Git repository::
 
-    git add scripts/*308303035.sh
+    git add simcoevolity-scripts/*308303035.sh
 
 Then, commit them to the repository::
 
@@ -120,7 +122,7 @@ If you are working on AU's Hopper cluster, use a for loop to submit the five
 
     for script_path in *308303035.sh; do ../../bin/psub "$script_path"; done
 
-.. note:: If you are not working on a different cluster, you will need
+.. note:: If you are working on a different cluster, you will need
     to either update the ``../../bin/psub`` to work for your system,
     or replace ``../../bin/psub`` with whatever command is used on your
     cluster to submit jobs.
@@ -222,17 +224,17 @@ You will see a very long list of files, so I won't show the output here.
 For each ``simcoevolity`` simulation replicate there are:
 
 *   10 data files (one for each of the pairs of populations). The names of
-    these files end with "chars.txt".
+    these files end with "``chars.txt``".
 *   1 file containing the true values of all the parameters that
     ``simcoevolity`` used to simulate the data files. These files end with
-    "-true-values.txt".
+    "``-true-values.txt``".
 *   6 ecoevolity config files. Two each for the DP, PYP, and SW models.
     Two each, because we will run analyses for each model both using and
     ignoring constant characters in the simulated data files.
-    These files end with "-config.yml"
+    These files end with "``-config.yml``"
 *   24 Bash scripts for analyzing the dataset with ``ecoevolity``.
     Four independent analyses (MCMC chains) for each of the 6 config files.
-    These files end with "-qsub.sh"
+    These files end with "``-qsub.sh``"
     
 
 Analyzing simulated data
@@ -249,7 +251,7 @@ Hopper imposes a limit of 500 jobs per user, so we will use the job array to
 run only 400 of these analyses at a time, and cycle through them until they are
 all done.
 
-.. note:: If you are not on the Hopper cluster, the ``submit_sim_analyses.sh``
+.. note:: If you are **not** on the Hopper cluster, the ``submit_sim_analyses.sh``
     script we use below will not work on your system.
     You will either need to update that script to work with your system,
     or simply submit all theses analyses "manually."
@@ -578,11 +580,39 @@ analyses::
 
 This script will copy these files into compressed archives and remove the
 original files.
-There's no need to add these archives to the git repository, because all the
-information we need from the analyses should be contained in the gzipped
-tab-delimited files we added to the repo above.
-Also, it's not difficult to re-generate these results if we later decide we
-need to extract more information from them.
+
+Now, we can add these archives to the git repository::
+
+    git add ../ecoevolity-simulations/*/batch-308303035/*.tar.gz
+
+And, commit them to the repository database::
+
+    git commit
+
+A good commit message might look something like::
+
+    Adding archives of sim files for batch 308303035.
+
+    Adding compressed archives of all the ``simcoevolity`` and
+    ``ecoevolity`` files for batch 308303035 of simulation replicates.
+    These files are handled by Git LFS, so only a reference to the
+    files is stored in the git database.
+
+.. note:: As discussed above, Git handles the versioning of text files very
+    well, but not large, compressed files like the ones we just added.
+    So, why did we add them? Well, we have configured
+    `Git LFS <https://git-lfs.github.com/>`_.
+    to handle any files that end with "``.tar.gz``" (this configuration is in
+    the ``.gitattributes`` file in the base directory of the project).
+
+    Git LFS works by only storing references to these files, rather than the
+    files themselves. So, ``git`` doesn't track the contents of these large,
+    compressed files. Which is good for us; we aren't going to be making
+    edits to these files!
+
+Finally, push everything to the remote repository on |github|_::
+
+    git push origin master
 
 
 Reflection

@@ -79,7 +79,7 @@ new Python environment using ``conda``::
 and (if you are working on this project on the AU Hopper cluster) source the
 file that loads all the necessary modules::
 
-    source source modules-to-load.sh
+    source modules-to-load.sh
 
 You will want to get in the habit of running these ``conda activate
 ecoevolity-model-prior-project`` and ``source modules-to-load.sh`` (the latter

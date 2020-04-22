@@ -50,6 +50,16 @@ If you are not sure what this is, please try out
 Folks in the |phyleticalab|_ will be using Bash on
 Auburn University's Hopper cluster.
 
+Git
+---
+
+This project requires |git|_.
+If you want to contribute to the project, you should also have the
+`Git Large File Storage <https://git-lfs.github.com/>`_
+extension to Git.
+`Git LFS <https://git-lfs.github.com/>`_
+is not required to replicate our analyses, but |phyleticalab|_ members will be
+using it to add large archives of simulation files to the project repository.
 
 Conda
 -----
@@ -96,3 +106,9 @@ Installing Miniconda on Hopper
 ------------------------------
 
 .. include:: snippets/installing-miniconda.rst
+
+
+Setting up Git on Hopper
+------------------------
+
+.. include:: snippets/installing-git.rst
