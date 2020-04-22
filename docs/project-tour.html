@@ -1,17 +1,19 @@
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Project Tour &#8212; Ecoevolity model prior experiments 0.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -74,15 +76,17 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
+  <h3>Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script type="text/javascript">$('#searchbox').show(0);</script>
 
 
 
@@ -111,8 +115,9 @@ If you haven’t already, clone the repository for the project:</p>
 </pre></div>
 </div>
 <p>Here’s an overview of the contents of the <a class="reference external" href="https://github.com/phyletica/ecoevolity-model-prior">project repository</a></p>
-<dl>
-<dt><code class="docutils literal notranslate"><span class="pre">bin</span></code> directory</dt><dd><p>This directory includes executable Bash scripts <code class="docutils literal notranslate"><span class="pre">psub</span></code>, <code class="docutils literal notranslate"><span class="pre">nsub</span></code>, and
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">bin</span></code> directory</dt>
+<dd><p class="first">This directory includes executable Bash scripts <code class="docutils literal notranslate"><span class="pre">psub</span></code>, <code class="docutils literal notranslate"><span class="pre">nsub</span></code>, and
 <code class="docutils literal notranslate"><span class="pre">spawn_job_array</span></code>.</p>
 <p>These Bash scripts were written for members of the <a class="reference external" href="http://phyletica.org">Phyletica Lab</a> to
 submit jobs to the queues on Auburn University’s Hopper cluster.  If you
@@ -121,79 +126,85 @@ analyses for this project, you will need to edit these files to work for
 your system. Alternatively, you can submit the analyses “manually;” simple
 <code class="docutils literal notranslate"><span class="pre">for</span></code> loops at the command prompt would work just fine to submit the
 jobs.</p>
-<p>Also, when you
+<p class="last">Also, when you
 <a class="reference internal" href="getting-started.html#setup-project"><span class="std std-ref">run the setup_project_env.sh</span></a>,
 <a class="reference internal" href="#setup-script"><span class="std std-ref">described below</span></a>,
 all of the <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a> tools will get installed in this <code class="docutils literal notranslate"><span class="pre">bin</span></code> directory.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">conda-environment.yml</span></code> file</dt><dd><p>This is a YAML-formatted configuration file that tells <code class="docutils literal notranslate"><span class="pre">conda</span></code> how to set
+<dt><code class="docutils literal notranslate"><span class="pre">conda-environment.yml</span></code> file</dt>
+<dd><p class="first">This is a YAML-formatted configuration file that tells <code class="docutils literal notranslate"><span class="pre">conda</span></code> how to set
 up a Python environment with the necessary requirements to allow all the
 Python scripts in the project to run successfully.</p>
-<p>This Python environment will get created
+<p class="last">This Python environment will get created
 <a class="reference internal" href="getting-started.html#setup-project"><span class="std std-ref">when you run the setup_project_env.sh</span></a>
 <a class="reference internal" href="#setup-script"><span class="std std-ref">(described below)</span></a>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">data</span></code> directory</dt><dd><p>This directory contains data files in a file format (YAML) recognized
+<dt><code class="docutils literal notranslate"><span class="pre">data</span></code> directory</dt>
+<dd><p class="first">This directory contains data files in a file format (YAML) recognized
 by <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a>.</p>
-<p>All of the files with the naming scheme of
+<p class="last">All of the files with the naming scheme of
 <code class="docutils literal notranslate"><span class="pre">comp##-#species-#genomes-######chars.txt</span></code> are “dummy” data files
 that will be used by the <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code> tool to simulate datasets.
 They are fully valid data files for <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a>, but are only meant to serve the
 purpose of “telling” <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code> the size of datasets to simulate.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> file</dt><dd><p>This is text file with the commands for assembling the image of a <a class="reference external" href="https://www.docker.com/">Docker</a>
+<dt><code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> file</dt>
+<dd>This is text file with the commands for assembling the image of a <a class="reference external" href="https://www.docker.com/">Docker</a>
 container.
 If you are familiar with containers, you can use this file to create a
 container of an environment with all the requirements to setup and work on
-this project.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">docs</span></code> directory</dt><dd><p>This directory contains the HTML of the
+this project.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">docs</span></code> directory</dt>
+<dd><p class="first">This directory contains the HTML of the
 <a class="reference external" href="http://phyletica.org/ecoevolity-model-prior">project documunetation</a>
 which is served by <a class="reference external" href="https://github.com/">GitHub</a> at
 <a class="reference external" href="http://phyletica.org/ecoevolity-model-prior">http://phyletica.org/ecoevolity-model-prior</a>.</p>
-<p>These HTML files are automatically generated by <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a> from the
+<p class="last">These HTML files are automatically generated by <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a> from the
 files in <code class="docutils literal notranslate"><span class="pre">docs-source</span></code>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">docs-source</span></code> directory</dt><dd><p>This directory contains the source files that are used by <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a> to
+<dt><code class="docutils literal notranslate"><span class="pre">docs-source</span></code> directory</dt>
+<dd><p class="first">This directory contains the source files that are used by <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a> to
 create the HTML files for the <a class="reference external" href="http://phyletica.org/ecoevolity-model-prior">project site</a>.
 These files are in
 <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText format</a>.</p>
-<p>If you want to add to or edit the documentation for this project,
+<p class="last">If you want to add to or edit the documentation for this project,
 <code class="docutils literal notranslate"><span class="pre">docs-source</span></code> is where to do that.
 This is covered in the <a class="reference internal" href="working-on-docs.html#working-on-docs"><span class="std std-ref">Working on project docs</span></a> section.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ecoevolity-configs</span></code> directory</dt><dd><p>As the name implies, this directory contains all of the configuration files
+<dt><code class="docutils literal notranslate"><span class="pre">ecoevolity-configs</span></code> directory</dt>
+<dd><p class="first">As the name implies, this directory contains all of the configuration files
 needed for the <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a> tools.
 These configuration files specify where the data files are located, and all
 of the settings for analysis.</p>
 <p>These configs are a critical component of the project and are covered more
 thorought in the <a class="reference internal" href="ecoevolity-configs.html#eco-configs"><span class="std std-ref">The ecoevolity configs</span></a> section.</p>
-<p>For more details about <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a> config files, please see
+<p class="last">For more details about <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a> config files, please see
 <a class="reference external" href="http://phyletica.org/ecoevolity/yaml-config.html">the ecoevolity documentation</a>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">modules-to-load.sh</span></code> file</dt><dd><p>This file contains the shell commands to load the modules on AU’s Hopper
+<dt><code class="docutils literal notranslate"><span class="pre">modules-to-load.sh</span></code> file</dt>
+<dd>This file contains the shell commands to load the modules on AU’s Hopper
 cluster that are needed for setting up and working on the project.
 If you are working on a different system, you will have to determine what
 modules are needed on your system to replace these; if your cluster is
-relatively new, perhaps none!</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">README.md</span></code> file</dt><dd><p>This file contains some basic information about the project, and is
-rendered on the GitHub landing page for the <a class="reference external" href="https://github.com/phyletica/ecoevolity-model-prior">project repository</a>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory</dt><dd><p>This contains a number of Bash and Python scripts that will be doing most
-of the “heavy lifting” for this project.</p>
-</dd>
+relatively new, perhaps none!</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">README.md</span></code> file</dt>
+<dd>This file contains some basic information about the project, and is
+rendered on the GitHub landing page for the <a class="reference external" href="https://github.com/phyletica/ecoevolity-model-prior">project repository</a>.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory</dt>
+<dd>This contains a number of Bash and Python scripts that will be doing most
+of the “heavy lifting” for this project.</dd>
 </dl>
-<dl id="setup-script">
-<dt><code class="docutils literal notranslate"><span class="pre">setup_project_env.sh</span></code> script</dt><dd><p>This is a executable Bash script that will</p>
+<dl class="docutils" id="setup-script">
+<dt><code class="docutils literal notranslate"><span class="pre">setup_project_env.sh</span></code> script</dt>
+<dd><p class="first">This is a executable Bash script that will</p>
 <ol class="arabic simple">
-<li><p>Compile and install (locally; within the project directory)
-<a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a>.</p></li>
-<li><p>Create a <code class="docutils literal notranslate"><span class="pre">conda</span></code> Python environment called
+<li>Compile and install (locally; within the project directory)
+<a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a>.</li>
+<li>Create a <code class="docutils literal notranslate"><span class="pre">conda</span></code> Python environment called
 <code class="docutils literal notranslate"><span class="pre">ecoevolity-model-prior-project</span></code> and activeate it (if <code class="docutils literal notranslate"><span class="pre">conda</span></code>
-is available on the system).</p></li>
+is available on the system).</li>
 </ol>
-<p>See the <a class="reference internal" href="getting-started.html#setup-project"><span class="std std-ref">Setting up the project</span></a> section for instructions on using this script
+<p class="last">See the <a class="reference internal" href="getting-started.html#setup-project"><span class="std std-ref">Setting up the project</span></a> section for instructions on using this script
 to setup the working environment for this project.</p>
 </dd>
 </dl>

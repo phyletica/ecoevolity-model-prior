@@ -1,17 +1,19 @@
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Simulation-based analyses &#8212; Ecoevolity model prior experiments 0.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -83,15 +85,17 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
+  <h3>Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script type="text/javascript">$('#searchbox').show(0);</script>
 
 
 
@@ -115,21 +119,21 @@
 we will be simulating datasets under five different models on divergneces among
 the 10 pairs of populations:</p>
 <ol class="arabic simple">
-<li><p>Dirichlet-process (DP) prior</p></li>
-<li><p>Pitman-Yor process (PYP) prior</p></li>
-<li><p>Uniform distribution with a split-weight parameter (SW)</p></li>
-<li><p>Simultaneous divergence</p></li>
-<li><p>Independent divergences</p></li>
+<li>Dirichlet-process (DP) prior</li>
+<li>Pitman-Yor process (PYP) prior</li>
+<li>Uniform distribution with a split-weight parameter (SW)</li>
+<li>Simultaneous divergence</li>
+<li>Independent divergences</li>
 </ol>
 <p>The settings for these models are contained in three <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a> configuration files
 in the <code class="docutils literal notranslate"><span class="pre">ecoevolity-configs</span></code> directory of the project. These
 are, respectively:</p>
 <ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05.yml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pairs-10-pyp-conc-2_0-1_79-disc-1_0-4_0-time-1_0-0_05.yml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pairs-10-unif-sw-0_55-7_32-time-1_0-0_05.yml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">fixed-pairs-10-simultaneous-time-1_0-0_05.yml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">fixed-pairs-10-independent-time-1_0-0_05.yml</span></code></p></li>
+<li><code class="docutils literal notranslate"><span class="pre">pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05.yml</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">pairs-10-pyp-conc-2_0-1_79-disc-1_0-4_0-time-1_0-0_05.yml</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">pairs-10-unif-sw-0_55-7_32-time-1_0-0_05.yml</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">fixed-pairs-10-simultaneous-time-1_0-0_05.yml</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">fixed-pairs-10-independent-time-1_0-0_05.yml</span></code></li>
 </ol>
 <p>We will use <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code> to simulate these datasets in a format ready to
 analyze with <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code>.
@@ -222,13 +226,13 @@ of project Git repository:</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="first admonition-title">Note</p>
 <p>If you are working on a different cluster, you will need
 to either update the <code class="docutils literal notranslate"><span class="pre">../../bin/psub</span></code> to work for your system,
 or replace <code class="docutils literal notranslate"><span class="pre">../../bin/psub</span></code> with whatever command is used on your
 cluster to submit jobs.</p>
 <p>If you are not on a cluster, you can simpy run the scripts directly:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">script_path</span> <span class="ow">in</span> <span class="o">*</span><span class="mf">308303035.</span><span class="n">sh</span><span class="p">;</span> <span class="n">do</span> <span class="n">bash</span> <span class="s2">&quot;$script_path&quot;</span><span class="p">;</span> <span class="n">done</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">script_path</span> <span class="ow">in</span> <span class="o">*</span><span class="mf">308303035.</span><span class="n">sh</span><span class="p">;</span> <span class="n">do</span> <span class="n">bash</span> <span class="s2">&quot;$script_path&quot;</span><span class="p">;</span> <span class="n">done</span>
 </pre></div>
 </div>
 </div>
@@ -277,20 +281,20 @@ minutes of being complete, the jobs will disappear from the output of
 </div>
 <p>What each of these <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code> scripts does is:</p>
 <ol class="arabic simple">
-<li><p>Use the <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code> tool to simulate datasets and output them into a
-<code class="docutils literal notranslate"><span class="pre">ecoevolity-simulations</span></code> directory in the project directory.</p></li>
-<li><p>Create YAML-formatted config files for analyzing each dataset with <code class="docutils literal notranslate"><span class="pre">ecoevolity.</span></code>
+<li>Use the <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code> tool to simulate datasets and output them into a
+<code class="docutils literal notranslate"><span class="pre">ecoevolity-simulations</span></code> directory in the project directory.</li>
+<li>Create YAML-formatted config files for analyzing each dataset with <code class="docutils literal notranslate"><span class="pre">ecoevolity.</span></code>
 For each dataset, 6 config files are created. One for each of the three
 models we wish to compare for the project (the DP, PYP, and SW models
 defined in the config file in the <code class="docutils literal notranslate"><span class="pre">ecoevolity-configs</span></code> directory).
 And another config for each of these three models, but configured to ignore
 constant characters (i.e., only use characters that vary among the samples
-genomes sampled from the two populations).</p></li>
-<li><p>For each config file created in Step 2 above, the script generates 4 Bash
+genomes sampled from the two populations).</li>
+<li>For each config file created in Step 2 above, the script generates 4 Bash
 scripts for analyzing the respective dataset 4 times with <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code>
 (i.e., four independent MCMC chains for each analysis).
 Thus, for each dataset simulated by <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code> there are 6 config
-files and 24 Bash scripts for running <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code> analyses.</p></li>
+files and 24 Bash scripts for running <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code> analyses.</li>
 </ol>
 <p>All of the files created during these 3 steps are output into
 a <code class="docutils literal notranslate"><span class="pre">ecoevolity-simulations</span></code> directory in the project directory.
@@ -323,18 +327,18 @@ will be different from mine):</p>
 <p>You will see a very long list of files, so I won’t show the output here.
 For each <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code> simulation replicate there are:</p>
 <ul class="simple">
-<li><p>10 data files (one for each of the pairs of populations). The names of
-these files end with “<code class="docutils literal notranslate"><span class="pre">chars.txt</span></code>”.</p></li>
-<li><p>1 file containing the true values of all the parameters that
+<li>10 data files (one for each of the pairs of populations). The names of
+these files end with “<code class="docutils literal notranslate"><span class="pre">chars.txt</span></code>”.</li>
+<li>1 file containing the true values of all the parameters that
 <code class="docutils literal notranslate"><span class="pre">simcoevolity</span></code> used to simulate the data files. These files end with
-“<code class="docutils literal notranslate"><span class="pre">-true-values.txt</span></code>”.</p></li>
-<li><p>6 ecoevolity config files. Two each for the DP, PYP, and SW models.
+“<code class="docutils literal notranslate"><span class="pre">-true-values.txt</span></code>”.</li>
+<li>6 ecoevolity config files. Two each for the DP, PYP, and SW models.
 Two each, because we will run analyses for each model both using and
 ignoring constant characters in the simulated data files.
-These files end with “<code class="docutils literal notranslate"><span class="pre">-config.yml</span></code>”</p></li>
-<li><p>24 Bash scripts for analyzing the dataset with <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code>.
+These files end with “<code class="docutils literal notranslate"><span class="pre">-config.yml</span></code>”</li>
+<li>24 Bash scripts for analyzing the dataset with <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code>.
 Four independent analyses (MCMC chains) for each of the 6 config files.
-These files end with “<code class="docutils literal notranslate"><span class="pre">-qsub.sh</span></code>”</p></li>
+These files end with “<code class="docutils literal notranslate"><span class="pre">-qsub.sh</span></code>”</li>
 </ul>
 </div>
 <div class="section" id="analyzing-simulated-data">
@@ -342,14 +346,14 @@ These files end with “<code class="docutils literal notranslate"><span class="
 <p>Next, we need to run all those Bash scripts to analyze each simulation
 replicate with <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code> four times under 6 different configurations.
 Given that we simulated 10 datasets under 5 different models, this
-will be <img class="math" src="_images/math/bf9bbda924a3f914c8beff4798bde5d6c0b998d8.svg" alt="24 \times 10 \times 5 = 1200"/> <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code> analyses.</p>
+will be <img class="math" src="_images/math/81a03f99de88ddb62e01e5b7bd277aafe7e6fe35.svg" alt="24 \times 10 \times 5 = 1200"/> <code class="docutils literal notranslate"><span class="pre">ecoevolity</span></code> analyses.</p>
 <p>If you are on the Hopper cluster, we will use a script that will run all of
 these analyses as a single job array.
 Hopper imposes a limit of 500 jobs per user, so we will use the job array to
 run only 400 of these analyses at a time, and cycle through them until they are
 all done.</p>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="first admonition-title">Note</p>
 <p>If you are <strong>not</strong> on the Hopper cluster, the <code class="docutils literal notranslate"><span class="pre">submit_sim_analyses.sh</span></code>
 script we use below will not work on your system.
 You will either need to update that script to work with your system,
@@ -358,7 +362,7 @@ This can be done easily with a for loop. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">script_path</span> <span class="ow">in</span> <span class="o">../</span><span class="n">ecoevolity</span><span class="o">-</span><span class="n">simulations</span><span class="o">/*/</span><span class="n">batch</span><span class="o">-</span><span class="mi">308303035</span><span class="o">/*</span><span class="n">qsub</span><span class="o">.</span><span class="n">sh</span><span class="p">;</span> <span class="n">do</span> <span class="n">echo</span> <span class="s2">&quot;$script_path&quot;</span><span class="p">;</span> <span class="n">done</span>
 </pre></div>
 </div>
-<p>Just change “echo” to whatever command is necessary to submit jobs on your
+<p class="last">Just change “echo” to whatever command is necessary to submit jobs on your
 system (and remember your batch ID number is different).</p>
 </div>
 <p>To do this, make sure you are in the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> directory of the project and
@@ -486,8 +490,8 @@ run the same command from within your <code class="docutils literal notranslate"
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Only re-run this command <em>after</em> all the analyses started
+<p class="first admonition-title">Note</p>
+<p class="last">Only re-run this command <em>after</em> all the analyses started
 by this command the first time are no longer running.
 In other words, the <code class="docutils literal notranslate"><span class="pre">qstat</span> <span class="pre">-t</span></code> should produce no output (assuming you are
 not running analyses for other projects) before you re-run this command.</p>
@@ -555,7 +559,7 @@ times above).
 Eventually, you should get the <code class="docutils literal notranslate"><span class="pre">All</span> <span class="pre">analyses</span> <span class="pre">are</span> <span class="pre">complete</span> <span class="pre">and</span> <span class="pre">clean!</span></code>
 message.</p>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="first admonition-title">Note</p>
 <p>Analyses that get need to be re-run are done so exactly (i.e., the
 exact same data and starting seed for the random number generator).</p>
 <p>These jobs are not failing due to any issues with <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a>.
@@ -563,7 +567,7 @@ Our cluster almost always has some small failure rate when running lots of
 jobs, no matter how simple the jobs are.
 So, we can simply run them again, exactly as before, and they will work
 fine.</p>
-<p>I say this, because if we were re-running analyses with different simulated
+<p class="last">I say this, because if we were re-running analyses with different simulated
 datasets or different starting seeds, we could be creating subtle biases in
 our analyses.
 That is not the case here.
@@ -597,13 +601,13 @@ copy of the project, run:</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="first admonition-title">Note</p>
 <p>If you are not on the Hopper cluster, you can simply run the Python
 script directly:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">parse_sim_results</span><span class="o">.</span><span class="n">py</span> <span class="o">../</span><span class="n">ecoevolity</span><span class="o">-</span><span class="n">simulations</span><span class="o">/*/*</span><span class="mi">308303035</span>
 </pre></div>
 </div>
-<p>Just make sure you have the <code class="docutils literal notranslate"><span class="pre">ecoevolity-model-prior-project</span></code> conda
+<p class="last">Just make sure you have the <code class="docutils literal notranslate"><span class="pre">ecoevolity-model-prior-project</span></code> conda
 environment activated.</p>
 </div>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">qstat</span></code> command to monitor the progress of the job.
@@ -647,12 +651,12 @@ We can easily confirm this using <code class="docutils literal notranslate"><spa
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="first admonition-title">Note</p>
 <p>Git handles the versioning of text files very well, but not zipped
 files. So, we usually want to avoid adding zipped files to a Git
 repository. If we have large files we want to keep in a Git repo, it’s
 better to use an extension like <a class="reference external" href="https://git-lfs.github.com/">Git LFS</a>.</p>
-<p>However, in this case we are adding files that we never want to version
+<p class="last">However, in this case we are adding files that we never want to version
 control (we shouldn’t be editing our results files!). So, it is not a
 problem that Git will not be able to track line-by-line changes to these
 files.</p>
@@ -691,14 +695,14 @@ files is stored in the git database.
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="admonition-title">Note</p>
+<p class="first admonition-title">Note</p>
 <p>As discussed above, Git handles the versioning of text files very
 well, but not large, compressed files like the ones we just added.
 So, why did we add them? Well, we have configured
 <a class="reference external" href="https://git-lfs.github.com/">Git LFS</a>.
 to handle any files that end with “<code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code>” (this configuration is in
 the <code class="docutils literal notranslate"><span class="pre">.gitattributes</span></code> file in the base directory of the project).</p>
-<p>Git LFS works by only storing references to these files, rather than the
+<p class="last">Git LFS works by only storing references to these files, rather than the
 files themselves. So, <code class="docutils literal notranslate"><span class="pre">git</span></code> doesn’t track the contents of these large,
 compressed files. Which is good for us; we aren’t going to be making
 edits to these files!</p>

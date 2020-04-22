@@ -1,17 +1,19 @@
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Background &#8212; Ecoevolity model prior experiments 0.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -78,15 +80,17 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
+  <h3>Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script type="text/javascript">$('#searchbox').show(0);</script>
 
 
 
@@ -117,7 +121,7 @@ the types of comparative phylogeographic models implemented in
 The <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a> documentation provides a
 <a class="reference external" href="http://phyletica.org/ecoevolity/background.html">brief and gentle introduction to such models here</a>.
 For more details, please refer to
-<a class="bibtex reference internal" href="zbib/references.html#oaks2018ecoevolity" id="id2">[4]</a><a class="bibtex reference internal" href="zbib/references.html#oaks2018paic" id="id3">[6]</a><a class="bibtex reference internal" href="zbib/references.html#oaks2019codemog" id="id4">[5]</a>.</p>
+<a class="reference internal" href="zbib/references.html#oaks2018ecoevolity" id="id2">[4]</a><a class="reference internal" href="zbib/references.html#oaks2018paic" id="id3">[6]</a><a class="reference internal" href="zbib/references.html#oaks2019codemog" id="id4">[5]</a>.</p>
 <p><a class="reference external" href="http://phyletica.org/ecoevolity">Ecoevolity</a> models two types of “evolutionary events”: population divergences and
 changes in effective population size (or “demographic change” for short).
 Below, and throughout this documentation, we will focus on divergences.
@@ -135,7 +139,7 @@ same time:</p>
 <div class="figure align-center" id="id11" style="width: 90%">
 <span id="div-island-cartoon"></span><a class="reference internal image-reference" href="_images/div-island-cartoon-shared-event-labels.png"><img alt="divergence model cartoon" src="_images/div-island-cartoon-shared-event-labels.png" style="width: 600px;" /></a>
 <p class="caption"><span class="caption-text">All three pairs of lizard species co-diverged when the island was
-fragmented.</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+fragmented.</span></p>
 </div>
 <p>If we want to evaluate the probability of such a model of co-divergence,
 we also need to consider other possible explanations (i.e., models).
@@ -174,32 +178,32 @@ assumptions.</p>
 <span id="dp-prior-on-divergence-models"></span><h3>Dirichlet-process prior<a class="headerlink" href="#dirichlet-process-prior" title="Permalink to this headline">¶</a></h3>
 <p>The original implementation of <a class="reference external" href="http://phyletica.org/ecoevolity">ecoevolity</a> treated the divergence model (number of
 divergence events, and the assignment of the taxa to the events) as a random
-variable under a Dirichlet process (DP) <a class="bibtex reference internal" href="zbib/references.html#ferguson1973" id="id5">[2]</a><a class="bibtex reference internal" href="zbib/references.html#antoniak1974" id="id6">[1]</a>.
+variable under a Dirichlet process (DP) <a class="reference internal" href="zbib/references.html#ferguson1973" id="id5">[2]</a><a class="reference internal" href="zbib/references.html#antoniak1974" id="id6">[1]</a>.
 At its core, the Dirichlet process is simple; we assign
 elements (pairs of populations)
 to
 categories (divergence events)
 one at a time following a simple rule.
-When assigning the <img class="math" src="_images/math/19caad0fb60a1408dfd5adf1a8ad1dd1a560bb82.svg" alt="n^{th}"/> pair, we assign it to its own event (i.e., a
+When assigning the <img class="math" src="_images/math/9c110e9d5f3c624b667a9ab894849f492b6ea25e.svg" alt="n^{th}"/> pair, we assign it to its own event (i.e., a
 new divergence event with a unique time) with probability</p>
 <div class="math" id="equation-dppnewcat">
-<p><span class="eqno">(1)<a class="headerlink" href="#equation-dppnewcat" title="Permalink to this equation">¶</a></span><img src="_images/math/d06acb2ca9c0f9f7ed55e31d0c70f3bfa40ce909.svg" alt="\frac{\alpha}{\alpha + n -1}"/></p>
-</div><p>or we assign it to an existing event <img class="math" src="_images/math/6bcdbccd26b626541ace17d7914a06e16a2c4b6b.svg" alt="x"/> with probability</p>
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-dppnewcat" title="Permalink to this equation">¶</a></span><img src="_images/math/7fc1d0c91422aaa5218f8f5f91d662be5b554060.svg" alt="\frac{\alpha}{\alpha + n -1}"/></p>
+</div><p>or we assign it to an existing event <img class="math" src="_images/math/3668a2b993ea9ed76a11f511550632c1d8421220.svg" alt="x"/> with probability</p>
 <div class="math" id="equation-dppexistingcat">
-<p><span class="eqno">(2)<a class="headerlink" href="#equation-dppexistingcat" title="Permalink to this equation">¶</a></span><img src="_images/math/7d87c3ac83febf076969593ac1523edf742387a3.svg" alt="\frac{n_x}{\alpha + n -1}"/></p>
-</div><p>where <img class="math" src="_images/math/317d29b2cf7de429807412300c2d18367e3d1b5c.svg" alt="n_x"/> is the number of pairs already assigned to
-event <img class="math" src="_images/math/6bcdbccd26b626541ace17d7914a06e16a2c4b6b.svg" alt="x"/>.</p>
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-dppexistingcat" title="Permalink to this equation">¶</a></span><img src="_images/math/641cdf50fd44368a50acf69e30c1df0e6fe6d98d.svg" alt="\frac{n_x}{\alpha + n -1}"/></p>
+</div><p>where <img class="math" src="_images/math/88f575ed7c8a479f4f88fbddbe453eee51ce9819.svg" alt="n_x"/> is the number of pairs already assigned to
+event <img class="math" src="_images/math/3668a2b993ea9ed76a11f511550632c1d8421220.svg" alt="x"/>.</p>
 <p>For example, let’s apply this rule to our three pairs of lizard populations.
 First, we have to assign our first pair (“A”) to a
 divergence event with probability 1.0;
 let’s call this the “blue” divergence event.
 Next we assign the second pair (“B”) to either a new (“red”) divergence
-event with probability <img class="math" src="_images/math/6f288e7561a3ee8a7197a3805177ebcb93370354.svg" alt="\alpha/\alpha + 1"/> or to the same “blue”
-divergence event as the first pair with probability <img class="math" src="_images/math/77faa8d34c93d8b903e529635854058deec0a068.svg" alt="1/\alpha + 1"/>.
+event with probability <img class="math" src="_images/math/92c2c6216048e15a8e53e37f6e03d20ede09d7d5.svg" alt="\alpha/\alpha + 1"/> or to the same “blue”
+divergence event as the first pair with probability <img class="math" src="_images/math/b520a6e5268c2b1c8a884db58935f08722c03cb7.svg" alt="1/\alpha + 1"/>.
 For this example, let’s say it gets assigned to the “blue” event.
 Lastly, we assign the third pair (“C”) to either a new (“red”) divergence
-event with probability <img class="math" src="_images/math/8328fdaffa9210704cbb0c4e1f1d9702b3efbf48.svg" alt="\alpha/\alpha + 2"/> or to the same “blue”
-divergence event as the first two pairs with probability <img class="math" src="_images/math/293f9d979a376cecf712ef7b49af76fa334bacdb.svg" alt="2/\alpha +
+event with probability <img class="math" src="_images/math/0511566f63862cd60880b07e6830332d2adcf96f.svg" alt="\alpha/\alpha + 2"/> or to the same “blue”
+divergence event as the first two pairs with probability <img class="math" src="_images/math/056f7f3c3940ad2644daf172188cf63189383ecd.svg" alt="2/\alpha +
 2"/>.</p>
 <p>The animation below illustrates how the these simple rules determine the
 prior probability of all five possible models of divergence.
@@ -208,7 +212,7 @@ increases we place more probability on the divergence models with more
 independent divergence events (less shared divergences).</p>
 <div class="figure align-center" id="id12" style="width: 90%">
 <span id="dpp-tree"></span><a class="reference internal image-reference" href="_images/dpp-3-example.gif"><img alt="DPP example" src="_images/dpp-3-example.gif" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-text">An example of the Dirichlet process.</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">An example of the Dirichlet process.</span></p>
 </div>
 <p><a class="reference external" href="http://phyletica.org/dpp-demo/">Click here for a larger, interactive demonstration of the DP</a>.</p>
 <p>The DP gives us a way to quickly calculate the prior probability of any
@@ -216,7 +220,7 @@ divergence model given a value of the concentration parameter.
 You might notice that the order of the elements does not affect
 the probability.
 This property of the DP (exchangeability) allows us to use Gibbs sampling
-<a class="bibtex reference internal" href="zbib/references.html#neal2000" id="id7">[3]</a> to sample across divergence models.
+<a class="reference internal" href="zbib/references.html#neal2000" id="id7">[3]</a> to sample across divergence models.
 Also, the concentration parameter makes the DP flexible.
 We can adjust the concentration parameter to fit our prior expectations
 regarding the probabilities of the divergence models, and we can put a
@@ -226,25 +230,25 @@ about the prior probabilities of the divergence models.</p>
 <div class="section" id="pitman-yor-process-prior">
 <span id="pyp-prior-on-divergence-models"></span><h3>Pitman-Yor process prior<a class="headerlink" href="#pitman-yor-process-prior" title="Permalink to this headline">¶</a></h3>
 <p>One of the newly implemented ways of modeling shared divergences is
-the Pitman-Yor process (PYP) <a class="bibtex reference internal" href="zbib/references.html#pitmanyor1997" id="id8">[7]</a>.
+the Pitman-Yor process (PYP) <a class="reference internal" href="zbib/references.html#pitmanyor1997" id="id8">[7]</a>.
 The PYP is a generalization of the Dirichlet process.
 It adds an additional parameter called the “discount” parameter, which
-we will denote as <img class="math" src="_images/math/673e073306a398e8a392e20581aa8a60e7810020.svg" alt="d"/>.
-When <img class="math" src="_images/math/3a3b50335a14d626f781a6bdc039dc930202ce5f.svg" alt="d = 0"/> the PYP is equivalent to the DP.
+we will denote as <img class="math" src="_images/math/a6e88c9b4be2709267c7b9d75c6a722050ff7d4c.svg" alt="d"/>.
+When <img class="math" src="_images/math/bde548d54af43a2b4e94dff0235ec5afba7f98be.svg" alt="d = 0"/> the PYP is equivalent to the DP.
 The discount parameter give the PYP flexibility over the tail behavior of the
 process (the DP has exponential tails).</p>
 <p>The rule governing the PYP is very similar to the DP.
-When assigning the <img class="math" src="_images/math/19caad0fb60a1408dfd5adf1a8ad1dd1a560bb82.svg" alt="n^{th}"/> pair, we assign it to its own event (i.e., a
+When assigning the <img class="math" src="_images/math/9c110e9d5f3c624b667a9ab894849f492b6ea25e.svg" alt="n^{th}"/> pair, we assign it to its own event (i.e., a
 new divergence event with a unique time) with probability</p>
 <div class="math" id="equation-pypnewcat">
-<p><span class="eqno">(3)<a class="headerlink" href="#equation-pypnewcat" title="Permalink to this equation">¶</a></span><img src="_images/math/cbf62173ce432124ee5b05a9e9c8dde132088bb2.svg" alt="\frac{\alpha + k d}{\alpha + n -1}"/></p>
-</div><p>where <img class="math" src="_images/math/bd96eae6cc90c2ba13a92dd24d731bab363341ff.svg" alt="k"/> is the number of events that currently exist (i.e., that
+<p><span class="eqno">(3)<a class="headerlink" href="#equation-pypnewcat" title="Permalink to this equation">¶</a></span><img src="_images/math/8f6e87fb636d1daa5f6f8556bd49dd60aeebb730.svg" alt="\frac{\alpha + k d}{\alpha + n -1}"/></p>
+</div><p>where <img class="math" src="_images/math/7788b979544e556445c651c6e432f75d407933c0.svg" alt="k"/> is the number of events that currently exist (i.e., that
 already have a pair assigned to it).
-Or, we assign it to an existing event <img class="math" src="_images/math/6bcdbccd26b626541ace17d7914a06e16a2c4b6b.svg" alt="x"/> with probability</p>
+Or, we assign it to an existing event <img class="math" src="_images/math/3668a2b993ea9ed76a11f511550632c1d8421220.svg" alt="x"/> with probability</p>
 <div class="math" id="equation-pypexistingcat">
-<p><span class="eqno">(4)<a class="headerlink" href="#equation-pypexistingcat" title="Permalink to this equation">¶</a></span><img src="_images/math/b0fca7d766f168f20b629e649b777eeb2674ec08.svg" alt="\frac{n_x - d}{\alpha + n -1}"/></p>
-</div><p>where <img class="math" src="_images/math/317d29b2cf7de429807412300c2d18367e3d1b5c.svg" alt="n_x"/> is the number of pairs already assigned to
-event <img class="math" src="_images/math/6bcdbccd26b626541ace17d7914a06e16a2c4b6b.svg" alt="x"/>.</p>
+<p><span class="eqno">(4)<a class="headerlink" href="#equation-pypexistingcat" title="Permalink to this equation">¶</a></span><img src="_images/math/403c3ef80260cc51ffc3b252a97be4cc134db28e.svg" alt="\frac{n_x - d}{\alpha + n -1}"/></p>
+</div><p>where <img class="math" src="_images/math/88f575ed7c8a479f4f88fbddbe453eee51ce9819.svg" alt="n_x"/> is the number of pairs already assigned to
+event <img class="math" src="_images/math/3668a2b993ea9ed76a11f511550632c1d8421220.svg" alt="x"/>.</p>
 <p>The animation below illustrates how the these rules of the PYP determine the
 prior probability of all five possible models of divergence.
 Notice toward the end of the animation, as the discount parameter
@@ -253,7 +257,7 @@ independent divergence events (less shared divergences).
 Again, when the discount parameter is zero, the PYP is equivalent to the DP.</p>
 <div class="figure align-center" id="id13" style="width: 90%">
 <span id="pyp-tree"></span><a class="reference internal image-reference" href="_images/pyp-3-example.gif"><img alt="PYP example" src="_images/pyp-3-example.gif" style="width: 600px;" /></a>
-<p class="caption"><span class="caption-text">An example of the Pitman-Yor process.</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">An example of the Pitman-Yor process.</span></p>
 </div>
 <p><a class="reference external" href="http://phyletica.org/pyp-demo/">Click here for a larger, interactive demonstration of the PYP</a>.</p>
 <p>With an extra parameter, the PYP has greater flexibility than the DP.
@@ -271,161 +275,161 @@ sample across possible divergence models.</p>
 <p>We have also implemented a uniform prior over divergence models, where we
 assume <em>a priori</em> that every possible divergence model (every way of grouping
 the divergence times of the population pairs) is equally probable.
-Furthermore, we added a “split weight” parameter, which we denote as <img class="math" src="_images/math/3081a2df27528764f1da7dc133d82ad13b18e36d.svg" alt="s"/>,
+Furthermore, we added a “split weight” parameter, which we denote as <img class="math" src="_images/math/cecfc021eff90d9b4cc264c34124e7d98925f2be.svg" alt="s"/>,
 to provide some flexibility to this prior on divergence models.</p>
-<p>We can think of the split weight (<img class="math" src="_images/math/3081a2df27528764f1da7dc133d82ad13b18e36d.svg" alt="s"/>) in simple terms.
-For a given model with <img class="math" src="_images/math/bd96eae6cc90c2ba13a92dd24d731bab363341ff.svg" alt="k"/> divergence events (i.e., divergence time
+<p>We can think of the split weight (<img class="math" src="_images/math/cecfc021eff90d9b4cc264c34124e7d98925f2be.svg" alt="s"/>) in simple terms.
+For a given model with <img class="math" src="_images/math/7788b979544e556445c651c6e432f75d407933c0.svg" alt="k"/> divergence events (i.e., divergence time
 categories), the relative probability of each model with
-<img class="math" src="_images/math/10c6c92ede55cf4b2175ea16d93500322b020953.svg" alt="k + 1"/> events is <img class="math" src="_images/math/3081a2df27528764f1da7dc133d82ad13b18e36d.svg" alt="s"/>,
+<img class="math" src="_images/math/c733b8ce76bcea895f0a8541e9e7a87757674ef7.svg" alt="k + 1"/> events is <img class="math" src="_images/math/cecfc021eff90d9b4cc264c34124e7d98925f2be.svg" alt="s"/>,
 and the relative probability of each model with
-<img class="math" src="_images/math/8d06695cd3f1c9f56edda493972e81111e82434a.svg" alt="k - 1"/> events is <img class="math" src="_images/math/59d1e0c147ce9d53590121979bc949e9ca8cc004.svg" alt="\frac{1}{s}"/>.
+<img class="math" src="_images/math/50a68aff1aa81e420223648d1ab251bb09da8733.svg" alt="k - 1"/> events is <img class="math" src="_images/math/656dc31c5c4fdeca2bd7abf7a64afaf1d81fe972.svg" alt="\frac{1}{s}"/>.
 More generally, the relative probability of each model with
-<img class="math" src="_images/math/f23881a19f82184200a93b906abc6d49bdf3c767.svg" alt="k + n"/> events is <img class="math" src="_images/math/24469fccacb37b1ddf762c16e8d3e40b49f4a2a3.svg" alt="s^n"/>,
+<img class="math" src="_images/math/d6216e9c42b41824c5f607bc2feddc2f6daaaa4c.svg" alt="k + n"/> events is <img class="math" src="_images/math/57f6115ee3e259e8020be967c330c7c5c4c3e0b3.svg" alt="s^n"/>,
 and the relative probability of each model with
-<img class="math" src="_images/math/6d352d792a947499e1542787e486bfc83f548be1.svg" alt="k - n"/> events is <img class="math" src="_images/math/c1f2311e19b8d57fa7c74d9886c3eeb4a7ffc862.svg" alt="\frac{1}{s^n}"/>.</p>
+<img class="math" src="_images/math/5c69aad3c9a7beab169f2bad329cf2a5e33bb3ea.svg" alt="k - n"/> events is <img class="math" src="_images/math/64e4ec5d0296d8f413a8759c70aaafdbc347155f.svg" alt="\frac{1}{s^n}"/>.</p>
 <p>To get a feel for this “uniform” prior, in the following tables we will look at
 an example for 4 pairs of populations, with 3 different values for the split
 weight. First, some notation that is used in the tables:</p>
-<dl class="simple">
-<dt><img class="math" src="_images/math/ed96afb95312139373fc29bd9fcc3bc41b9d073e.svg" alt="N"/></dt><dd><p>The number of population pairs we are comparing.</p>
-</dd>
-<dt><img class="math" src="_images/math/bd96eae6cc90c2ba13a92dd24d731bab363341ff.svg" alt="k"/></dt><dd><p>The number of divergence events (i.e., divergence time categories).</p>
-</dd>
-<dt><img class="math" src="_images/math/27d86d43f14a81332ba24cf7c9033c903d23ea4e.svg" alt="S(N, k)"/></dt><dd><p>The number of models that have <img class="math" src="_images/math/bd96eae6cc90c2ba13a92dd24d731bab363341ff.svg" alt="k"/> categories (the Stirling number of
-the second kind).</p>
-</dd>
-<dt><img class="math" src="_images/math/de2661e21b799667efb62cc8fff3e458530066cc.svg" alt="s^{k-1}"/></dt><dd><p>The relative probability of each model with <img class="math" src="_images/math/bd96eae6cc90c2ba13a92dd24d731bab363341ff.svg" alt="k"/> events (we scale this
-relative probability to help make the tables readable).</p>
-</dd>
-<dt><img class="math" src="_images/math/8310bc64713452be00d23dbf9d520cd0ad7754a9.svg" alt="s^{k-1}S(N, k)"/></dt><dd><p>The relative probability of the entire class of divergence models with
-<img class="math" src="_images/math/bd96eae6cc90c2ba13a92dd24d731bab363341ff.svg" alt="k"/> events.</p>
-</dd>
-<dt><img class="math" src="_images/math/66ca0075490eacada5de6594b501001410f6b894.svg" alt="p(m_k)"/></dt><dd><p>The probability of <em>each</em> divergence model with <img class="math" src="_images/math/bd96eae6cc90c2ba13a92dd24d731bab363341ff.svg" alt="k"/> events.</p>
-</dd>
+<dl class="docutils">
+<dt><img class="math" src="_images/math/45a50c450987046693b9843bd7c439baddf50d84.svg" alt="N"/></dt>
+<dd>The number of population pairs we are comparing.</dd>
+<dt><img class="math" src="_images/math/7788b979544e556445c651c6e432f75d407933c0.svg" alt="k"/></dt>
+<dd>The number of divergence events (i.e., divergence time categories).</dd>
+<dt><img class="math" src="_images/math/f34a7a643b7e783dbf5328aec8f9a5d1df1916d7.svg" alt="S(N, k)"/></dt>
+<dd>The number of models that have <img class="math" src="_images/math/7788b979544e556445c651c6e432f75d407933c0.svg" alt="k"/> categories (the Stirling number of
+the second kind).</dd>
+<dt><img class="math" src="_images/math/142a550eeb8bd20d367a1acf43dce750ef3d6c79.svg" alt="s^{k-1}"/></dt>
+<dd>The relative probability of each model with <img class="math" src="_images/math/7788b979544e556445c651c6e432f75d407933c0.svg" alt="k"/> events (we scale this
+relative probability to help make the tables readable).</dd>
+<dt><img class="math" src="_images/math/9265ebed466000c53772877d466d7c6cf369beae.svg" alt="s^{k-1}S(N, k)"/></dt>
+<dd>The relative probability of the entire class of divergence models with
+<img class="math" src="_images/math/7788b979544e556445c651c6e432f75d407933c0.svg" alt="k"/> events.</dd>
+<dt><img class="math" src="_images/math/49bef7d5c708576f719c2d2e944b01e42f4bf3d3.svg" alt="p(m_k)"/></dt>
+<dd>The probability of <em>each</em> divergence model with <img class="math" src="_images/math/7788b979544e556445c651c6e432f75d407933c0.svg" alt="k"/> events.</dd>
 </dl>
-<p>Split weight <img class="math" src="_images/math/a3d6b1f73a5a3b88959852e7c5eb26d46ece4e60.svg" alt="s = 1.0"/>:</p>
-<table class="docutils align-default">
+<p>Split weight <img class="math" src="_images/math/4803d9bd8e5c8f22a0d0bfb1947468893cbc94fd.svg" alt="s = 1.0"/>:</p>
+<table border="1" class="docutils">
 <colgroup>
-<col style="width: 11%" />
-<col style="width: 18%" />
-<col style="width: 19%" />
-<col style="width: 27%" />
-<col style="width: 25%" />
+<col width="11%" />
+<col width="18%" />
+<col width="19%" />
+<col width="27%" />
+<col width="25%" />
 </colgroup>
-<tbody>
-<tr class="row-odd"><td><p><img class="math" src="_images/math/bd96eae6cc90c2ba13a92dd24d731bab363341ff.svg" alt="k"/></p></td>
-<td><p><img class="math" src="_images/math/75adccee39da671f841846a1248b0d971dacf4d5.svg" alt="S(N,k)"/></p></td>
-<td><p><img class="math" src="_images/math/de2661e21b799667efb62cc8fff3e458530066cc.svg" alt="s^{k-1}"/></p></td>
-<td><p><img class="math" src="_images/math/592652a89bc1d001c6c15b374ed565a40d18c5c2.svg" alt="s^{k-1}S(N,k)"/></p></td>
-<td><p><img class="math" src="_images/math/66ca0075490eacada5de6594b501001410f6b894.svg" alt="p(m_k)"/></p></td>
+<tbody valign="top">
+<tr class="row-odd"><td><img class="math" src="_images/math/7788b979544e556445c651c6e432f75d407933c0.svg" alt="k"/></td>
+<td><img class="math" src="_images/math/1ed6e3f3233aabcac6d7df8076683b2c1696b641.svg" alt="S(N,k)"/></td>
+<td><img class="math" src="_images/math/142a550eeb8bd20d367a1acf43dce750ef3d6c79.svg" alt="s^{k-1}"/></td>
+<td><img class="math" src="_images/math/075d87580bec47130f7e765d271f37f73c0a41d8.svg" alt="s^{k-1}S(N,k)"/></td>
+<td><img class="math" src="_images/math/49bef7d5c708576f719c2d2e944b01e42f4bf3d3.svg" alt="p(m_k)"/></td>
 </tr>
-<tr class="row-even"><td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p><img class="math" src="_images/math/e598cc3b75b6984c6a8bffa03fff0fb0757f7ce7.svg" alt="\frac{1}{15}"/></p></td>
+<tr class="row-even"><td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td><img class="math" src="_images/math/2d17ada08109c282c4fd4652c5818fa1881e447d.svg" alt="\frac{1}{15}"/></td>
 </tr>
-<tr class="row-odd"><td><p>2</p></td>
-<td><p>7</p></td>
-<td><p>1</p></td>
-<td><p>7</p></td>
-<td><p><img class="math" src="_images/math/e598cc3b75b6984c6a8bffa03fff0fb0757f7ce7.svg" alt="\frac{1}{15}"/></p></td>
+<tr class="row-odd"><td>2</td>
+<td>7</td>
+<td>1</td>
+<td>7</td>
+<td><img class="math" src="_images/math/2d17ada08109c282c4fd4652c5818fa1881e447d.svg" alt="\frac{1}{15}"/></td>
 </tr>
-<tr class="row-even"><td><p>3</p></td>
-<td><p>6</p></td>
-<td><p>1</p></td>
-<td><p>6</p></td>
-<td><p><img class="math" src="_images/math/e598cc3b75b6984c6a8bffa03fff0fb0757f7ce7.svg" alt="\frac{1}{15}"/></p></td>
+<tr class="row-even"><td>3</td>
+<td>6</td>
+<td>1</td>
+<td>6</td>
+<td><img class="math" src="_images/math/2d17ada08109c282c4fd4652c5818fa1881e447d.svg" alt="\frac{1}{15}"/></td>
 </tr>
-<tr class="row-odd"><td><p>4</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p><img class="math" src="_images/math/e598cc3b75b6984c6a8bffa03fff0fb0757f7ce7.svg" alt="\frac{1}{15}"/></p></td>
+<tr class="row-odd"><td>4</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td><img class="math" src="_images/math/2d17ada08109c282c4fd4652c5818fa1881e447d.svg" alt="\frac{1}{15}"/></td>
 </tr>
 </tbody>
 </table>
-<p>Split weight <img class="math" src="_images/math/919ab0ee4d5682442f22117c1a31fe6eef57ffd1.svg" alt="s = 2.0"/>:</p>
-<table class="docutils align-default">
+<p>Split weight <img class="math" src="_images/math/01df6c87e12ae3e8430443b4a4984f972505c7f1.svg" alt="s = 2.0"/>:</p>
+<table border="1" class="docutils">
 <colgroup>
-<col style="width: 11%" />
-<col style="width: 18%" />
-<col style="width: 19%" />
-<col style="width: 27%" />
-<col style="width: 25%" />
+<col width="11%" />
+<col width="18%" />
+<col width="19%" />
+<col width="27%" />
+<col width="25%" />
 </colgroup>
-<tbody>
-<tr class="row-odd"><td><p><img class="math" src="_images/math/bd96eae6cc90c2ba13a92dd24d731bab363341ff.svg" alt="k"/></p></td>
-<td><p><img class="math" src="_images/math/75adccee39da671f841846a1248b0d971dacf4d5.svg" alt="S(N,k)"/></p></td>
-<td><p><img class="math" src="_images/math/de2661e21b799667efb62cc8fff3e458530066cc.svg" alt="s^{k-1}"/></p></td>
-<td><p><img class="math" src="_images/math/592652a89bc1d001c6c15b374ed565a40d18c5c2.svg" alt="s^{k-1}S(N,k)"/></p></td>
-<td><p><img class="math" src="_images/math/66ca0075490eacada5de6594b501001410f6b894.svg" alt="p(m_k)"/></p></td>
+<tbody valign="top">
+<tr class="row-odd"><td><img class="math" src="_images/math/7788b979544e556445c651c6e432f75d407933c0.svg" alt="k"/></td>
+<td><img class="math" src="_images/math/1ed6e3f3233aabcac6d7df8076683b2c1696b641.svg" alt="S(N,k)"/></td>
+<td><img class="math" src="_images/math/142a550eeb8bd20d367a1acf43dce750ef3d6c79.svg" alt="s^{k-1}"/></td>
+<td><img class="math" src="_images/math/075d87580bec47130f7e765d271f37f73c0a41d8.svg" alt="s^{k-1}S(N,k)"/></td>
+<td><img class="math" src="_images/math/49bef7d5c708576f719c2d2e944b01e42f4bf3d3.svg" alt="p(m_k)"/></td>
 </tr>
-<tr class="row-even"><td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p><img class="math" src="_images/math/96949a5de4f781008b55f0323cc442aa81ee87cf.svg" alt="\frac{1}{47}"/></p></td>
+<tr class="row-even"><td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td><img class="math" src="_images/math/ad2d1262aa14e41eefd69a95013944bb9a0bde78.svg" alt="\frac{1}{47}"/></td>
 </tr>
-<tr class="row-odd"><td><p>2</p></td>
-<td><p>7</p></td>
-<td><p>2</p></td>
-<td><p>14</p></td>
-<td><p><img class="math" src="_images/math/cb1460032c7a51684b175bb56b4f539f955fa036.svg" alt="\frac{2}{47}"/></p></td>
+<tr class="row-odd"><td>2</td>
+<td>7</td>
+<td>2</td>
+<td>14</td>
+<td><img class="math" src="_images/math/f9c0a56b887a14bbfc4ffdd5bf01fc1c1164217c.svg" alt="\frac{2}{47}"/></td>
 </tr>
-<tr class="row-even"><td><p>3</p></td>
-<td><p>6</p></td>
-<td><p>4</p></td>
-<td><p>24</p></td>
-<td><p><img class="math" src="_images/math/1108f63cf892a5d87bce8d694236c508e87f47ab.svg" alt="\frac{4}{47}"/></p></td>
+<tr class="row-even"><td>3</td>
+<td>6</td>
+<td>4</td>
+<td>24</td>
+<td><img class="math" src="_images/math/c6243ce9104ba781cf37238a2ef275391c50be66.svg" alt="\frac{4}{47}"/></td>
 </tr>
-<tr class="row-odd"><td><p>4</p></td>
-<td><p>1</p></td>
-<td><p>8</p></td>
-<td><p>8</p></td>
-<td><p><img class="math" src="_images/math/5eec4137417e29ff13bb962d10c949c907793b3d.svg" alt="\frac{8}{47}"/></p></td>
+<tr class="row-odd"><td>4</td>
+<td>1</td>
+<td>8</td>
+<td>8</td>
+<td><img class="math" src="_images/math/ad2218de13ffc982f1ea9973335356a285fda86e.svg" alt="\frac{8}{47}"/></td>
 </tr>
 </tbody>
 </table>
-<p>Split weight <img class="math" src="_images/math/a86a601a867c7f36d3dd52323b12051fe57cafea.svg" alt="s = \frac{1}{2}"/>:</p>
-<table class="docutils align-default">
+<p>Split weight <img class="math" src="_images/math/a4bfc3333e1b4ba427264eb76eaed9f73f79b70d.svg" alt="s = \frac{1}{2}"/>:</p>
+<table border="1" class="docutils">
 <colgroup>
-<col style="width: 11%" />
-<col style="width: 18%" />
-<col style="width: 19%" />
-<col style="width: 27%" />
-<col style="width: 25%" />
+<col width="11%" />
+<col width="18%" />
+<col width="19%" />
+<col width="27%" />
+<col width="25%" />
 </colgroup>
-<tbody>
-<tr class="row-odd"><td><p><img class="math" src="_images/math/bd96eae6cc90c2ba13a92dd24d731bab363341ff.svg" alt="k"/></p></td>
-<td><p><img class="math" src="_images/math/75adccee39da671f841846a1248b0d971dacf4d5.svg" alt="S(N,k)"/></p></td>
-<td><p><img class="math" src="_images/math/de2661e21b799667efb62cc8fff3e458530066cc.svg" alt="s^{k-1}"/></p></td>
-<td><p><img class="math" src="_images/math/592652a89bc1d001c6c15b374ed565a40d18c5c2.svg" alt="s^{k-1}S(N,k)"/></p></td>
-<td><p><img class="math" src="_images/math/66ca0075490eacada5de6594b501001410f6b894.svg" alt="p(m_k)"/></p></td>
+<tbody valign="top">
+<tr class="row-odd"><td><img class="math" src="_images/math/7788b979544e556445c651c6e432f75d407933c0.svg" alt="k"/></td>
+<td><img class="math" src="_images/math/1ed6e3f3233aabcac6d7df8076683b2c1696b641.svg" alt="S(N,k)"/></td>
+<td><img class="math" src="_images/math/142a550eeb8bd20d367a1acf43dce750ef3d6c79.svg" alt="s^{k-1}"/></td>
+<td><img class="math" src="_images/math/075d87580bec47130f7e765d271f37f73c0a41d8.svg" alt="s^{k-1}S(N,k)"/></td>
+<td><img class="math" src="_images/math/49bef7d5c708576f719c2d2e944b01e42f4bf3d3.svg" alt="p(m_k)"/></td>
 </tr>
-<tr class="row-even"><td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>8</p></td>
-<td><p>8</p></td>
-<td><p><img class="math" src="_images/math/2168c43533a76d8a412d039f6c05b86fd6f5c8cc.svg" alt="\frac{8}{49}"/></p></td>
+<tr class="row-even"><td>1</td>
+<td>1</td>
+<td>8</td>
+<td>8</td>
+<td><img class="math" src="_images/math/f6b95af9ba06e35871d2d4c251b6781dd09071a2.svg" alt="\frac{8}{49}"/></td>
 </tr>
-<tr class="row-odd"><td><p>2</p></td>
-<td><p>7</p></td>
-<td><p>4</p></td>
-<td><p>28</p></td>
-<td><p><img class="math" src="_images/math/24c8d04a77b37d6ca05fde827f79d961a5e62678.svg" alt="\frac{4}{49}"/></p></td>
+<tr class="row-odd"><td>2</td>
+<td>7</td>
+<td>4</td>
+<td>28</td>
+<td><img class="math" src="_images/math/f84df68e71d2a351af35ea84f4e65a8558f44e38.svg" alt="\frac{4}{49}"/></td>
 </tr>
-<tr class="row-even"><td><p>3</p></td>
-<td><p>6</p></td>
-<td><p>2</p></td>
-<td><p>12</p></td>
-<td><p><img class="math" src="_images/math/e2ad0d6f92650d64f87838c329d99db87649ddc4.svg" alt="\frac{2}{49}"/></p></td>
+<tr class="row-even"><td>3</td>
+<td>6</td>
+<td>2</td>
+<td>12</td>
+<td><img class="math" src="_images/math/796df07a14604e1a96c28c596b54fdb2236fc0e7.svg" alt="\frac{2}{49}"/></td>
 </tr>
-<tr class="row-odd"><td><p>4</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p>1</p></td>
-<td><p><img class="math" src="_images/math/da9834bdc97943bdd204161ec00d258a4c453a82.svg" alt="\frac{1}{49}"/></p></td>
+<tr class="row-odd"><td>4</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td><img class="math" src="_images/math/9a4c67200472ae9cbf8bc50a9e8c4763b3dec8bc.svg" alt="\frac{1}{49}"/></td>
 </tr>
 </tbody>
 </table>
