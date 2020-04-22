@@ -165,4 +165,4 @@ we downloaded and extracted::
 Lastly, run the following command to configure ``git-lfs`` for your Hopper
 account::
 
-    git lfs install
+    git lfs install --skip-smudge
