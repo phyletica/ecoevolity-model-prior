@@ -16,6 +16,11 @@ or, if you have SSH-tunnelling setup::
 
     ssh hopper
 
+To avoid library conflicts, let's deactivate ``conda`` before we build
+``git``::
+
+    conda deactivate
+
 *On hopper*, download an archive of the |git|_ source code::
 
     wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.26.2.tar.gz
