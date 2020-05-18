@@ -1849,7 +1849,7 @@ def main_cli(argv = sys.argv):
             result_paths = [
                     os.path.join(
                         bd,
-                        analysis_cfg + "-results.tsv"
+                        analysis_cfg + "-results.tsv.gz"
                         ) for bd in batch_dirs
                     ]
             results[sim_cfg][analysis_cfg] = parse_results(result_paths)
@@ -1858,7 +1858,7 @@ def main_cli(argv = sys.argv):
             var_only_result_paths = [
                     os.path.join(
                         bd,
-                        var_only_analysis_cfg + "-results.tsv"
+                        var_only_analysis_cfg + "-results.tsv.gz"
                         ) for bd in batch_dirs
                     ]
             var_only_results[sim_cfg][analysis_cfg] = parse_results(
