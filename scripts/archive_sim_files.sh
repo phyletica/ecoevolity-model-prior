@@ -15,6 +15,10 @@ usage () {
 
 if [ -n "$PBS_JOBNAME" ]
 then
+    if [ -f "${PBS_O_HOME}/.bashrc" ]
+    then
+        source "${PBS_O_HOME}/.bashrc"
+    fi
     cd $PBS_O_WORKDIR
 fi
 
