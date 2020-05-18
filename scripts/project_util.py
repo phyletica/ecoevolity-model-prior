@@ -56,9 +56,9 @@ set -e
 
 if [ -n "$PBS_JOBNAME" ]
 then
-    if [ -f "${PBS_O_HOME}/.bashrc" ]
+    if [ -f "${{PBS_O_HOME}}/.bashrc" ]
     then
-        source "${PBS_O_HOME}/.bashrc"
+        source "${{PBS_O_HOME}}/.bashrc"
     fi
 fi
 
