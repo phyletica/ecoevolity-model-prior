@@ -54,6 +54,14 @@ def get_pbs_header(pbs_script_path,
 
 set -e
 
+if [ -n "$PBS_JOBNAME" ]
+then
+    if [ -f "${PBS_O_HOME}/.bashrc" ]
+    then
+        source "${PBS_O_HOME}/.bashrc"
+    fi
+fi
+
 cd {script_dir}
 
 project_dir="{rel_project_dir}"
