@@ -87,13 +87,13 @@ do
     # Use sumcoevolity to compare model prior expectations to samples 
     sum_output_prefix="${output_dir}/"
     $sum_exe_path --seed="$rng_seed" -p "$sum_output_prefix" -b 101 -c "$cfg_path" -n 1000000 "$state_log_path"
-    # if [ -n "$(command -v pyco-sumevents)" ]
-    # then
-    #     (
-    #         cd "$output_dir"
-    #         pyco-sumevents -f "sumcoevolity-results-nevents.txt"
-    #     )
-    # fi
+    if [ -n "$(command -v pyco-sumevents)" ]
+    then
+        (
+            cd "$output_dir"
+            pyco-sumevents -f "sumcoevolity-results-nevents.txt"
+        )
+    fi
 
     # Use custom plotting script to compare prior expectations to samples for
     # all other parameters
