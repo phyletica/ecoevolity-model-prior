@@ -1284,6 +1284,9 @@ def generate_model_plot_grid(
         y_label_size = 18.0,
         y_label = None,
         number_font_size = 12.0,
+        force_shared_spines = True,
+        plot_as_histogram = False,
+        histogram_correct_values = [],
         plot_file_prefix = None,
         plot_dir = project_util.PLOT_DIR
         ):
@@ -1305,9 +1308,14 @@ def generate_model_plot_grid(
     fig_width = (ncols * w)
     fig_height = (nrows * h)
     fig = plt.figure(figsize = (fig_width, fig_height))
-    gs = gridspec.GridSpec(nrows, ncols,
-            wspace = 0.0,
-            hspace = 0.0)
+    if force_shared_spines:
+        gs = gridspec.GridSpec(nrows, ncols,
+                wspace = 0.0,
+                hspace = 0.0)
+    else:
+        gs = gridspec.GridSpec(nrows, ncols,
+                wspace = 0.0,
+                hspace = 0.37)
 
     for row_index, results_grid_row in enumerate(results_grid):
         for column_index, results in enumerate(results_grid_row):
@@ -1357,59 +1365,147 @@ def generate_model_plot_grid(
             # _LOG.info("p(model within CS) = {0:.4f}".format(p_model_within_95_cred))
             ax = plt.subplot(gs[row_index, column_index])
 
-            ax.imshow(true_map_nevents,
-                    origin = 'lower',
-                    cmap = cmap,
-                    interpolation = 'none',
-                    aspect = 'auto'
-                    # extent = [0.5, 3.5, 0.5, 3.5]
-                    )
-            for i, row_list in enumerate(true_map_nevents):
-                for j, num_events in enumerate(row_list):
-                    ax.text(j, i,
-                            str(num_events),
-                            horizontalalignment = "center",
-                            verticalalignment = "center",
-                            size = number_font_size)
-            ax.text(0.98, 0.02,
-                    "\\scriptsize$p(k \\in \\textrm{{\\sffamily CS}}) = {0:.3f}$".format(
-                            p_nevents_within_95_cred),
-                    horizontalalignment = "right",
-                    verticalalignment = "bottom",
-                    transform = ax.transAxes,
-                    zorder = 300,
-                    bbox = {
-                        'facecolor': 'white',
-                        'edgecolor': 'white',
-                        'pad': 2}
-                    )
-            ax.text(0.02, 0.98,
-                    "\\scriptsize$p(\\hat{{k}} = k) = {0:.3f}$".format(
-                            p_correct),
-                    horizontalalignment = "left",
-                    verticalalignment = "top",
-                    transform = ax.transAxes,
-                    zorder = 300,
-                    bbox = {
-                        'facecolor': 'white',
-                        'edgecolor': 'white',
-                        'pad': 2}
-                    )
-            ax.text(0.98, 0.98,
-                    "\\scriptsize$\\widetilde{{p(k|\\mathbf{{D}})}} = {0:.3f}$".format(
-                            median_true_nevents_prob),
-                    horizontalalignment = "right",
-                    verticalalignment = "top",
-                    transform = ax.transAxes,
-                    zorder = 300,
-                    bbox = {
-                        'facecolor': 'white',
-                        'edgecolor': 'white',
-                        'pad': 2}
-                    )
+            if plot_as_histogram:
+                total_nevent_estimates = len(map_nevents)
+                nevents_indices = [float(x) for x in range(number_of_comparisons)]
+                nevents_counts = [0 for x in nevents_indices]
+                for k in map_nevents:
+                    nevents_counts[k - 1] += 1
+                nevents_freqs = [
+                        (x / float(total_nevent_estimates)) for x in nevents_counts
+                        ]
+                assert len(nevents_indices) == len(nevents_freqs)
+                bar_width = 0.9
+                bar_color = "0.5"
+                bars_posterior = ax.bar(
+                        nevents_indices,
+                        nevents_freqs,
+                        bar_width,
+                        color = bar_color,
+                        label = "MAP")
+                x_tick_labels = [str(i + 1) for i in range(number_of_comparisons)]
+                plt.xticks(
+                        nevents_indices,
+                        x_tick_labels
+                        )
+                if histogram_correct_values:
+                    correct_val = histogram_correct_values[row_index][column_index]
+                    correct_line, = ax.plot(
+                            [correct_val - 1, correct_val - 1],
+                            [0.0, 1.0])
+                    plt.setp(correct_line,
+                            color = '0.7',
+                            linestyle = '--',
+                            linewidth = 1.0,
+                            marker = '',
+                            zorder = 200)
+            else:
+                ax.imshow(true_map_nevents,
+                        origin = 'lower',
+                        cmap = cmap,
+                        interpolation = 'none',
+                        aspect = 'auto'
+                        # extent = [0.5, 3.5, 0.5, 3.5]
+                        )
+                for i, row_list in enumerate(true_map_nevents):
+                    for j, num_events in enumerate(row_list):
+                        ax.text(j, i,
+                                str(num_events),
+                                horizontalalignment = "center",
+                                verticalalignment = "center",
+                                size = number_font_size)
+
+            upper_text_y = 1.02
+            lower_text_y = 1.11
+            upper_text_valign = "bottom"
+            lower_text_valign = "bottom"
+            if force_shared_spines:
+                upper_text_y = 0.98
+                lower_text_y = 0.02
+                upper_text_valign = "top"
+                lower_text_valign = "bottom"
+
+            if force_shared_spines:
+                ax.text(0.98, lower_text_y,
+                        "\\scriptsize$p(k \\in \\textrm{{\\sffamily CS}}) = {0:.3f}$".format(
+                                p_nevents_within_95_cred),
+                        horizontalalignment = "right",
+                        verticalalignment = lower_text_valign,
+                        transform = ax.transAxes,
+                        zorder = 300,
+                        bbox = {
+                            'facecolor': 'white',
+                            'edgecolor': 'white',
+                            'pad': 2}
+                        )
+                ax.text(0.02, upper_text_y,
+                        "\\scriptsize$p(\\hat{{k}} = k) = {0:.3f}$".format(
+                                p_correct),
+                        horizontalalignment = "left",
+                        verticalalignment = upper_text_valign,
+                        transform = ax.transAxes,
+                        zorder = 300,
+                        bbox = {
+                            'facecolor': 'white',
+                            'edgecolor': 'white',
+                            'pad': 2}
+                        )
+                ax.text(0.98, upper_text_y,
+                        "\\scriptsize$\\widetilde{{p(k|\\mathbf{{D}})}} = {0:.3f}$".format(
+                                median_true_nevents_prob),
+                        horizontalalignment = "right",
+                        verticalalignment = upper_text_valign,
+                        transform = ax.transAxes,
+                        zorder = 300,
+                        bbox = {
+                            'facecolor': 'white',
+                            'edgecolor': 'white',
+                            'pad': 2}
+                        )
+            else:
+                ax.text(0.02, lower_text_y,
+                        "\\scriptsize$p(k \\in \\textrm{{\\sffamily CS}}) = {0:.3f}$".format(
+                                p_nevents_within_95_cred),
+                        horizontalalignment = "left",
+                        verticalalignment = lower_text_valign,
+                        transform = ax.transAxes,
+                        zorder = 300,
+                        # bbox = {
+                        #     'facecolor': 'white',
+                        #     'edgecolor': 'white',
+                        #     'pad': 0}
+                        )
+                ax.text(0.02, upper_text_y,
+                        "\\scriptsize$p(\\hat{{k}} = k) = {0:.3f}$".format(
+                                p_correct),
+                        horizontalalignment = "left",
+                        verticalalignment = upper_text_valign,
+                        transform = ax.transAxes,
+                        zorder = 300,
+                        # bbox = {
+                        #     'facecolor': 'white',
+                        #     'edgecolor': 'white',
+                        #     'pad': 0}
+                        )
+                ax.text(0.98, upper_text_y,
+                        "\\scriptsize$\\widetilde{{p(k|\\mathbf{{D}})}} = {0:.3f}$".format(
+                                median_true_nevents_prob),
+                        horizontalalignment = "right",
+                        verticalalignment = upper_text_valign,
+                        transform = ax.transAxes,
+                        zorder = 300,
+                        # bbox = {
+                        #     'facecolor': 'white',
+                        #     'edgecolor': 'white',
+                        #     'pad': 0}
+                        )
+
+            col_text_y = 1.2
+            if force_shared_spines:
+                col_text_y = 1.015
             if column_labels and (row_index == 0):
                 col_header = column_labels[column_index]
-                ax.text(0.5, 1.015,
+                ax.text(0.5, col_text_y,
                         col_header,
                         horizontalalignment = "center",
                         verticalalignment = "bottom",
@@ -1423,59 +1519,119 @@ def generate_model_plot_grid(
                         rotation = 270.0,
                         transform = ax.transAxes)
 
-    # show only the outside ticks
     all_axes = fig.get_axes()
-    for ax in all_axes:
-        if not ax.is_last_row():
-            ax.set_xticks([])
-        if not ax.is_first_col():
-            ax.set_yticks([])
+    if plot_as_histogram:
+        for ax in all_axes:
+            ax.set_ylim(0.0, 1.0)
+            # Make sure ticks correspond only with number of events
+            # ax.xaxis.set_ticks(range(number_of_comparisons))
+            # xtick_labels = [item for item in ax.get_xticklabels()]
+            # for i in range(len(xtick_labels)):
+            #     xtick_labels[i].set_text(str(i + 1))
+            # ax.set_xticklabels(xtick_labels)
 
-    # show tick labels only for lower-left plot 
-    all_axes = fig.get_axes()
-    for ax in all_axes:
-        # Make sure ticks correspond only with number of events
-        ax.xaxis.set_ticks(range(number_of_comparisons))
-        ax.yaxis.set_ticks(range(number_of_comparisons))
-        if ax.is_last_row() and ax.is_first_col():
-            xtick_labels = [item for item in ax.get_xticklabels()]
-            for i in range(len(xtick_labels)):
-                xtick_labels[i].set_text(str(i + 1))
-            ytick_labels = [item for item in ax.get_yticklabels()]
-            for i in range(len(ytick_labels)):
-                ytick_labels[i].set_text(str(i + 1))
-            ax.set_xticklabels(xtick_labels)
-            ax.set_yticklabels(ytick_labels)
-        else:
-            xtick_labels = ["" for item in ax.get_xticklabels()]
-            ytick_labels = ["" for item in ax.get_yticklabels()]
-            ax.set_xticklabels(xtick_labels)
-            ax.set_yticklabels(ytick_labels)
+    if force_shared_spines:
+        # show only the outside ticks
+        for ax in all_axes:
+            if not ax.is_last_row():
+                ax.set_xticks([])
+            if not ax.is_first_col():
+                ax.set_yticks([])
 
-    # avoid doubled spines
-    all_axes = fig.get_axes()
-    for ax in all_axes:
-        for sp in ax.spines.values():
-            sp.set_visible(False)
-            sp.set_linewidth(2)
-        if ax.is_first_row():
+        # show tick labels only for lower-left plot 
+        for ax in all_axes:
+            # Make sure ticks correspond only with number of events
+            if not plot_as_histogram:
+                ax.xaxis.set_ticks(range(number_of_comparisons))
+                ax.yaxis.set_ticks(range(number_of_comparisons))
+            if ax.is_last_row() and ax.is_first_col():
+                if not plot_as_histogram:
+                    xtick_labels = [item for item in ax.get_xticklabels()]
+                    for i in range(len(xtick_labels)):
+                        xtick_labels[i].set_text(str(i + 1))
+                    ax.set_xticklabels(xtick_labels)
+                    ytick_labels = [item for item in ax.get_yticklabels()]
+                    for i in range(len(ytick_labels)):
+                        ytick_labels[i].set_text(str(i + 1))
+                    ax.set_yticklabels(ytick_labels)
+            else:
+                xtick_labels = ["" for item in ax.get_xticklabels()]
+                ytick_labels = ["" for item in ax.get_yticklabels()]
+                ax.set_xticklabels(xtick_labels)
+                ax.set_yticklabels(ytick_labels)
+
+        # avoid doubled spines
+        for ax in all_axes:
+            for sp in ax.spines.values():
+                sp.set_visible(False)
+                sp.set_linewidth(1.2)
+            if ax.is_first_row():
+                ax.spines['top'].set_visible(True)
+                ax.spines['bottom'].set_visible(True)
+            else:
+                ax.spines['bottom'].set_visible(True)
+            if ax.is_first_col():
+                ax.spines['left'].set_visible(True)
+                ax.spines['right'].set_visible(True)
+            else:
+                ax.spines['right'].set_visible(True)
+    else:
+        # show tick labels only for left plots
+        for ax in all_axes:
+            # Make sure ticks correspond only with number of events
+            if not plot_as_histogram:
+                ax.xaxis.set_ticks(range(number_of_comparisons))
+                ax.yaxis.set_ticks(range(number_of_comparisons))
+                xtick_labels = [item for item in ax.get_xticklabels()]
+                for i in range(len(xtick_labels)):
+                    xtick_labels[i].set_text(str(i + 1))
+                ax.set_xticklabels(xtick_labels)
+            if ax.is_first_col():
+                if not plot_as_histogram:
+                    ytick_labels = [item for item in ax.get_yticklabels()]
+                    for i in range(len(ytick_labels)):
+                        ytick_labels[i].set_text(str(i + 1))
+                    ax.set_yticklabels(ytick_labels)
+            else:
+                ytick_labels = ["" for item in ax.get_yticklabels()]
+                ax.set_yticklabels(ytick_labels)
+
+        # show only the outside ticks
+        for ax in all_axes:
+            if not ax.is_first_col():
+                ax.set_yticks([])
+
+        # avoid doubled spines
+        for ax in all_axes:
+            for sp in ax.spines.values():
+                sp.set_visible(False)
+                sp.set_linewidth(1.2)
             ax.spines['top'].set_visible(True)
             ax.spines['bottom'].set_visible(True)
-        else:
-            ax.spines['bottom'].set_visible(True)
-        if ax.is_first_col():
-            ax.spines['left'].set_visible(True)
-            ax.spines['right'].set_visible(True)
-        else:
-            ax.spines['right'].set_visible(True)
+            if ax.is_first_col():
+                ax.spines['left'].set_visible(True)
+                ax.spines['right'].set_visible(True)
+            else:
+                ax.spines['right'].set_visible(True)
 
-    fig.text(0.5, 0.001,
-            "True number of events ($k$)",
-            horizontalalignment = "center",
-            verticalalignment = "bottom",
-            size = 18.0)
+
+    if plot_as_histogram:
+        fig.text(0.5, 0.001,
+                "Estimated number of events ($\\hat{{k}}$)",
+                horizontalalignment = "center",
+                verticalalignment = "bottom",
+                size = 18.0)
+    else:
+        fig.text(0.5, 0.001,
+                "True number of events ($k$)",
+                horizontalalignment = "center",
+                verticalalignment = "bottom",
+                size = 18.0)
     if y_label is None:
-        y_label = "Estimated number of events ($\\hat{{k}}$)"
+        if plot_as_histogram:
+            y_label = "Frequency"
+        else:
+            y_label = "Estimated number of events ($\\hat{{k}}$)"
     fig.text(0.005, 0.5,
             y_label,
             horizontalalignment = "left",
@@ -1829,13 +1985,24 @@ def main_cli(argv = sys.argv):
             "pairs-10-pyp-conc-2_0-1_79-disc-1_0-4_0-time-1_0-0_05"     : "PYP",
             "pairs-10-unif-sw-0_55-7_32-time-1_0-0_05"                  : "Uniform",
             }
+    cfg_to_correct_nevents = {
+            "fixed-pairs-10-independent-time-1_0-0_05"                  : 10,
+            "fixed-pairs-10-simultaneous-time-1_0-0_05"                 : 1,
+            }
     
     cfg_grid = tuple(
             tuple((row, col) for col in analysis_config_names 
                 ) for row in sim_config_names)
+    analysis_cfg_grid = tuple(
+            tuple((row, col) for col in analysis_config_names 
+                ) for row in analysis_config_names)
+    fixed_cfg_grid = tuple(
+            tuple((row, col) for col in analysis_config_names 
+                ) for row in sim_config_names[0:2])
     
     column_labels = tuple(cfg_to_label[c] for c in analysis_config_names)
     row_labels = tuple(cfg_to_label[c] for c in sim_config_names)
+    fixed_row_labels = tuple(cfg_to_label[c] for c in sim_config_names[0:2])
 
     header = None
     results = {}
@@ -1867,6 +2034,16 @@ def main_cli(argv = sys.argv):
     results_grid = get_data_grid(results, cfg_grid)
     var_only_results_grid = get_data_grid(var_only_results, cfg_grid)
 
+    analysis_results_grid = get_data_grid(results, analysis_cfg_grid)
+    var_only_analysis_results_grid = get_data_grid(var_only_results, analysis_cfg_grid)
+
+    fixed_results_grid = get_data_grid(results, fixed_cfg_grid)
+    var_only_fixed_results_grid = get_data_grid(var_only_results, fixed_cfg_grid)
+    fixed_correct_nevents_grid = []
+    for row in fixed_cfg_grid:
+        r = [cfg_to_correct_nevents[cell[0]] for cell in row]
+        fixed_correct_nevents_grid.append(r)
+
     height_parameters = tuple(
             h[5:] for h in header if h.startswith("mean_root_height_c")
     )
@@ -1877,16 +2054,7 @@ def main_cli(argv = sys.argv):
             h[5:] for h in header if h.startswith("mean_pop_size_c")
     )
 
-
     parameters_to_plot = {
-            "concentration": {
-                    "headers": ["concentration"],
-                    "label": "concentration",
-                    "short_label": "concentration",
-                    "symbol": "\\alpha",
-                    "xy_limits": None,
-                    "pad_left": pad_left,
-            },
             "div-time": {
                     "headers": height_parameters,
                     "label": "divergence time",
@@ -1996,37 +2164,130 @@ def main_cli(argv = sys.argv):
                 include_error_bars = True,
                 plot_dir = project_util.PLOT_DIR)
 
+    # Generate concentration/split weight plots
+    for config_name in analysis_config_names:
+        data = ScatterData.init(
+                results[config_name][config_name],
+                ["concentration"],
+                highlight_parameter_prefix = "psrf",
+                highlight_threshold = brooks_gelman_1998_recommended_psrf,
+                )
+        var_only_data = ScatterData.init(
+                var_only_results[config_name][config_name],
+                ["concentration"],
+                highlight_parameter_prefix = "psrf",
+                highlight_threshold = brooks_gelman_1998_recommended_psrf,
+                )
+        
+        x_label = "True concentration"
+        y_label = "Estimated concentration"
+        if config_name.startswith("pairs-10-unif"):
+            x_label = "True split weight"
+            y_label = "Estimated split weight"
+
+
+        prefix = "concentration-" + cfg_to_label[config_name]
+
+        generate_scatter_plot(
+                data = data,
+                plot_file_prefix = prefix,
+                parameter_symbol = "\\alpha",
+                x_label = x_label,
+                y_label = y_label,
+                include_coverage = True,
+                include_rmse = True,
+                include_identity_line = True,
+                include_error_bars = True,
+                plot_dir = project_util.PLOT_DIR)
+        generate_scatter_plot(
+                data = var_only_data,
+                plot_file_prefix = "var-only-" + prefix,
+                parameter_symbol = "\\alpha",
+                x_label = x_label,
+                y_label = y_label,
+                include_coverage = True,
+                include_rmse = True,
+                include_identity_line = True,
+                include_error_bars = True,
+                plot_dir = project_util.PLOT_DIR)
+
+    # Generate model plots
     prefix = "infer-columns-by-data-rows"
     generate_model_plot_grid(
-            results_grid = results_grid,
+            results_grid = analysis_results_grid,
             column_labels = column_labels,
-            row_labels = row_labels,
+            row_labels = column_labels,
             number_of_comparisons = len(height_parameters),
-            plot_width = plot_width,
+            plot_width = plot_width - 0.6,
             plot_height = plot_height,
-            pad_left = pad_left,
+            pad_left = pad_left - 0.07,
             pad_right = pad_right,
-            pad_bottom = pad_bottom,
-            pad_top = pad_top,
+            pad_bottom = pad_bottom - 0.035,
+            pad_top = pad_top - 0.032,
             y_label_size = 18.0,
             y_label = None,
-            number_font_size = 12.0,
+            number_font_size = 10.0,
+            force_shared_spines = False,
+            plot_as_histogram = False,
+            histogram_correct_values = [],
             plot_file_prefix = prefix,
             plot_dir = project_util.PLOT_DIR)
     generate_model_plot_grid(
-            results_grid = var_only_results_grid,
+            results_grid = var_only_analysis_results_grid,
             column_labels = column_labels,
-            row_labels = row_labels,
+            row_labels = column_labels,
             number_of_comparisons = len(height_parameters),
-            plot_width = plot_width,
+            plot_width = plot_width - 0.6,
             plot_height = plot_height,
-            pad_left = pad_left,
+            pad_left = pad_left - 0.07,
             pad_right = pad_right,
-            pad_bottom = pad_bottom,
-            pad_top = pad_top,
+            pad_bottom = pad_bottom - 0.035,
+            pad_top = pad_top - 0.032,
             y_label_size = 18.0,
             y_label = None,
-            number_font_size = 12.0,
+            number_font_size = 10.0,
+            force_shared_spines = False,
+            plot_as_histogram = False,
+            plot_file_prefix = "var-only-" + prefix,
+            plot_dir = project_util.PLOT_DIR)
+
+    prefix = "infer-columns-by-fixed-rows"
+    generate_model_plot_grid(
+            results_grid = fixed_results_grid,
+            column_labels = column_labels,
+            row_labels = fixed_row_labels,
+            number_of_comparisons = len(height_parameters),
+            plot_width = plot_width - 0.6,
+            plot_height = plot_height,
+            pad_left = pad_left - 0.07,
+            pad_right = pad_right,
+            pad_bottom = pad_bottom + 0.01,
+            pad_top = pad_top - 0.065,
+            y_label_size = 18.0,
+            y_label = None,
+            number_font_size = 10.0,
+            force_shared_spines = False,
+            plot_as_histogram = True,
+            histogram_correct_values = fixed_correct_nevents_grid,
+            plot_file_prefix = prefix,
+            plot_dir = project_util.PLOT_DIR)
+    generate_model_plot_grid(
+            results_grid = var_only_fixed_results_grid,
+            column_labels = column_labels,
+            row_labels = fixed_row_labels,
+            number_of_comparisons = len(height_parameters),
+            plot_width = plot_width - 0.6,
+            plot_height = plot_height,
+            pad_left = pad_left - 0.07,
+            pad_right = pad_right,
+            pad_bottom = pad_bottom + 0.01,
+            pad_top = pad_top - 0.065,
+            y_label_size = 18.0,
+            y_label = None,
+            number_font_size = 10.0,
+            force_shared_spines = False,
+            plot_as_histogram = True,
+            histogram_correct_values = fixed_correct_nevents_grid,
             plot_file_prefix = "var-only-" + prefix,
             plot_dir = project_util.PLOT_DIR)
 
