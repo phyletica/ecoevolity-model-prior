@@ -1,6 +1,0 @@
----
-markers_are_dominant: false
-population_labels: [c10sp1, c10sp2]
-allele_count_patterns:
-    - [[1, 4], [1, 4]]
-pattern_weights: [500000]

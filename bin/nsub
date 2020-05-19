@@ -1,5 +1,0 @@
-#!/bin/bash
-
-export myqueue="gen28"
-export myreservation="jro0014_s28"
-psub $@
