@@ -21,9 +21,7 @@ git clone https://github.com/phyletica/ecoevolity.git
     cd ..
 )
 
-if [ -n "$(command -v conda)" ]
-then
-    eval "$(conda shell.bash hook)"
-    conda env create -f conda-environment.yml
-    conda activate ecoevolity-model-prior-project
-fi
+python3 -m venv project-python-env
+source project-python-env/bin/activate
+pip3 install wheel
+pip3 install -r python-requirements.txt
