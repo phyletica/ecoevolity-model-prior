@@ -1,10 +1,10 @@
 name: ecoevolity-model-prior-project
 dependencies:
-  - python=3.7.6
+  - python=3.8.3
   - scipy=1.4.1
   - numpy=1.18.1
-  - pyyaml=5.3
+  - matplotlib=3.1.3
+  - pyyaml=5.3.1
   - pip=20.0.2
   - pip:
       - git+git://github.com/phyletica/pycoevolity.git@master
-      - matplotlib==3.1.3
