@@ -102,6 +102,11 @@ to yours, and **use the email associated with your** |github|_ **account**)::
     git config --global user.name "Jamie R. Oaks"
     git config --global user.email "joaks1@gmail.com"
 
+If you have an account on GitHub, give Git your GitHub username too (again,
+change my username to yours)::
+
+    git config --global github.user "joaks1"
+
 When you ``commit`` content to a git repository, git will open a text editor
 for you to write a message to accompany your commit.
 By default, it will open ``vim``. So, if you are not confortable using ``vim``
