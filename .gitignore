@@ -22,6 +22,7 @@ bin/simcoevolity
 bin/sumcoevolity
 bin/swprobs
 ecoevolity/
+project-python-env/
 *.log
 *.out
 *simcoevolity-sim-*
