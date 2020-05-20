@@ -1,0 +1,114 @@
+.. _prerequisites:
+
+###############
+Before starting
+###############
+
+Before diving into this project there are some skills and software that are
+needed.
+
+
+Required skills
+===============
+
+This project documentation assumes some basic skills using the command line and
+the version-control tool, |git|_.
+By "command line," we mean a Unix-like shell environment.
+For this documentation, we assume you are using the Bash shell specifically.
+
+For learning basic Bash skills, 
+`Software Carpentry <https://software-carpentry.org/>`_
+has a nice lesson:
+
+*   http://swcarpentry.github.io/shell-novice/
+
+
+For learning basic |git|_ skills, 
+`Software Carpentry <https://software-carpentry.org/>`_
+has a nice lesson for that as well:
+
+*   http://swcarpentry.github.io/git-novice/
+
+If you are a member of the |phyleticalab|_, you will be doing most of the work
+for the project on Auburn University's Hopper cluster.
+The guide for using the Hopper cluster is here:
+
+*   https://wp.auburn.edu/hpc/?document=auburn-university-hopper-hpcc-users-guide
+
+
+Required software
+=================
+
+Unix-like shell environment
+---------------------------
+
+As alluded to above in the required-skills section, you will need to have
+access to a Unix-like shell environment (or Unix-like "command line").
+If you are not sure what this is, please try out
+`this Software Carpentry lesson <http://swcarpentry.github.io/shell-novice/>`_.
+
+Folks in the |phyleticalab|_ will be using Bash on
+Auburn University's Hopper cluster.
+
+Git
+---
+
+This project requires |git|_.
+If you want to contribute to the project, you should also have the
+`Git Large File Storage <https://git-lfs.github.com/>`_
+extension to Git.
+`Git LFS <https://git-lfs.github.com/>`_
+is not required to replicate our analyses, but |phyleticalab|_ members will be
+using it to add large archives of simulation files to the project repository.
+
+Conda
+-----
+
+While not absolutely necessary, working on the this project will be easier if you
+have some sort of conda installation, like
+|Anaconda|
+or
+|Miniconda|.
+Several Python scripts are used in this project, and we provide a conda
+configuration file that allows you to easily set up a Python environment for
+these scripts to work successfully.
+
+C++ compiler
+------------
+
+This project requires |cmake|_ and a new-ish C++ compiler (one that supports
+the C++11 standard). This are needed to compile |eco|_.
+
+
+.. _setting-up:
+
+Getting set up
+==============
+
+This section is intended specifically for |phyleticalab|_ members to get their
+accounts on the Hopper cluster set up for working on this project.
+If you are not in the lab, some of the instructions below might still be useful
+for setting up your own system to work on this project.
+
+Setting up Hopper account
+-------------------------
+
+.. include:: snippets/setting-up-hopper.rst
+
+
+Setting up Github account
+-------------------------
+
+.. include:: snippets/setting-up-github.rst
+
+
+Installing Miniconda on Hopper
+------------------------------
+
+.. include:: snippets/installing-miniconda.rst
+
+
+Setting up Git on Hopper
+------------------------
+
+.. include:: snippets/installing-git.rst

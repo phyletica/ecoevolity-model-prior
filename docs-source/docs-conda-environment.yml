@@ -1,0 +1,8 @@
+name: ecoevolity-model-prior-docs
+dependencies:
+  - python=3
+  - sphinx
+  - recommonmark
+  - pip
+  - pip:
+      - sphinxcontrib-bibtex
