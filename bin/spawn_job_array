@@ -1,0 +1,73 @@
+#!/bin/bash
+
+usage() {
+    echo ""
+    echo "Usage:"
+    echo "  $0 [-h|--help] PATH-TO-SCRIPT-LIST"
+    echo ""
+    echo "Optional arguments:"
+    echo "  -h|--help       Show help message and exit."
+    echo ""
+    echo "Required positional argument:"
+    echo "  PATH-TO-SCRIPT-LIST  Path to file containing paths to scripts to be"
+    echo "                       run in the array (one script path per line)."
+    echo ""
+    echo "Example:"
+    echo "  qsub -t 1-100%10 $0 /path/to/file-with-scripts-to-run"
+    echo ""
+}
+
+if [ -z "$PBS_ARRAYID" ]
+then
+    echo "ERROR: This script must be run by submitting it to the queue as a "
+    echo "       job array. For example:"
+    echo "         qsub -t 1-1000%100 $0 /path/to/file-with-scripts-to-run"
+    usage
+    exit 1
+fi
+
+positional_args=()
+
+while [[ "$#" -gt 0 ]]
+do
+    key="$1"
+    case $key in
+        -h| --help)
+            usage
+            exit
+            ;;
+        *)
+            positional_args+=("$1")
+            shift
+            ;;
+    esac
+done
+
+set -- "${positional_args[@]}" # restore positional arguments
+
+if [ ! "$#" -eq 1 ]
+then
+    echo "ERROR: One positional argument required, the path to the script list"
+    usage
+    exit 1
+fi
+
+script_path="$(sed "${PBS_ARRAYID}q;d" "$1")"
+if [ -z "$script_path" ]
+then
+    echo "ERROR: Line $PBS_ARRAYID of \"$1\" was empty."
+    echo "       Perhaps the PBS_ARRAYID was beyond the end of the file."
+    usage
+    exit 1
+fi
+script_dir="$(dirname "$script_path")"
+script_name="$(basename "$script_path")"
+(
+    cd "$script_dir"
+    if [ -x "$script_name" ]
+    then
+        "./${script_name}"
+    else
+        bash "${script_name}"
+    fi
+)
