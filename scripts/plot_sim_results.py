@@ -2004,6 +2004,7 @@ def main_cli(argv = sys.argv):
     row_labels = tuple(cfg_to_label[c] for c in sim_config_names)
     fixed_row_labels = tuple(cfg_to_label[c] for c in sim_config_names[0:2])
 
+    sys.stdout.write("Parsing results...\n")
     header = None
     results = {}
     var_only_results = {}
@@ -2030,6 +2031,17 @@ def main_cli(argv = sys.argv):
                     ]
             var_only_results[sim_cfg][analysis_cfg] = parse_results(
                     var_only_result_paths)
+            sys.stdout.write("\n")
+            sys.stdout.write("Parsed results for data simulated under:\n")
+            sys.stdout.write("    {0}\n".format(sim_cfg))
+            sys.stdout.write("and analyzed under:\n")
+            sys.stdout.write("    {0}\n".format(analysis_cfg))
+            sys.stdout.write(
+                    "    Number of reps using variable sites: {0}\n".format(
+                        len(results[sim_cfg][analysis_cfg]["true_model"])))
+            sys.stdout.write(
+                    "    Number of reps ignoring variable sites: {0}\n".format(
+                        len(var_only_results[sim_cfg][analysis_cfg]["true_model"])))
 
     results_grid = get_data_grid(results, cfg_grid)
     var_only_results_grid = get_data_grid(var_only_results, cfg_grid)
