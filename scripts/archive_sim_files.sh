@@ -8,7 +8,7 @@ usage () {
     echo "  $0 <PATH-TO-SIM-DIR> [ <PATH-TO-SIM-DIR> ... ]"
     echo ""
     echo "Required positional argument:"
-    echo "  PATH-TO-SIM-DIR  Path to diretory containing ecoeovlity output of "
+    echo "  PATH-TO-SIM-DIR  Path to diretory containing ecoevolity output of "
     echo "                   analyses of data sets simulated with simcoevolity."
     echo ""
 }
@@ -85,17 +85,17 @@ do
             break
         fi; done
         for p in run-?-*operator*.log; do if [ -e "$p" ]; then
-            echo "Archiving and removing ecoeovlity operator logs..."
+            echo "Archiving and removing ecoevolity operator logs..."
             tar czf sim-files-op-logs.tar.gz run-?-*operator*.log && rm run-?-*operator*.log
             break
         fi; done
         for p in run-?-*state*.log; do if [ -e "$p" ]; then
-            echo "Archiving and removing ecoeovlity state logs..."
+            echo "Archiving and removing ecoevolity state logs..."
             tar czf sim-files-state-logs.tar.gz run-?-*state*.log && rm run-?-*state*.log
             break
         fi; done
         for p in run-?-*.out; do if [ -e "$p" ]; then
-            echo "Archiving and removing ecoeovlity stdout files..."
+            echo "Archiving and removing ecoevolity stdout files..."
             tar czf sim-files-stdout.tar.gz run-?-*.out && rm run-?-*.out
             break
         fi; done
