@@ -74,9 +74,10 @@ do
             shift
             ;;
         *)
-            extra_args+=( "$1" )
+            extra_args+=("$1")
+            shift
+            ;;
     esac
-    shift
 done
 
 if [ ! -x "$submission_executable" ]
