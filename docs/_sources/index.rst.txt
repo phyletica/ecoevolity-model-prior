@@ -22,6 +22,7 @@ Ecoevolity Model Prior Project
    ecoevolity-configs
    sample-priors
    sim-analyses
+   sim-analyses-vary-nchars
    working-on-docs
    acknowledgments
    citation

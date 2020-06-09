@@ -15,7 +15,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Working on project docs" href="working-on-docs.html" />
+    <link rel="next" title="Varying dataset size" href="sim-analyses-vary-nchars.html" />
     <link rel="prev" title="Sampling the model priors" href="sample-priors.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -65,6 +65,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#reflection">Reflection</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="sim-analyses-vary-nchars.html">Varying dataset size</a></li>
 <li class="toctree-l1"><a class="reference internal" href="working-on-docs.html">Working on project docs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgments.html">Acknowledgments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citation.html">Citation</a></li>
@@ -78,7 +79,7 @@
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="sample-priors.html" title="previous chapter">Sampling the model priors</a></li>
-      <li>Next: <a href="working-on-docs.html" title="next chapter">Working on project docs</a></li>
+      <li>Next: <a href="sim-analyses-vary-nchars.html" title="next chapter">Varying dataset size</a></li>
   </ul></li>
 </ul>
 </div>
@@ -160,7 +161,7 @@ there):</p>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">create_new_batch_of_simcoevolity-scripts.py</span></code> Python script to create
 simcoevolity scripts for generating a new batch of 10 simulated datasets for
 each of the 5 models (ecoevolity config files):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">create_new_batch_of_simcoevolity</span><span class="o">-</span><span class="n">scripts</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">n</span> <span class="mi">10</span> <span class="n">simcoevolity</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">template</span><span class="o">-</span><span class="n">simcoevolity</span><span class="o">-*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">create_new_batch_of_simcoevolity</span><span class="o">-</span><span class="n">scripts</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">n</span> <span class="mi">10</span> <span class="n">simcoevolity</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span><span class="n">template</span><span class="o">-</span><span class="n">simcoevolity</span><span class="o">-*</span><span class="mf">05.</span><span class="n">template</span>
 </pre></div>
 </div>
 <p>The output should confirm the creation of 5 new scripts for running
@@ -227,7 +228,7 @@ of project Git repository:</p>
 to either update the <code class="docutils literal notranslate"><span class="pre">../../bin/psub</span></code> to work for your system,
 or replace <code class="docutils literal notranslate"><span class="pre">../../bin/psub</span></code> with whatever command is used on your
 cluster to submit jobs.</p>
-<p>If you are not on a cluster, you can simpy run the scripts directly:</p>
+<p>If you are not on a cluster, you can simply run the scripts directly:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">script_path</span> <span class="ow">in</span> <span class="o">*</span><span class="mf">308303035.</span><span class="n">sh</span><span class="p">;</span> <span class="n">do</span> <span class="n">bash</span> <span class="s2">&quot;$script_path&quot;</span><span class="p">;</span> <span class="n">done</span>
 </pre></div>
 </div>
