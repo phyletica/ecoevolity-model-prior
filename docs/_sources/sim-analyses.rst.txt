@@ -59,7 +59,7 @@ Use the ``create_new_batch_of_simcoevolity-scripts.py`` Python script to create
 simcoevolity scripts for generating a new batch of 10 simulated datasets for
 each of the 5 models (ecoevolity config files)::
 
-    python create_new_batch_of_simcoevolity-scripts.py -n 10 simcoevolity-scripts/template-simcoevolity-*
+    python create_new_batch_of_simcoevolity-scripts.py -n 10 simcoevolity-scripts/template-simcoevolity-*05.template
 
 The output should confirm the creation of 5 new scripts for running
 ``simcoevolity`` (one for each config in ``ecoevolity-configs``), and report a
@@ -127,7 +127,7 @@ If you are working on AU's Hopper cluster, use a for loop to submit the five
     or replace ``../../bin/psub`` with whatever command is used on your
     cluster to submit jobs.
 
-    If you are not on a cluster, you can simpy run the scripts directly::
+    If you are not on a cluster, you can simply run the scripts directly::
 
         for script_path in *308303035.sh; do bash "$script_path"; done
 
