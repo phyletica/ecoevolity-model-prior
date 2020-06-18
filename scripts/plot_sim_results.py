@@ -1966,12 +1966,30 @@ def main_cli(argv = sys.argv):
     plot_width = 2.8
     plot_height = 2.2
 
+    all_sim_config_names = (
+            "fixed-pairs-10-independent-time-1_0-0_05",
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-5000",
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-10000",
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-50000",
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-100000",
+            "fixed-pairs-10-simultaneous-time-1_0-0_05",
+            "pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05",
+            "pairs-10-pyp-conc-2_0-1_79-disc-1_0-4_0-time-1_0-0_05",
+            "pairs-10-unif-sw-0_55-7_32-time-1_0-0_05",
+            )
     sim_config_names = (
             "fixed-pairs-10-independent-time-1_0-0_05",
             "fixed-pairs-10-simultaneous-time-1_0-0_05",
             "pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05",
             "pairs-10-pyp-conc-2_0-1_79-disc-1_0-4_0-time-1_0-0_05",
             "pairs-10-unif-sw-0_55-7_32-time-1_0-0_05",
+            )
+    nchars_sim_config_names = (
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-5000",
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-10000",
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-50000",
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-100000",
+            "fixed-pairs-10-independent-time-1_0-0_05",
             )
     analysis_config_names = (
             "pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05",
@@ -1986,8 +2004,19 @@ def main_cli(argv = sys.argv):
             "pairs-10-unif-sw-0_55-7_32-time-1_0-0_05"                  : "Uniform",
             }
     cfg_to_correct_nevents = {
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-5000"       : 10,
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-10000"      : 10,
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-50000"      : 10,
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-100000"     : 10,
             "fixed-pairs-10-independent-time-1_0-0_05"                  : 10,
             "fixed-pairs-10-simultaneous-time-1_0-0_05"                 : 1,
+            }
+    nchars_cfg_to_label = {
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-5000"       : "5k",
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-10000"      : "10k",
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-50000"      : "50k",
+            "fixed-pairs-10-independent-time-1_0-0_05-chars-100000"     : "100k",
+            "fixed-pairs-10-independent-time-1_0-0_05"                  : "500k",
             }
     
     cfg_grid = tuple(
@@ -1999,16 +2028,20 @@ def main_cli(argv = sys.argv):
     fixed_cfg_grid = tuple(
             tuple((row, col) for col in analysis_config_names 
                 ) for row in sim_config_names[0:2])
+    nchars_cfg_grid = tuple(
+            tuple((row, col) for col in analysis_config_names 
+                ) for row in nchars_sim_config_names)
     
     column_labels = tuple(cfg_to_label[c] for c in analysis_config_names)
     row_labels = tuple(cfg_to_label[c] for c in sim_config_names)
     fixed_row_labels = tuple(cfg_to_label[c] for c in sim_config_names[0:2])
+    nchars_row_labels = tuple(nchars_cfg_to_label[c] for c in nchars_sim_config_names)
 
     sys.stdout.write("Parsing results...\n")
     header = None
     results = {}
     var_only_results = {}
-    for sim_cfg in sim_config_names:
+    for sim_cfg in all_sim_config_names:
         results[sim_cfg] = {}
         var_only_results[sim_cfg] = {}
         sim_dir = os.path.join(project_util.SIM_DIR, sim_cfg)
@@ -2055,6 +2088,13 @@ def main_cli(argv = sys.argv):
     for row in fixed_cfg_grid:
         r = [cfg_to_correct_nevents[cell[0]] for cell in row]
         fixed_correct_nevents_grid.append(r)
+
+    nchars_results_grid = get_data_grid(results, nchars_cfg_grid)
+    var_only_nchars_results_grid = get_data_grid(var_only_results, nchars_cfg_grid)
+    nchars_correct_nevents_grid = []
+    for row in nchars_cfg_grid:
+        r = [cfg_to_correct_nevents[cell[0]] for cell in row]
+        nchars_correct_nevents_grid.append(r)
 
     height_parameters = tuple(
             h[5:] for h in header if h.startswith("mean_root_height_c")
@@ -2156,6 +2196,62 @@ def main_cli(argv = sys.argv):
                 parameter_symbol = p_info["symbol"],
                 column_labels = column_labels,
                 row_labels = row_labels,
+                plot_width = plot_width,
+                plot_height = plot_height,
+                pad_left = p_info["pad_left"],
+                pad_right = pad_right,
+                pad_bottom = pad_bottom,
+                pad_top = pad_top,
+                x_label = x_label,
+                x_label_size = 18.0,
+                y_label = y_label,
+                y_label_size = 18.0,
+                force_shared_x_range = True,
+                force_shared_y_range = True,
+                force_shared_xy_ranges = True,
+                force_shared_spines = True,
+                include_coverage = True,
+                include_rmse = True,
+                include_identity_line = True,
+                include_error_bars = True,
+                plot_dir = project_util.PLOT_DIR)
+
+        # Plot results for varying dataset size
+        data_grid = get_data_grid(data, nchars_cfg_grid)
+        var_only_data_grid = get_data_grid(var_only_data, nchars_cfg_grid)
+
+        prefix = "nchars-" + parameter
+        generate_scatter_plot_grid(
+                data_grid = data_grid,
+                plot_file_prefix = prefix,
+                parameter_symbol = p_info["symbol"],
+                column_labels = column_labels,
+                row_labels = nchars_row_labels,
+                plot_width = plot_width,
+                plot_height = plot_height,
+                pad_left = p_info["pad_left"],
+                pad_right = pad_right,
+                pad_bottom = pad_bottom,
+                pad_top = pad_top,
+                x_label = x_label,
+                x_label_size = 18.0,
+                y_label = y_label,
+                y_label_size = 18.0,
+                force_shared_x_range = True,
+                force_shared_y_range = True,
+                force_shared_xy_ranges = True,
+                force_shared_spines = True,
+                include_coverage = True,
+                include_rmse = True,
+                include_identity_line = True,
+                include_error_bars = True,
+                plot_dir = project_util.PLOT_DIR)
+        generate_scatter_plot_grid(
+                data_grid = var_only_data_grid,
+                plot_file_prefix = "var-only-" + prefix,
+                parameter_symbol = p_info["symbol"],
+                column_labels = column_labels,
+                row_labels = nchars_row_labels,
                 plot_width = plot_width,
                 plot_height = plot_height,
                 pad_left = p_info["pad_left"],
@@ -2303,6 +2399,46 @@ def main_cli(argv = sys.argv):
             plot_file_prefix = "var-only-" + prefix,
             plot_dir = project_util.PLOT_DIR)
 
+    # Generate model plots for different sized datasets
+    prefix = "nchars"
+    generate_model_plot_grid(
+            results_grid = nchars_results_grid,
+            column_labels = column_labels,
+            row_labels = nchars_row_labels,
+            number_of_comparisons = len(height_parameters),
+            plot_width = plot_width - 0.6,
+            plot_height = plot_height,
+            pad_left = pad_left - 0.07,
+            pad_right = pad_right,
+            pad_bottom = pad_bottom - 0.035,
+            pad_top = pad_top - 0.032,
+            y_label_size = 18.0,
+            y_label = None,
+            number_font_size = 10.0,
+            force_shared_spines = False,
+            plot_as_histogram = True,
+            histogram_correct_values = nchars_correct_nevents_grid,
+            plot_file_prefix = prefix,
+            plot_dir = project_util.PLOT_DIR)
+    generate_model_plot_grid(
+            results_grid = var_only_nchars_results_grid,
+            column_labels = column_labels,
+            row_labels = nchars_row_labels,
+            number_of_comparisons = len(height_parameters),
+            plot_width = plot_width - 0.6,
+            plot_height = plot_height,
+            pad_left = pad_left - 0.07,
+            pad_right = pad_right,
+            pad_bottom = pad_bottom - 0.035,
+            pad_top = pad_top - 0.032,
+            y_label_size = 18.0,
+            y_label = None,
+            number_font_size = 10.0,
+            force_shared_spines = False,
+            plot_as_histogram = True,
+            histogram_correct_values = nchars_correct_nevents_grid,
+            plot_file_prefix = "var-only-" + prefix,
+            plot_dir = project_util.PLOT_DIR)
 
     jitter = 0.12
     alpha = 0.5
@@ -2502,6 +2638,51 @@ def main_cli(argv = sys.argv):
                 plot_file_prefix = "var-only-" + prefix,
                 column_labels = column_labels,
                 row_labels = row_labels,
+                parameter_label = p_info["label"],
+                range_key = "range",
+                center_key = p_info["center_key"],
+                number_of_digits = p_info["ndigits"],
+                plot_width = plot_width,
+                plot_height = plot_height,
+                pad_left = pad_left,
+                pad_right = pad_right,
+                pad_bottom = pad_bottom,
+                pad_top = pad_top,
+                force_shared_x_range = True,
+                force_shared_bins = True,
+                force_shared_y_range = True,
+                force_shared_spines = True,
+                plot_dir = project_util.PLOT_DIR)
+
+        data_grid = get_data_grid(data, nchars_cfg_grid)
+        var_only_data_grid = get_data_grid(var_only_data, nchars_cfg_grid)
+
+        prefix = "nchars-" + parameter
+        generate_histogram_grid(
+                data_grid = data_grid,
+                plot_file_prefix = prefix,
+                column_labels = column_labels,
+                row_labels = nchars_row_labels,
+                parameter_label = p_info["label"],
+                range_key = "range",
+                center_key = p_info["center_key"],
+                number_of_digits = p_info["ndigits"],
+                plot_width = plot_width,
+                plot_height = plot_height,
+                pad_left = pad_left,
+                pad_right = pad_right,
+                pad_bottom = pad_bottom,
+                pad_top = pad_top,
+                force_shared_x_range = True,
+                force_shared_bins = True,
+                force_shared_y_range = True,
+                force_shared_spines = True,
+                plot_dir = project_util.PLOT_DIR)
+        generate_histogram_grid(
+                data_grid = var_only_data_grid,
+                plot_file_prefix = "var-only-" + prefix,
+                column_labels = column_labels,
+                row_labels = nchars_row_labels,
                 parameter_label = p_info["label"],
                 range_key = "range",
                 center_key = p_info["center_key"],
