@@ -56,6 +56,17 @@ def get_results_header(population_labels):
             "true_num_events",
             "map_num_events",
             "true_num_events_cred_level",
+            # "mean_sampled_median_model_distance",
+            # "median_sampled_median_model_distance",
+            "mean_map_model_distance",
+            "median_map_model_distance",
+            "mean_model_distance",
+            "median_model_distance",
+            "stddev_model_distance",
+            "hpdi_95_lower_model_distance",
+            "hpdi_95_upper_model_distance",
+            "eti_95_lower_model_distance",
+            "eti_95_upper_model_distance",
         ]
 
     number_of_comparisons = len(population_labels)
@@ -149,6 +160,35 @@ def get_results_from_sim_rep(
     results["true_model_cred_level"] = true_model_cred
     results["map_model_p"] = map_model_p
     results["true_model_p"] = true_model_p
+    model_dist_summary = pycoevolity.stats.get_summary(
+                post_sample.distances_from(true_model))
+    results["mean_model_distance"] = model_dist_summary["mean"]
+    results["median_model_distance"] = model_dist_summary["median"]
+    results["stddev_model_distance"] = math.sqrt(model_dist_summary["variance"])
+    results["hpdi_95_lower_model_distance"] = model_dist_summary["hpdi_95"][0]
+    results["hpdi_95_upper_model_distance"] = model_dist_summary["hpdi_95"][1]
+    results["eti_95_lower_model_distance"] = model_dist_summary["qi_95"][0]
+    results["eti_95_upper_model_distance"] = model_dist_summary["qi_95"][1]
+    map_model_distances = post_sample.get_map_model_distances_from(true_model)
+    if len(map_model_distances) > 1:
+        map_model_dist_summary = pycoevolity.stats.get_summary(
+                map_model_distances)
+        results["mean_map_model_distance"] = map_model_dist_summary["mean"]
+        results["median_map_model_distance"] = map_model_dist_summary["median"]
+    else:
+        results["mean_map_model_distance"] = map_model_distances[0]
+        results["median_map_model_distance"] = map_model_distances[0]
+    # Computing the median models is very slow and likely won't offer any
+    # advantages to our other summaries of model distances. So, we'll skip this
+    # median_model_distances = post_sample.get_median_model_distances_from(true_model)
+    # if len(median_model_distances) > 1:
+    #     median_model_dist_summary = pycoevolity.stats.get_summary(
+    #             median_model_distances)
+    #     results["mean_sampled_median_model_distance"] = median_model_dist_summary["mean"]
+    #     results["median_sampled_median_model_distance"] = median_model_dist_summary["median"]
+    # else:
+    #     results["mean_sampled_median_model_distance"] = median_model_distances[0]
+    #     results["median_sampled_median_model_distance"] = median_model_distances[0]
     
     true_nevents = int(true_values["number_of_events"][0])
     true_nevents_p = post_sample.get_number_of_events_probability(true_nevents)
