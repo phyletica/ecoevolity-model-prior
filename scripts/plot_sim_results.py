@@ -36,25 +36,21 @@ import numpy
 
 
 class BoxData(object):
-    def __init__(self, values = [], labels = []):
+    def __init__(self, values = [],
+            labels = [],
+            lower = [],
+            upper = []):
         assert len(values) == len(labels)
         self._values = values
         self._labels = labels
-
-    @classmethod
-    def init(cls, results, parameters, labels = None):
-        if labels:
-            assert len(parameters) == len(labels)
-        bd = cls()
-        bd._values = [[] for i in range(len(parameters))]
-        if labels:
-            bd._labels = list(labels)
-        else:
-            bd._labels = list(parameters)
-        for i, parameter_str in enumerate(parameters):
-            x = [float(e) for e in results["{0}".format(parameter_str)]]
-            bd._d[i].append(x)
-        return bd
+        self._lower = None
+        self._upper = None
+        if lower:
+            assert len(values) == len(lower)
+            self._lower = lower
+        if upper:
+            assert len(values) == len(upper)
+            self._upper = upper
 
     def _get_values(self):
         return self._values
@@ -71,6 +67,67 @@ class BoxData(object):
 
     number_of_categories = property(_get_number_of_categories)
 
+    def _get_lower(self):
+        return self._lower
+    lower = property(_get_lower)
+
+    def _get_upper(self):
+        return self._upper
+    upper = property(_get_upper)
+
+    def has_ci(self):
+        return bool(self.lower) and bool(self.upper)
+
+    @classmethod
+    def init_model_distance_v_nevents(cls, results,
+            estimator_prefix = "mean"):
+        bd = cls()
+        nreplicates = len(results["true_model"])
+        ncomparisons = len(results["true_model"][0])
+
+        labels = list(x + 1 for x in range(ncomparisons))
+        vals = [[] for l in labels]
+        lower = [[] for l in labels]
+        upper = [[] for l in labels]
+
+        for sim_index in range(nreplicates):
+            v = float(results["{0}_model_distance".format(estimator_prefix)][sim_index])
+            ci_lower = float(results["eti_95_lower_model_distance"][sim_index])
+            ci_upper = float(results["eti_95_upper_model_distance"][sim_index])
+            nevents = int(results["true_num_events"][sim_index])
+            vals[nevents - 1].append(v)
+            lower[nevents - 1].append(ci_lower)
+            upper[nevents - 1].append(ci_upper)
+        bd._labels = labels
+        bd._values = vals
+        bd._lower = lower
+        bd._upper = upper
+        return bd
+
+    @classmethod
+    def init_model_distance(cls, results, labels,
+            estimator_prefix = "mean"):
+        assert len(results) == len(labels)
+        bd = cls()
+
+        vals = [[] for l in labels]
+        lower = [[] for l in labels]
+        upper = [[] for l in labels]
+
+        for label_index, res in enumerate(results):
+            nreplicates = len(res["true_model"])
+            for sim_index in range(nreplicates):
+                v = float(res["{0}_model_distance".format(estimator_prefix)][sim_index])
+                ci_lower = float(res["eti_95_lower_model_distance"][sim_index])
+                ci_upper = float(res["eti_95_upper_model_distance"][sim_index])
+                vals[label_index].append(v)
+                lower[label_index].append(ci_lower)
+                upper[label_index].append(ci_upper)
+        bd._labels = labels
+        bd._values = vals
+        bd._lower = lower
+        bd._upper = upper
+        return bd
 
     @classmethod
     def init_time_v_sharing(cls, results,
@@ -979,6 +1036,263 @@ def generate_box_plot(
     else:
         plt.savefig(plot_path)
     _LOG.info("Box plot written to {0!r}".format(plot_path))
+
+def generate_box_plot_grid(
+        data_grid,
+        plot_file_prefix,
+        column_labels = None,
+        row_labels = None,
+        plot_width = 1.9,
+        plot_height = 1.8,
+        pad_left = 0.1,
+        pad_right = 0.98,
+        pad_bottom = 0.12,
+        pad_top = 0.92,
+        x_label = None,
+        x_label_size = 18.0,
+        y_label = None,
+        y_label_size = 18.0,
+        force_shared_y_range = True,
+        force_shared_spines = True,
+        include_error_bars = True,
+        show_sample_sizes = True,
+        show_means = True,
+        show_overall_mean = True,
+        jitter = 0.05,
+        box_alpha = 0.4,
+        point_alpha = 0.8,
+        rasterized = False,
+        plot_dir = project_util.PLOT_DIR
+        ):
+    if force_shared_spines:
+        force_shared_y_range = True
+
+    if row_labels:
+        assert len(row_labels) ==  len(data_grid)
+    if column_labels:
+        assert len(column_labels) == len(data_grid[0])
+
+    nrows = len(data_grid)
+    ncols = len(data_grid[0])
+
+    y_min = float('inf')
+    y_max = float('-inf')
+    x_labels = None
+    for row_index, data_grid_row in enumerate(data_grid):
+        for column_index, data in enumerate(data_grid_row):
+            y_min = min(y_min, min(min(x) for x in data.values))
+            y_max = max(y_max, max(max(x) for x in data.values))
+            if force_shared_spines:
+                if x_labels is None:
+                    x_labels = data.labels
+                else:
+                    assert x_labels == data.labels
+    buff = 0.05
+    y_buffer = math.fabs(y_max - y_min) * buff
+    y_axis_min = y_min - y_buffer
+    y_axis_max = y_max + y_buffer
+    if show_sample_sizes:
+        y_axis_min = y_min - (2 * y_buffer)
+    if show_means:
+        y_axis_max = y_max + (2 * y_buffer)
+
+
+    plt.close('all')
+    w = plot_width
+    h = plot_height
+    fig_width = (ncols * w)
+    fig_height = (nrows * h)
+    fig = plt.figure(figsize = (fig_width, fig_height))
+    if force_shared_spines:
+        gs = gridspec.GridSpec(nrows, ncols,
+                wspace = 0.0,
+                hspace = 0.0)
+    else:
+        gs = gridspec.GridSpec(nrows, ncols)
+
+    for row_index, data_grid_row in enumerate(data_grid):
+        for column_index, data in enumerate(data_grid_row):
+            ax = plt.subplot(gs[row_index, column_index])
+            sample_sizes = [len(data.values[i]) for i in range(data.number_of_categories)]
+            means = [sum(data.values[i]) / float(len(data.values[i])) for i in range(data.number_of_categories)]
+            distance_summarizer = pycoevolity.stats.SampleSummarizer()
+            for vals in data.values:
+                distance_summarizer.update_samples(vals)
+            distance_mean = distance_summarizer.mean
+            box_dict = ax.boxplot(data.values,
+                    labels = data.labels,
+                    notch = False,
+                    sym = '',
+                    vert = True,
+                    zorder = 500)
+            for c in box_dict["caps"]:
+                plt.setp(c,
+                        linestyle = "None")
+            for f in box_dict["fliers"]:
+                plt.setp(f,
+                        linestyle = "None")
+            for m in box_dict["means"]:
+                plt.setp(m,
+                        linestyle = "None")
+            for w in box_dict["whiskers"]:
+                plt.setp(w,
+                        linestyle = "None")
+            for b in box_dict["boxes"]:
+                plt.setp(b,
+                        color = "black",
+                        alpha = box_alpha)
+            for m in box_dict["medians"]:
+                plt.setp(m,
+                        color = "black",
+                        alpha = box_alpha)
+            for i in range(data.number_of_categories):
+                vals = data.values[i]
+                x = numpy.random.uniform(low = i + 1 - jitter, high = i + 1 + jitter, size = len(vals))
+                if include_error_bars and data.has_ci():
+                    line = ax.errorbar(
+                            x = x,
+                            y = vals,
+                            yerr = get_errors(data.values[i], data.lower[i], data.upper[i]),
+                            ecolor = '0.65',
+                            elinewidth = 0.5,
+                            capsize = 0.8,
+                            barsabove = False,
+                            marker = 'o',
+                            linestyle = '',
+                            markerfacecolor = 'none',
+                            markeredgecolor = '0.35',
+                            markeredgewidth = 0.7,
+                            alpha = point_alpha,
+                            markersize = 2.5,
+                            zorder = 100,
+                            rasterized = rasterized)
+                else:
+                    line, = ax.plot(x, vals,
+                            marker = 'o',
+                            linestyle = '',
+                            markerfacecolor = 'none',
+                            markeredgecolor = '0.35',
+                            markeredgewidth = 0.7,
+                            alpha = point_alpha,
+                            markersize = 2.5,
+                            zorder = 100,
+                            rasterized = rasterized)
+            if force_shared_y_range:
+                ax.set_ylim(y_axis_min, y_axis_max)
+            else:
+                y_mn = min(min(x) for x in data.values)
+                y_mx = max(max(x) for x in data.values)
+                y_buf = math.fabs(y_mx - y_mn) * buff
+                y_ax_mn = y_mn - y_buf
+                y_ax_mx = y_mx + y_buf
+                if show_sample_sizes:
+                    y_ax_mn = y_mn - (y_buf * 2)
+                if show_means:
+                    y_ax_mx = y_mx + (y_buf * 2)
+                ax.set_ylim(y_ax_mn, y_ax_mx)
+            if column_labels and (row_index == 0):
+                col_header = column_labels[column_index]
+                ax.text(0.5, 1.015,
+                        col_header,
+                        horizontalalignment = "center",
+                        verticalalignment = "bottom",
+                        transform = ax.transAxes)
+            if row_labels and (column_index == (ncols - 1)):
+                row_label = row_labels[row_index]
+                ax.text(1.015, 0.5,
+                        row_label,
+                        horizontalalignment = "left",
+                        verticalalignment = "center",
+                        rotation = 270.0,
+                        transform = ax.transAxes)
+            if show_sample_sizes:
+                y_min, y_max = ax.get_ylim()
+                y_n = y_min + ((y_max - y_min) * 0.001)
+                for i in range(len(sample_sizes)):
+                    ax.text(i + 1, y_n,
+                            "\\scriptsize {ss}".format(
+                                ss = sample_sizes[i]),
+                            horizontalalignment = "center",
+                            verticalalignment = "bottom")
+            if show_means:
+                if show_overall_mean:
+                    ax.text(0.5, 0.999,
+                            "\\scriptsize mean = {mean:,.{ndigits}f}".format(
+                                mean = distance_mean,
+                                ndigits = 2),
+                            horizontalalignment = "center",
+                            verticalalignment = "top",
+                            transform = ax.transAxes)
+                else:
+                    y_min, y_max = ax.get_ylim()
+                    y_mean = y_min + ((y_max - y_min) * 0.999)
+                    for i in range(len(means)):
+                        ax.text(i + 1, y_mean,
+                                "\\scriptsize {mean:,.{ndigits}f}".format(
+                                    mean = means[i],
+                                    ndigits = 2),
+                                horizontalalignment = "center",
+                                verticalalignment = "top")
+
+    if force_shared_spines:
+        # show only the outside ticks
+        all_axes = fig.get_axes()
+        for ax in all_axes:
+            if not ax.is_last_row():
+                ax.set_xticks([])
+            if not ax.is_first_col():
+                ax.set_yticks([])
+
+        # show tick labels only for lower-left plot 
+        all_axes = fig.get_axes()
+        for ax in all_axes:
+            if ax.is_last_row() and ax.is_first_col():
+                continue
+            xtick_labels = ["" for item in ax.get_xticklabels()]
+            ytick_labels = ["" for item in ax.get_yticklabels()]
+            ax.set_xticklabels(xtick_labels)
+            ax.set_yticklabels(ytick_labels)
+
+        # avoid doubled spines
+        all_axes = fig.get_axes()
+        for ax in all_axes:
+            for sp in ax.spines.values():
+                sp.set_visible(False)
+                sp.set_linewidth(2)
+            if ax.is_first_row():
+                ax.spines['top'].set_visible(True)
+                ax.spines['bottom'].set_visible(True)
+            else:
+                ax.spines['bottom'].set_visible(True)
+            if ax.is_first_col():
+                ax.spines['left'].set_visible(True)
+                ax.spines['right'].set_visible(True)
+            else:
+                ax.spines['right'].set_visible(True)
+
+    if x_label:
+        fig.text(0.5, 0.001,
+                x_label,
+                horizontalalignment = "center",
+                verticalalignment = "bottom",
+                size = x_label_size)
+    if y_label:
+        fig.text(0.005, 0.5,
+                y_label,
+                horizontalalignment = "left",
+                verticalalignment = "center",
+                rotation = "vertical",
+                size = y_label_size)
+
+    gs.update(left = pad_left,
+            right = pad_right,
+            bottom = pad_bottom,
+            top = pad_top)
+
+    plot_path = os.path.join(plot_dir,
+            "{0}-box.pdf".format(plot_file_prefix))
+    plt.savefig(plot_path, dpi=600)
+    _LOG.info("Box plots written to {0!r}".format(plot_path))
 
 
 def generate_histogram_grid(
@@ -2031,6 +2345,9 @@ def main_cli(argv = sys.argv):
     nchars_cfg_grid = tuple(
             tuple((row, col) for col in analysis_config_names 
                 ) for row in nchars_sim_config_names)
+    dist_nchars_cfg_grid = tuple(
+            tuple((row, col) for col in ["dummy"] 
+                ) for row in nchars_sim_config_names)
     
     column_labels = tuple(cfg_to_label[c] for c in analysis_config_names)
     row_labels = tuple(cfg_to_label[c] for c in sim_config_names)
@@ -2525,6 +2842,156 @@ def main_cli(argv = sys.argv):
                     jitter = jitter,
                     alpha = alpha,
                     rasterized = False)
+
+
+    # Model distance plots
+    data = {}
+    var_only_data = {}
+    for sim_cfg in analysis_config_names:
+        data[sim_cfg] = {}
+        var_only_data[sim_cfg] = {}
+        for analysis_cfg in analysis_config_names:
+            data[sim_cfg][analysis_cfg] = BoxData.init_model_distance_v_nevents(
+                    results = results[sim_cfg][analysis_cfg],
+                    estimator_prefix = "mean")
+            var_only_data[sim_cfg][analysis_cfg] = BoxData.init_model_distance_v_nevents(
+                    results = var_only_results[sim_cfg][analysis_cfg],
+                    estimator_prefix = "mean")
+    
+    x_label = "True number of events"
+    y_label = "Posterior mean model distance"
+
+    data_grid = get_data_grid(data, analysis_cfg_grid)
+    var_only_data_grid = get_data_grid(var_only_data, analysis_cfg_grid)
+    prefix = "infer-columns-by-data-rows-model-distance"
+    generate_box_plot_grid(
+        data_grid = data_grid,
+        plot_file_prefix = prefix,
+        column_labels = column_labels,
+        row_labels = column_labels,
+        plot_width = 2.1,
+        plot_height = 1.8,
+        pad_left = 0.1,
+        pad_right = 0.96,
+        pad_bottom = 0.10,
+        pad_top = 0.96,
+        x_label = x_label,
+        x_label_size = 18.0,
+        y_label = y_label,
+        y_label_size = 18.0,
+        force_shared_y_range = True,
+        force_shared_spines = True,
+        include_error_bars = False,
+        show_sample_sizes = True,
+        show_means = True,
+        show_overall_mean = True,
+        jitter = 0.1,
+        box_alpha = 0.4,
+        point_alpha = 0.8,
+        rasterized = True,
+        plot_dir = project_util.PLOT_DIR)
+    generate_box_plot_grid(
+        data_grid = var_only_data_grid,
+        plot_file_prefix = "var-only-" + prefix,
+        column_labels = column_labels,
+        row_labels = column_labels,
+        plot_width = 2.1,
+        plot_height = 1.8,
+        pad_left = 0.1,
+        pad_right = 0.96,
+        pad_bottom = 0.10,
+        pad_top = 0.96,
+        x_label = x_label,
+        x_label_size = 18.0,
+        y_label = y_label,
+        y_label_size = 18.0,
+        force_shared_y_range = True,
+        force_shared_spines = True,
+        include_error_bars = False,
+        show_sample_sizes = True,
+        show_means = True,
+        show_overall_mean = True,
+        jitter = 0.1,
+        box_alpha = 0.4,
+        point_alpha = 0.8,
+        rasterized = True,
+        plot_dir = project_util.PLOT_DIR)
+
+    # Model distances by nchars
+    data = {}
+    var_only_data = {}
+    for sim_cfg in nchars_sim_config_names:
+        l = [cfg_to_label[c] for c in analysis_config_names]
+        r = [results[sim_cfg][c] for c in analysis_config_names]
+        var_only_r = [var_only_results[sim_cfg][c] for c in analysis_config_names]
+        data[sim_cfg] = {}
+        data[sim_cfg]["dummy"] = BoxData.init_model_distance(
+                results = r,
+                labels = l,
+                estimator_prefix = "mean")
+        var_only_data[sim_cfg] = {}
+        var_only_data[sim_cfg]["dummy"] = BoxData.init_model_distance(
+                results = var_only_r,
+                labels = l,
+                estimator_prefix = "mean")
+
+    y_label = "Posterior mean model distance"
+
+    data_grid = get_data_grid(data, dist_nchars_cfg_grid)
+    var_only_data_grid = get_data_grid(var_only_data, dist_nchars_cfg_grid)
+    prefix = "nchars-model-distance"
+    generate_box_plot_grid(
+        data_grid = data_grid,
+        plot_file_prefix = prefix,
+        column_labels = None,
+        row_labels = nchars_row_labels,
+        plot_width = 2.4,
+        plot_height = 1.8,
+        pad_left = 0.2,
+        pad_right = 0.92,
+        pad_bottom = 0.03,
+        pad_top = 0.999,
+        x_label = None,
+        x_label_size = 18.0,
+        y_label = y_label,
+        y_label_size = 18.0,
+        force_shared_y_range = True,
+        force_shared_spines = True,
+        include_error_bars = False,
+        show_sample_sizes = False,
+        show_means = True,
+        show_overall_mean = False,
+        jitter = 0.1,
+        box_alpha = 0.4,
+        point_alpha = 0.8,
+        rasterized = True,
+        plot_dir = project_util.PLOT_DIR)
+    generate_box_plot_grid(
+        data_grid = var_only_data_grid,
+        plot_file_prefix = "var-only-" + prefix,
+        column_labels = None,
+        row_labels = nchars_row_labels,
+        plot_width = 2.4,
+        plot_height = 1.8,
+        pad_left = 0.2,
+        pad_right = 0.92,
+        pad_bottom = 0.03,
+        pad_top = 0.999,
+        x_label = None,
+        x_label_size = 18.0,
+        y_label = y_label,
+        y_label_size = 18.0,
+        force_shared_y_range = True,
+        force_shared_spines = True,
+        include_error_bars = False,
+        show_sample_sizes = False,
+        show_means = True,
+        show_overall_mean = False,
+        jitter = 0.1,
+        box_alpha = 0.4,
+        point_alpha = 0.8,
+        rasterized = True,
+        plot_dir = project_util.PLOT_DIR)
 
 
     histograms_to_plot = {
