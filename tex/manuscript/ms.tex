@@ -1,0 +1,145 @@
+%&<latex>
+\documentclass[letterpaper,12pt]{article}
+\pdfoutput=1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% preamble %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{../utils/preamble.tex}
+\input{../utils/environments.tex}
+\input{../utils/macros.tex}
+\input{../utils/notation.tex}
+
+\newcommand{\ifembed}[2]{#1}
+% \newcommand{\ifembed}[2]{#2}
+\newcommand{\ifdoublespacing}[2]{#1}
+% \newcommand{\ifdoublespacing}[2]{#2}
+\newcommand{\iflinenumbers}[2]{#1}
+% \newcommand{\iflinenumbers}[2]{#2}
+% \newcommand{\ifragged}[2]{#1}
+\newcommand{\ifragged}[2]{#2}
+
+\usepackage[round]{natbib}
+
+\title{A Pitman-Yor process prior for estimating shared evolutionary events}
+% \title{Comparing hiearchicial Bayesian priors for estimating shared evolutionary events}
+
+\author[1]{Tashitso Anamza}
+\author[1]{Jamie R.\ Oaks \thanks{Corresponding author: \href{mailto:joaks@auburn.edu}{\tt joaks@auburn.edu}}}
+\affil[1]{Department of Biological Sciences \& Museum of Natural History, Auburn University, Auburn, Alabama 36849}
+
+\date{\today}
+
+\makeatletter
+\let\msTitle\@title
+\let\msAuthor\@author
+\let\msDate\@date
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\ifragged{
+\raggedright
+}{}
+
+\iflinenumbers{
+\begin{linenumbers}
+}{}
+
+\textbf{Running head}: \uppercase{Estimating shared evolutionary events}
+
+{\let\newpage\relax\maketitle}
+
+\newpage
+
+\ifdoublespacing{
+\doublespacing
+}{}
+
+\begin{abstract}
+    \input{abstract.tex}
+
+    \vspace{6pt}
+    \noindent\textbf{KEY WORDS:}
+\end{abstract}
+
+\newpage
+
+\input{body.tex}
+
+
+\section{Acknowledgments}
+\input{acknowledgments.tex}
+
+\bibliographystyle{../bib/evolution}
+\bibliography{../bib/references}
+
+%TC:ignore
+
+%% LIST OF FIGURES %%%%%%%%%%%%%%%%%%%%%%%%%%
+% \ifembed{}{
+% \newpage
+% \singlespacing
+
+% \renewcommand\listfigurename{Figure Captions}
+% \cftsetindents{fig}{0cm}{2.2cm}
+% \renewcommand\cftdotsep{\cftnodots}
+% \setlength\cftbeforefigskip{10pt}
+% \cftpagenumbersoff{fig}
+% \listoffigures
+% }
+
+\iflinenumbers{
+\end{linenumbers}
+}{}
+
+%% TABLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifembed{}{
+\newpage
+\singlespacing
+
+\input{tables.tex}
+
+\clearpage
+}
+
+%% FIGURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifembed{}{
+\newpage
+
+\input{figures.tex}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SUPPORTING INFO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{page}{1}
+\setcounter{section}{0}
+
+\singlespacing
+
+\section*{Supporting Information}
+% PUT MAIN TEXT CITATION HERE
+\hangindent=1cm
+\noindent Title: \msTitle
+
+\bigskip
+{\noindent Authors: \msAuthor}
+
+\newpage
+\singlespacing
+
+\input{si-body.tex}
+\clearpage
+
+\input{si-tables.tex}
+\clearpage
+
+\input{si-figures.tex}
+
+%TC:endignore
+
+\end{document}
