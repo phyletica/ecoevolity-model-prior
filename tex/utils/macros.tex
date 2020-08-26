@@ -1,0 +1,71 @@
+% \newcommand{\jedit}[2]{\sout{#1}{\color{red}{#2}}}
+\newcommand{\jedit}[2]{#2}
+\newcommand{\jcomment}[1]{({\color{pgreen}{JRO's comment:}} \textbf{\color{pgreen}{#1}})}
+
+\newcommand{\citationNeeded}{\textcolor{magenta}{\textbf{[CITATION NEEDED]}}\xspace}
+\newcommand{\tableNeeded}{\textcolor{magenta}{\textbf{[TABLE NEEDED]}}\xspace}
+\newcommand{\figureNeeded}{\textcolor{magenta}{\textbf{[FIGURE NEEDED]}}\xspace}
+\newcommand{\highLight}[1]{\textcolor{magenta}{\MakeUppercase{#1}}}
+
+\newcommand{\fig}{Figure\xspace}
+\newcommand{\figs}{Figures\xspace}
+\newcommand{\tbl}{Table\xspace}
+\newcommand{\tbls}{Tables\xspace}
+
+\newcommand{\datasets}{data sets\xspace}
+\newcommand{\dataset}{data set\xspace}
+
+\newcommand{\ignore}[1]{}
+\newcommand{\addTail}[1]{\textit{#1}.---}
+\newcommand{\super}[1]{\ensuremath{^{\textrm{#1}}}}
+\newcommand{\sub}[1]{\ensuremath{_{\textrm{#1}}}}
+\newcommand{\dC}{\ensuremath{^\circ{\textrm{C}}}}
+\newcommand{\tn}{\tabularnewline}
+\newcommand{\spp}[1]{\textit{#1}}
+
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
+
+\newcommand{\change}[2]{{\color{red} #2}\xspace}
+\newcommand{\thought}[1]{\textcolor{purple}{THOUGHT: #1}}
+
+\newcommand{\widthFigure}[5]{\begin{figure}[htbp]
+\begin{center}
+    \includegraphics[width=#1\textwidth]{#2}
+    \captionsetup{#3}
+    \caption{#4}
+    \label{#5}
+    \end{center}
+    \end{figure}}
+
+\newcommand{\heightFigure}[5]{\begin{figure}[htbp]
+\begin{center}
+    \includegraphics[height=#1\textheight]{#2}
+    \captionsetup{#3}
+    \caption{#4}
+    \label{#5}
+    \end{center}
+    \end{figure}}
+
+\newcommand{\smartFigure}[5]{%
+    \begin{figure}[htbp]
+        \begin{center}
+            \includegraphics[width=\textwidth,height=#1\textheight,keepaspectratio]{#2}
+            \captionsetup{#3}
+            \caption{#4}
+            \label{#5}
+        \end{center}
+    \end{figure}
+}
+
+\newcommand{\mFigure}[4]{\smartFigure{#1}{#2}{listformat=figList}{#3}{#4}\clearpage}
+\newcommand{\embedHeightFigure}[4]{\heightFigure{#1}{#2}{listformat=figList}{#3}{#4}}
+\newcommand{\embedWidthFigure}[4]{\widthFigure{#1}{#2}{listformat=figList}{#3}{#4}}
+\newcommand{\siFigure}[4]{\smartFigure{#1}{#2}{name=Figure S, labelformat=noSpace, listformat=sFigList}{#3}{#4}\clearpage}
+
+%% macro to make long strings breakable over lines
+\makeatletter
+\def\breakable#1{\xHyphen@te#1$\unskip}
+\def\xHyphen@te{\@ifnextchar${\@gobble}{\sw@p{\allowbreak{}\xHyphen@te}}}
+% \def\xHyphen@te{\@ifnextchar${\@gobble}{\sw@p{\hskip 0pt plus 1pt\xHyphen@te}}}
+\def\sw@p#1#2{#2#1}
+\makeatother

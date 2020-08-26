@@ -1,0 +1,72 @@
+\pdfpagewidth = 8.5in
+\pdfpageheight = 11.0in
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\pagestyle{plain}
+\pagenumbering{arabic}
+\usepackage[nodisplayskipstretch]{setspace}
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[hyphens]{url}
+\usepackage{verbatim}
+\usepackage[title]{appendix}
+\usepackage{indentfirst}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{ragged2e}
+\usepackage{upgreek}
+\usepackage[T1]{fontenc}
+\usepackage[titles]{tocloft}
+\usepackage{xspace}
+% xcolor allows rowcolors for tables
+\usepackage[table,x11names,dvipsnames,table]{xcolor}
+% \usepackage[usenames]{color}
+\usepackage{ifthen}
+\usepackage{cancel}
+\usepackage{array}
+\usepackage{tabulary}
+\usepackage{authblk}
+\usepackage{tikz}
+\usepackage{pdflscape}
+\usepackage[normalem]{ulem}
+
+%% Set up color palettes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Color palette GreenOrange_6 from
+% https://jiffyclub.github.io/palettable/tableau/
+\definecolor{pgreen}     {RGB}{50,162,81}
+\definecolor{porange}    {RGB}{255,127,15}
+\definecolor{pblue}      {RGB}{60,183,204}
+\definecolor{pyellow}    {RGB}{255,217,74}
+\definecolor{pteal}      {RGB}{57,115,124}
+\definecolor{pauburn}    {RGB}{184,90,13}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{mygray}{gray}{0.9}
+
+\usepackage{hyperref}
+\hypersetup{pdfborder={0 0 0},
+            colorlinks=true,
+            % colorlinks=false,
+            urlcolor=porange,
+            linkcolor=pauburn,
+            citecolor=pteal}
+
+\usepackage[capitalize]{cleveref}
+\newcommand{\crefrangeconjunction}{--}
+
+% Set up line numbering; using lineno to number lines of paragraphs with
+% equations sanely
+\usepackage[right, mathlines]{lineno}
+\setlength\linenumbersep{1cm}
+\def\linenumberfont{\normalfont\scriptsize\sffamily}
+
+% Set up caption formatting
+\usepackage{subcaption}
+\usepackage[format=plain, labelsep=period, singlelinecheck=false, skip=4pt, font=sf]{caption}
+\DeclareCaptionLabelFormat{noSpace}{{#1}{#2}}
+\DeclareCaptionListFormat{figList}{Figure {#2}.}
+\DeclareCaptionListFormat{sFigList}{Figure S{#2}.}
+
+\newenvironment{mytitle}
+ {\parskip=0pt\par\nopagebreak\centering\LARGE\slshape}
+ {\par\noindent\ignorespacesafterend}
