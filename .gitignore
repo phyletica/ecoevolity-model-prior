@@ -15,6 +15,7 @@ __pycache__
 *.snm
 *.toc
 *.bcf
+*.pdf
 bin/dpprobs
 bin/ecoevolity
 bin/nex2yml
