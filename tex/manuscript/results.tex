@@ -4,7 +4,7 @@ Summary Statistics
 Before looking at the results here are some summary statistics that we need to 
 understand to interpret the results. Coverage or credible sties is the probability
 of the number events within the credible sites. The probability of estimated number 
-of events equal to the true number of events which basially tells us how often we 
+of events equal to the true number of events which basicially tells us how often we 
 are right. Median posterior probability is the true number of events given the data 
 and this summary statistics tells us how much support we have for the correct answer.
 Root mean square error quantifies how much error is there and comparing the true 
@@ -14,11 +14,26 @@ We are going to look how well the hyper parameters are estimated. Dirichlet
 prior has as a single parameter called concentration parameter that tells how cluster 
 the process is. The result of estimated concentration verses true concentration plot
 shows that the true value is within 95% credible sites. Pitman-Yor prior has two 
-parameters(concentration parameter and discount parameter) the concentration plot 
-the estimated valuer verses the true value indicates that the true is also within 95%
+parameters(concentration parameter and discount parameter) the estimated value of 
+concentration verses the true value indicates that the true is also within 95%
 credible sites. The Uniform prior has split weight and the result of estimated value 
-verses the true values shows the true value is little less comparing to the other two 
+verses the true value shows the true value is little less comparing to the other two 
 priors but it's still within 94% credible sites.
+In this study, we are interested in divergence time and sharing divergence time and 
+everything else is nuisance parameters. For both divergence time and sharing divergence time 
+estimation we analyzed data with constant sites and without constant sites. First, we are going 
+to look at the results of divegence time estimation with constant sites. The models which generated 
+the data in rows and columns represent the models under which the data is analyzed. The true divergene 
+time is on x-axis and the estimated divergence time is on y-axis. The results of true divergence 
+time verses estimated divengence time show that all the three models (DP, PYP, and SW) performed
+equally well with very similiar coverage around 95%. Except for independent all others have truths 
+contianed in within that 95% credible interval. Independent is little lower because it's evolving 
+indepdently and we are not modleing that way. We haven't observed any patterns that differiate
+these 3 models. Root mean square errors are very similiar across all the models as well. 
+ 
+  
+
+ 
 
 
     
