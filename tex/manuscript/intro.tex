@@ -7,7 +7,7 @@ divergence time from the generated data. We generated data under 5 various ways 
 the models have estimated the divergence time and how well the models have estimted what population pairs belong to which divergence time. 
 
 Before looking at the genomic data we needed to assign prior probabilities to 3 models; how probable each model is. Dirichlet-process prior assigns prior 
-to a new category with probability of 1/a+1 or an exsiting category with probability of a/a+1. The concentration parameter makes the DP flexible
+to a new category with probability of 1/a+1 and an exsiting category with probability of a/a+1. The concentration parameter(a) makes the DP flexible
 because we can adjust the concentration parameter to fit our prior expectation. We can put a distribution on the concetration parameter and intergrate 
 over uncertainty about the prior probabilities of the divergence models. Pitman-Yor process prior is generalization of Dirichlet process. 
 There is a discount parameter(d) added in PYP and when d=0 PYP converges to DP. Drichlet has an exponential tail and the discount parameter gives the PYP flexibity
@@ -19,7 +19,9 @@ there are 10 divergence times and each population diverged indepedently. Simutan
 there is 1 shared event. And there is another config file which ignores the constant sites(characters). A total of 6 config files are specified to 
 stimulate the datasets. We used these 6 config files 4 times to generate scripts and then simulated 10 datasets under each of these 5 models with 5000,000
 characters. Then we decided to do another analysis with 4 varying datasets 5,000, 10,000, 50,000, and 100,000. All the datasets stimulated under 5 models 
-and then analyzed these datasets under 3 models (DP, PYP, and SW).
+and then analyzed these datasets under 3 models (DP, PYP, and SW).There are equal number of replicates for both analyses a total of 720 for each analysis. 
+ 
+
 
  
  
