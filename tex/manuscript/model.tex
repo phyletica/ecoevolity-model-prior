@@ -1,5 +1,5 @@
 Here we provide a summary of the model implemented in \ecoevolity; please see
-\citet{Oaks2018ecoevolity} adn \citet{Oaks2019codemog} for a full description.
+\citet{Oaks2018ecoevolity} and \citet{Oaks2019codemog} for a full description.
 
 Our model allows for an arbitrary number of two types of temporal comparisons:
 \begin{enumerate}
@@ -16,9 +16,10 @@ Our model allows for an arbitrary number of two types of temporal comparisons:
         sizes.
         We will refer to this as a \emph{divergence comparison}.
 \end{enumerate}
-For simplicity, hereforth we will only talk in terms of the timing of
-divergences among divergence comparions.
-However, everything also applies to demographic comparisons.
+For simplicity, we will use terminology related to the timing of divergences
+among divergence comparions.
+However, all of the theory discussed below also applies to demographic
+comparisons.
 
 The primary goal is to infer the temporal clustering of divergences across
 \ncomparisons comparisons.
@@ -29,8 +30,8 @@ is the number of ways we can assign \ncomparisons comparisons to
 $1, 2,  \ldots, \ncomparisons$ divergence times
 \citep[the Bell number;][]{Bell1934}.
 Below, we use \etimesets to represent the partitioning of comparisons to
-events, which we will also refer to as an ``event model,'' and \etimes to
-represent the unique times within \etimesets.
+divergence events, which we will also refer to as an ``divergence model,'' and
+\etimes to represent the unique divergence times within \etimesets.
 
 \subsection{Dirichlet-process (DP) prior}
 
@@ -51,7 +52,7 @@ When assigning the $i^{th}$ comparison, we assign it to its own event
 \end{equation}
 or we assign it to an existing event $x$ with probability
 \begin{equation}
-    \frac{n_x}{\concentration + n -1}.
+    \frac{n_x}{\concentration + i - 1}.
     \label{eq:dpexistingcat}
 \end{equation}
 where $n_x$ is the number of comparisons already assigned to event $x$.
@@ -63,28 +64,21 @@ where $n_x$ is the number of comparisons already assigned to event $x$.
 \citet{PitmanYor1997} generalized the Dirichlet process by adding a
 ``discount'' parameter (\discount) that can take values from 0--1.
 The rule governing the PYP is very similar to the DP.
-When assigning the $n^{th}$ comparison, we assign it to its own event
+When assigning the $i^{th}$ comparison, we assign it to its own event
 with probability
 \begin{equation}
-    \frac{\concentration + \nexistingcats \discount}{\concentration + n -1},
+    \frac{\concentration + \nexistingcats \discount}{\concentration + i - 1},
     \label{eq:pypnewcat}
 \end{equation}
 where \nexistingcats is the number of events that currently exist (i.e., that have at
 least one comparison assigned to it).
 Alternatively, we assign it to an existing event $x$ with probability
 \begin{equation}
-    \frac{n_x - \discount}{\concentration + n -1}.
+    \frac{n_x - \discount}{\concentration + i -1}.
     \label{eq:pypexistingcat}
 \end{equation}
 Notice, when $\discount = 0$, the PYP is equivalent to the DP.
 \end{linenomath}
-
-Under the PYP (and the special case of the DP), the order of the comparison
-does not affect the probability of the model.
-In other words, divergence models (\etimesets) that share the same integer
-partition (i.e., the same number of events with the same number of comparisons
-assigned to them) are equally probable.
-Hence, the comparisons are exchangeable under the PYP and DP priors.
 
 \subsection{Weighted-uniform prior}
 We have also implemented a uniform prior over divergence models, where we can
@@ -92,7 +86,7 @@ assume \emph{a priori} that every possible divergence model (\etimesets) is
 equally probable.
 Furthermore, we added a ``split weight'' parameter, which we denote as
 \splitweight, to provide flexibility on the prior probabilities of
-models with different number of events.
+models with different numbers of events.
 For a given model with \nevents divergence events, the relative probability
 of each model with $\nevents + 1$ events is \splitweight,
 and the relative probability of each model with $\nevents - 1$ events is
@@ -107,8 +101,33 @@ events is
 $\frac{1}{\splitweight{}^n}$.
 When $\splitweight = 1$, all divergence models are equally probable.
 
+\subsection{Approximating the posterior with MCMC}
+
+We use Markov chain Monte Carlo (MCMC) algorithms to sample from
+the joint posterior distribution of the divergence model (\etimesets),
+divergence times (\etimes), effective population sizes, and
+any mutation rate or substitution parameters
+\cite{Oaks2018ecoevolity,Oaks2019codemog}.
+Because \etimesets can differ in the number of divergence-time parameters, we
+need to use trans-dimensional MCMC algorithms to sample over all possbile
+divergence models.
+
+Under the PYP, and the special case of the DP, the order of the comparisons
+does not affect the probability of the model.
+In other words, divergence models (\etimesets) that share the same integer
+partition (i.e., the same number of events with the same number of comparisons
+assigned to them) are equally probable.
+Hence, the comparisons are exchangeable under the PYP and DP priors.
+This allows us to use the Gibbs sampling algorithm (Algorithm 8) of
+\citet{Neal2000} to update the \etimesets during the MCMC chain.
+
 Unlike the PYP and DP, where divergence events with the same
 integer partition were equally probably, under the
 WU prior, divergence events that share the same number of events (\nevents) are
 equally probable.
-This also means that the comparisons are not exchangeable under the WU prior.
+This means that the comparisons are not exchangeable under the WU prior, and
+thus Gibbs sampling will not work to sample \etimesets under the WU prior.
+Instead we use reversible-jump MCMC moves under the WU prior.
+
+\subsubsection{reversible-jump MCMC}
+Layout the rjMCMC moves here \ldots
