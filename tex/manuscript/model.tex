@@ -21,6 +21,21 @@ among divergence comparions.
 However, all of the theory discussed below also applies to demographic
 comparisons.
 
+For each comparison, we assume we have sampled unlinked biallelic characters;
+i.e., each character evolved along a gene tree that is independent of the
+other characters, conditional on the population history.
+We assume these characters evolved along their gene trees according to a
+finite-sites continuous time Markov chain model (CTMC).
+The equilibrium frequency (\gfreq) of the two character states can be
+estimated, making the CTMC model a two-state general time-reversible model
+\citep{Tavare1986}.
+Alternatively, if the frequencies are constrained to be equal, the CTMC model
+is a two-state analog of the ``JC69'' model of nucleotide substitution
+\citep{JC1969}.
+For the divergence times among comparisons to be comparable, the relative or
+absolute mutation rate (\murate) or each pair must be specified or given a
+prior probability distribution.
+
 The primary goal is to infer the temporal clustering of divergences across
 \ncomparisons comparisons.
 At one extreme, all \ncomparisons could have diverged at the same time,
@@ -103,10 +118,10 @@ When $\splitweight = 1$, all divergence models are equally probable.
 
 \subsection{Approximating the posterior with MCMC}
 
-We use Markov chain Monte Carlo (MCMC) algorithms to sample from
-the joint posterior distribution of the divergence model (\etimesets),
-divergence times (\etimes), effective population sizes, and
-any mutation rate or substitution parameters
+We use Markov chain Monte Carlo (MCMC) algorithms to sample from the joint
+posterior distribution of the divergence model (\etimesets), divergence times
+(\etimes), effective population sizes (\epopsize), and any mutation rate
+(\murate) or substitution parameters (\gfreq)
 \cite{Oaks2018ecoevolity,Oaks2019codemog}.
 Because \etimesets can differ in the number of divergence-time parameters, we
 need to use trans-dimensional MCMC algorithms to sample over all possbile
