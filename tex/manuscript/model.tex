@@ -123,10 +123,14 @@ posterior distribution of the divergence model (\etimesets), divergence times
 (\etimes), effective population sizes (\epopsize), and any mutation rate
 (\murate) or substitution parameters (\gfreq)
 \cite{Oaks2018ecoevolity,Oaks2019codemog}.
-Because \etimesets can differ in the number of divergence-time parameters, we
-need to use trans-dimensional MCMC algorithms to sample over all possbile
-divergence models.
+We use a suite of univariate and multivariate Metropolis-Hastings moves to
+update the parameters of the model \citep{Metropolis1953,Hastings1970}.
+The latter improve mixing in the face of correlations among divergence times,
+population sizes, and mutation rates \citep[see][]{Oaks2018ecoevolity}.
 
+Because \etimesets can differ in the number of divergence-time parameters, we
+also need to use trans-dimensional MCMC algorithms to sample over all possbile
+divergence models.
 Under the PYP, and the special case of the DP, the order of the comparisons
 does not affect the probability of the model.
 In other words, divergence models (\etimesets) that share the same integer
