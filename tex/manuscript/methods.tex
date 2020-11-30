@@ -1,1 +1,68 @@
-We did some simulations \ldots
+\subsection{Analyses of simulated data}
+
+We used \simcoevolity and \ecoevolity of the \ecoevolity software
+package
+\citep[Version 0.3.2 Commit c1685dfa][]{Oaks2018ecoevolity}
+to simulate and analyze \datasets, respectively.
+Each simulated \dataset comprised biallelic characters from 2 diploid
+individuals (4 genomes) sampled per population from 10 pairs of populations
+(i.e., 10 divergence comparisons).
+We assumed the mutation rates were equal and 1 across the 10 pairs of
+populations, such that time and effective population sizes are scaled by the
+mutation rate.
+The times of divergence events were exponentially distributed with a mean 0.05
+expected subsitutions per site.
+The mutation-scaled effective sizes ($\epopsize\murate$) of the descendant
+populations were gamma-distributed with a shape of 20 and mean of 0.001,
+and the size of the ancestral population relative to the mean of its
+descendants was gamma distributed with a shape of 50 and mean of 1.
+These distributions were also used as priors when the simulated \datasets were
+analyzed with \ecoevolity.
+
+
+When analyzing each simulated \dataset with \ecoevolity,
+we ran four MCMC chains for 75,000 generations with a sample taken every 50
+generations.
+We summarized the last 1000 samples from each chain for a total of 4000 MCMC
+samples to approximate the posterior distribution for every simulated \dataset.
+From the four chains of each analysis, we calculated the potential
+scale reduction factor \citep[PSRF; the square root of Equation 1.1
+in][]{Brooks1998} and effective sample size \citep[ESS;][]{Gong2014} for all
+continuous parameters and the log likelihood using
+\pycoevolity (Version 0.2.6 Commit 27cb15e5).
+When plotting results, we highlight any simulation replicates that have a
+$\textrm{PSRF} > 1.2$.
+
+\subsubsection{Comparing three models of shared evolutionary events}
+
+
+We simulated 720 \datasets comprised of 500,000 biallelic characters under five
+different models of how divergences are clustered across 10 pairs of
+populations.
+\begin{description}
+    \item[Simultaneous] All 10 pairs of populations diverged at the same time
+        (which was exponentially distributed).
+    \item[Independent] All 10 pairs of populations diverged independently.
+    \item[DP] Divergence times distributed according to a Dirichlet process
+        where the concentration parameter is distributed as
+        $\concentration \sim \dgamma{2}{5.42}$.
+    \item[PYP] Divergence times distributed according to a Pitman-Yor process
+        where the concentration and discount parameters are distributed as
+        $\concentration \sim \dgamma{2}{3.58}$
+        and
+        $\discount \sim \dbeta{1}{4}$.
+    \item[\wunif] Divergence times distributed according to a
+        weighted-uniform distribution
+        where the split-weight parameter is distributed as
+        $\splitweight \sim \dgamma{0.55}{4.026}$.
+\end{description}
+The hyperpriors on the parameters of the DP, PYP, and \wunif
+were selected such that the mean number of divergence events
+is approximately 5.5
+and the probability of each possible number of events
+is similar among the three models.
+% Each simulated \dataset comprised 500,000 unlinked biallelic characters from 10
+% diploid individuals (20 genomes) sampled per population from three demographic
+% comparisons.
+
+\subsubsection{Comparing across \dataset sizes}

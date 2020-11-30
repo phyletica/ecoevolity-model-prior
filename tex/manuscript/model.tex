@@ -16,25 +16,24 @@ Our model allows for an arbitrary number of two types of temporal comparisons:
         sizes.
         We will refer to this as a \emph{divergence comparison}.
 \end{enumerate}
-For simplicity, we will use terminology related to the timing of divergences
-among divergence comparions.
-However, all of the theory discussed below also applies to demographic
-comparisons.
+For simplicity, we will use terminology related to divergence comparions, but
+all of the theory discussed below also applies to demographic comparisons.
 
 For each comparison, we assume we have sampled unlinked biallelic characters;
 i.e., each character evolved along a gene tree that is independent of the
 other characters, conditional on the population history.
 We assume these characters evolved along their gene trees according to a
-finite-sites continuous time Markov chain model (CTMC).
+finite-sites continuous-time Markov chain model (CTMC).
 The equilibrium frequency (\gfreq) of the two character states can be
-estimated, making the CTMC model a two-state general time-reversible model
+estimated, making the CTMC model a two-state, general, time-reversible model
 \citep{Tavare1986}.
-Alternatively, if the frequencies are constrained to be equal, the CTMC model
-is a two-state analog of the ``JC69'' model of nucleotide substitution
+Alternatively, if the state frequencies are constrained to be equal, the CTMC
+model is a two-state analog of the ``JC69'' model of nucleotide substitution
 \citep{JC1969}.
-For the divergence times among comparisons to be comparable, the relative or
-absolute mutation rate (\murate) or each pair must be specified or given a
-prior probability distribution.
+For the divergence times to be comparable among comparisons, the relative or
+absolute mutation rate (\murate) or each pair must be specified or given an
+informative prior probability distribution.
+\citep{Oaks2018ecoevolity,Oaks2019codemog}.
 
 The primary goal is to infer the temporal clustering of divergences across
 \ncomparisons comparisons.
@@ -45,7 +44,7 @@ is the number of ways we can assign \ncomparisons comparisons to
 $1, 2,  \ldots, \ncomparisons$ divergence times
 \citep[the Bell number;][]{Bell1934}.
 Below, we use \etimesets to represent the partitioning of comparisons to
-divergence events, which we will also refer to as an ``divergence model,'' and
+divergence events, which we will also refer to as a ``divergence model,'' and
 \etimes to represent the unique divergence times within \etimesets.
 
 \subsection{Dirichlet-process (DP) prior}
@@ -78,7 +77,7 @@ where $n_x$ is the number of comparisons already assigned to event $x$.
 \begin{linenomath}
 \citet{PitmanYor1997} generalized the Dirichlet process by adding a
 ``discount'' parameter (\discount) that can take values from 0--1.
-The rule governing the PYP is very similar to the DP.
+% The rule governing the PYP is very similar to the DP.
 When assigning the $i^{th}$ comparison, we assign it to its own event
 with probability
 \begin{equation}
@@ -95,12 +94,12 @@ Alternatively, we assign it to an existing event $x$ with probability
 Notice, when $\discount = 0$, the PYP is equivalent to the DP.
 \end{linenomath}
 
-\subsection{Weighted-uniform prior}
+\subsection{Weighted-uniform (\wunif) prior}
 We have also implemented a uniform prior over divergence models, where we can
 assume \emph{a priori} that every possible divergence model (\etimesets) is
 equally probable.
 Furthermore, we added a ``split weight'' parameter, which we denote as
-\splitweight, to provide flexibility on the prior probabilities of
+\splitweight, to provide flexibility for the prior probabilities of
 models with different numbers of events.
 For a given model with \nevents divergence events, the relative probability
 of each model with $\nevents + 1$ events is \splitweight,
@@ -121,7 +120,7 @@ When $\splitweight = 1$, all divergence models are equally probable.
 We use Markov chain Monte Carlo (MCMC) algorithms to sample from the joint
 posterior distribution of the divergence model (\etimesets), divergence times
 (\etimes), effective population sizes (\epopsize), and any mutation rate
-(\murate) or substitution parameters (\gfreq)
+(\murate) or substitution parameters (\gfreq) that are free to vary
 \cite{Oaks2018ecoevolity,Oaks2019codemog}.
 We use a suite of univariate and multivariate Metropolis-Hastings moves to
 update the parameters of the model \citep{Metropolis1953,Hastings1970}.
@@ -129,7 +128,7 @@ The latter improve mixing in the face of correlations among divergence times,
 population sizes, and mutation rates \citep[see][]{Oaks2018ecoevolity}.
 
 Because \etimesets can differ in the number of divergence-time parameters, we
-also need to use trans-dimensional MCMC algorithms to sample over all possbile
+also need to use trans-dimensional MCMC algorithms to sample over all possible
 divergence models.
 Under the PYP, and the special case of the DP, the order of the comparisons
 does not affect the probability of the model.
@@ -142,11 +141,12 @@ This allows us to use the Gibbs sampling algorithm (Algorithm 8) of
 
 Unlike the PYP and DP, where divergence events with the same
 integer partition were equally probably, under the
-WU prior, divergence events that share the same number of events (\nevents) are
+\wunif prior, divergence events that share the same number of events (\nevents) are
 equally probable.
-This means that the comparisons are not exchangeable under the WU prior, and
-thus Gibbs sampling will not work to sample \etimesets under the WU prior.
-Instead we use reversible-jump MCMC moves under the WU prior.
+This means that the comparisons are not exchangeable under the \wunif prior,
+and thus Gibbs sampling will not work to sample \etimesets under the \wunif
+prior.
+Instead we use reversible-jump MCMC moves under the \wunif prior.
 
 \subsubsection{reversible-jump MCMC}
 Layout the rjMCMC moves here \ldots
