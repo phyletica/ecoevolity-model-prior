@@ -1,5 +1,7 @@
 \subsection{Analyses of simulated data}
 
+\subsubsection{Comparing three models of shared evolutionary events}
+
 Summary Statistics
 Before looking at the results here are some summary statistics that we need to 
 understand in order to interpret the results. Coverage or credible sites is the probability
@@ -13,12 +15,12 @@ Hyper Parameter Estimation
 We are going to look how well the hyper parameters are estimated. Dirichlet
 prior has as a single parameter called concentration parameter that tells how cluster 
 the process is. The result of estimated concentration versus true concentration plot
-shows that the true value is within 95% credible sites. Pitman-Yor prior has two 
+shows that the true value is within 95\% credible sites. Pitman-Yor prior has two 
 parameters(concentration parameter and discount parameter) the estimated value of 
-concentration versus the true value indicates that the true is also within 95%
+concentration versus the true value indicates that the true is also within 95\%
 credible sites. The Uniform prior has split weight and the result of estimated value 
 versus the true value shows the true value is little less comparing to the other two 
-priors but it's still within 94% credible sites.
+priors but it's still within 94\% credible sites.
 In this study, we are interested in divergence time and sharing divergence time and 
 everything else is nuisance parameters. For both divergence time and sharing divergence time 
 estimation we analyzed data with constant sites and without constant sites. First, we are going 
@@ -26,8 +28,8 @@ to look at the results of divegence time estimation with constant sites. The mod
 the data in rows and columns represent the models under which the data is analyzed. The true divergene 
 time is on x-axis and the estimated divergence time is on y-axis. The results of true divergence 
 time versus estimated divengence time show that all the three models (DP, PYP, and SW) performed
-equally well with very similiar coverage around 95%. Except for independent all others have truths 
-contianed in within that 95% credible interval. Independent is little lower because it's evolving 
+equally well with very similiar coverage around 95\%. Except for independent all others have truths 
+contianed in within that 95\% credible interval. Independent is little lower because it's evolving 
 indepdently and we are not modeling that way. We haven't observed any patterns that differiate
 these 3 models. Root mean square errors are very similiar across all the models as well. 
 With variable sites only there are more variation in estimates when throwing the invariable 
@@ -48,7 +50,7 @@ indepdent model. The models are doing very well and they got half of time the co
 ones got wrong are not that far away from the true and they are 8 or 9 event. PYP seems like 
 doing little better in terms of how often ge tthe correct answer and also the confident in that 
 correct asnwer. The median posterior probability for k=10 getting the correct answer
-given the data is 47% and it's little lower for the other models. The scenario of co-divergence
+given the data is 47\% and it's little lower for the other models. The scenario of co-divergence
 is an easy scenario and it has the proability of 1 for true number of event versus estimated number of 
 event. When the true 1 the models are doing very well estimating the number of divergence time. But 
 when the truth is 10 everything is diverging indepdently then it's more difficult scenario for 
@@ -60,12 +62,10 @@ likelihood for the missing invariable characters is corrected in Ecoevolity. PYP
 dealing with the most difficult scenario all the 10 pairs are diverging independetly as well. Both in
 terms of covrage and getting the correct answer is much higher than the other two models. 
 
-#### 
-Resutls for varying datasets: 
+\subsubsection{Comparing DP, PYP, and \wunif across \dataset sizes}
 
-#### 
-Nuisane Parameters
-
+% #### 
+% Nuisane Parameters
 
 
 \subsection{Empirical application?}
