@@ -150,3 +150,28 @@ Instead we use reversible-jump MCMC moves under the \wunif prior.
 
 \subsubsection{reversible-jump MCMC}
 Layout the rjMCMC moves here \ldots
+
+
+\subsection{Software implementation and project documentation}
+
+The models outlined above are implemented in the open-source \cpp package,
+\ecoevolity, which is freely available from
+\url{https://github.com/phyletica/ecoevolity}, with documentation available
+at
+\url{http://phyletica.org/ecoevolity/}.
+The test suite of \ecoevolity
+validates the likelihood calculations and that the MCMC algorithms sample from
+the expected prior distribution when data are ignored.
+All of our analyses were performed with
+Commit c1685dfa
+of the \ecoevolity software package,
+and all of the functionality included in this commit is part of
+the release of Version \highLight{X.X.X}.
+A detailed history of this project, including all of the scripts
+needed to produce our results, is available at
+\url{https://github.com/phyletica/ecoevolity-model-prior}
+(\highLight{Cite Zenodo archive of repo here}).
+% \citep{Anamza2020zenodo}.
+The project repository includes detailed documentation and tutorials of our
+work, which is hosted as a website at
+\url{http://phyletica.org/ecoevolity-model-prior/}.
