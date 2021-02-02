@@ -3,7 +3,7 @@ go there and sign up for a free account.
 Log in to your |github|_ account, and go to the "Settings" for your account
 (there should be a drop down near the top right corner of the |github|_ page,
 with a "Settings" option).
-Along the right side of your settings page, there should be a "SSH and GPG
+Along the left side of your settings page, there should be a "SSH and GPG
 keys" link; click on this.
 
 Open a shell (terminal) session on your computer and enter::
