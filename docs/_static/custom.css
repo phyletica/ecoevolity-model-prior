@@ -5,3 +5,8 @@ div.footer {
     color: {{ theme_footer_text }};
     text-align: center;
 }
+
+div.sphinxsidebar {
+    max-height: 100%;
+    overflow-y: auto;
+}
