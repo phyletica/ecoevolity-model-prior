@@ -9,8 +9,6 @@
 \input{../utils/macros.tex}
 \input{../utils/notation.tex}
 
-\newcommand{\ifembed}[2]{#1}
-% \newcommand{\ifembed}[2]{#2}
 \newcommand{\ifdoublespacing}[2]{#1}
 % \newcommand{\ifdoublespacing}[2]{#2}
 \newcommand{\iflinenumbers}[2]{#1}
@@ -456,6 +454,9 @@ Alabama Supercomputer Authority.
 This paper is contribution number \highLight{XXX} of the Auburn University
 Museum of Natural History.
 
+
+%TC:ignore
+
 \bibliographystyle{../bib/evolution}
 \bibliography{../bib/references}
 
@@ -464,22 +465,6 @@ Museum of Natural History.
 \end{linenumbers}
 }{}
 
-%% TABLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifembed{}{
-\newpage
-\singlespacing
-
-\input{tables.tex}
-
-\clearpage
-}
-
-%% FIGURES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifembed{}{
-\newpage
-
-\input{figures.tex}
-}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% SUPPORTING INFO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -492,7 +477,6 @@ Museum of Natural History.
 \singlespacing
 
 \section*{Supporting Information}
-% PUT MAIN TEXT CITATION HERE
 \hangindent=1cm
 \noindent Title: \msTitle
 
