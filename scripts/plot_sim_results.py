@@ -2052,7 +2052,7 @@ def generate_model_plot_grid(
             if force_shared_spines:
                 if show_coverage:
                     ax.text(0.98, lower_text_y,
-                            "\\scriptsize$p(k \\in \\textrm{{\\sffamily CS}}) = {0:.3f}$".format(
+                            "\\scriptsize$p(K \\in \\textrm{{\\sffamily CS}}) = {0:.3f}$".format(
                                     p_nevents_within_95_cred),
                             horizontalalignment = "right",
                             verticalalignment = lower_text_valign,
@@ -2064,7 +2064,7 @@ def generate_model_plot_grid(
                                 'pad': 2}
                             )
                 ax.text(0.03, upper_text_y,
-                        "\\scriptsize$p(\\hat{{k}} = k) = {0:.3f}$".format(
+                        "\\scriptsize$p(\\hat{{K}} = K) = {0:.3f}$".format(
                                 p_correct),
                         horizontalalignment = "left",
                         verticalalignment = upper_text_valign,
@@ -2077,7 +2077,7 @@ def generate_model_plot_grid(
                         )
                 # ax.text(0.98, upper_text_y,
                 ax.text(0.03, upper_text_y - 0.125,
-                        "\\scriptsize$\\widetilde{{p(k|\\mathbf{{D}})}} = {0:.3f}$".format(
+                        "\\scriptsize$\\widetilde{{p(K|\\mathbf{{D}})}} = {0:.3f}$".format(
                                 median_true_nevents_prob),
                         horizontalalignment = "left",
                         verticalalignment = upper_text_valign,
@@ -2091,7 +2091,7 @@ def generate_model_plot_grid(
             else:
                 if show_coverage:
                     ax.text(0.02, lower_text_y,
-                            "\\scriptsize$p(k \\in \\textrm{{\\sffamily CS}}) = {0:.3f}$".format(
+                            "\\scriptsize$p(K \\in \\textrm{{\\sffamily CS}}) = {0:.3f}$".format(
                                     p_nevents_within_95_cred),
                             horizontalalignment = "left",
                             verticalalignment = lower_text_valign,
@@ -2103,7 +2103,7 @@ def generate_model_plot_grid(
                             #     'pad': 0}
                             )
                 ax.text(0.02, upper_text_y,
-                        "\\scriptsize$p(\\hat{{k}} = k) = {0:.3f}$".format(
+                        "\\scriptsize$p(\\hat{{K}} = K) = {0:.3f}$".format(
                                 p_correct),
                         horizontalalignment = "left",
                         verticalalignment = upper_text_valign,
@@ -2115,7 +2115,7 @@ def generate_model_plot_grid(
                         #     'pad': 0}
                         )
                 ax.text(0.98, upper_text_y,
-                        "\\scriptsize$\\widetilde{{p(k|\\mathbf{{D}})}} = {0:.3f}$".format(
+                        "\\scriptsize$\\widetilde{{p(K|\\mathbf{{D}})}} = {0:.3f}$".format(
                                 median_true_nevents_prob),
                         horizontalalignment = "right",
                         verticalalignment = upper_text_valign,
@@ -2246,13 +2246,13 @@ def generate_model_plot_grid(
 
     if plot_as_histogram:
         fig.text(0.5, 0.001,
-                "Estimated number of events ($\\hat{{k}}$)",
+                "Estimated number of events ($\\hat{{K}}$)",
                 horizontalalignment = "center",
                 verticalalignment = "bottom",
                 size = 18.0)
     else:
         fig.text(0.5, 0.001,
-                "True number of events ($k$)",
+                "True number of events ($K$)",
                 horizontalalignment = "center",
                 verticalalignment = "bottom",
                 size = 18.0)
@@ -2260,7 +2260,7 @@ def generate_model_plot_grid(
         if plot_as_histogram:
             y_label = "Frequency"
         else:
-            y_label = "Estimated number of events ($\\hat{{k}}$)"
+            y_label = "Estimated number of events ($\\hat{{K}}$)"
     fig.text(0.005, 0.5,
             y_label,
             horizontalalignment = "left",
@@ -2441,7 +2441,7 @@ def generate_model_plot(
                     )
         else:
             ax.text(0.98, lower_annotation_y,
-                    "$p(k \\in \\textrm{{\\sffamily CS}}) = {0:.3f}$".format(
+                    "$p(K \\in \\textrm{{\\sffamily CS}}) = {0:.3f}$".format(
                             p_nevents_within_95_cred),
                     horizontalalignment = "right",
                     verticalalignment = "bottom",
@@ -2468,7 +2468,7 @@ def generate_model_plot(
                     )
         else:
             ax.text(0.02, upper_annotation_y,
-                    "$p(\\hat{{k}} = k) = {0:.3f}$".format(
+                    "$p(\\hat{{K}} = K) = {0:.3f}$".format(
                             p_correct),
                     horizontalalignment = "left",
                     verticalalignment = "bottom",
@@ -2495,7 +2495,7 @@ def generate_model_plot(
                     )
         else:
             ax.text(0.98, upper_annotation_y,
-                    "$\\widetilde{{p(k|\\mathbf{{D}})}} = {0:.3f}$".format(
+                    "$\\widetilde{{p(K|\\mathbf{{D}})}} = {0:.3f}$".format(
                             median_true_nevents_prob),
                     horizontalalignment = "right",
                     verticalalignment = "bottom",
@@ -2512,7 +2512,7 @@ def generate_model_plot(
                     # labelpad = 8.0,
                     fontsize = xy_label_size)
         else:
-            ax.set_xlabel("True \\# of events ($k$)",
+            ax.set_xlabel("True \\# of events ($K$)",
                     # labelpad = 8.0,
                     fontsize = xy_label_size)
     if include_y_label:
@@ -2521,7 +2521,7 @@ def generate_model_plot(
                     labelpad = 8.0,
                     fontsize = xy_label_size)
         else:
-            ax.set_ylabel("MAP \\# of events ($\\hat{{k}}$)",
+            ax.set_ylabel("MAP \\# of events ($\\hat{{K}}$)",
                     labelpad = 8.0,
                     fontsize = xy_label_size)
     if plot_title:
