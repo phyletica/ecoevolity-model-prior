@@ -1,3 +1,5 @@
+The website for this project is <http://phyletica.org/ecoevolity-model-prior>
+
 # Table of Contents
 
 -   [Overview](#overview)
