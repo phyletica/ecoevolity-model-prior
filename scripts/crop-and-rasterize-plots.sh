@@ -15,7 +15,8 @@ do
     
     echo "Cropping $f"
     n=${f/\.pdf/-cropped\.pdf}
-    pdfcrop --margins 20 $f $n
+    # pdfcrop --margins 20 $f $n
+    pdfcrop $f $n
 done
 
 paths="$(ls ../results/plots/*-nevents-cropped.pdf)"
