@@ -23,6 +23,7 @@ tex_font_settings = {
         "font.family": "sans-serif",
         "text.latex.preamble" : [
                 "\\usepackage[T1]{fontenc}",
+                "\\usepackage{amssymb}",
                 "\\usepackage[cm]{sfmath}",
                 ]
 }
@@ -31,12 +32,22 @@ mpl.rcParams.update(tex_font_settings)
 
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
+from matplotlib import cm
 import scipy.stats
 import numpy
 
 pauburn = (184 / 255.0, 90 / 255.0, 13 / 255.0)
 pblue = (60 / 255.0, 183 / 255.0,   204 / 255.0)
 pteal = (57 / 255.0, 115 / 255.0, 124 / 255.0)
+
+viridis_cm = cm.get_cmap("viridis")
+viridis_palette = {}
+for i in range(5, 100, 5):
+    viridis_palette[i] = viridis_cm(i / 100)
+
+color_dp = viridis_palette[15]
+color_pyp = viridis_palette[50]
+color_wu = viridis_palette[90]
 
 class BoxData(object):
     def __init__(self, values = [],
@@ -52,6 +63,9 @@ class BoxData(object):
         self._lower = None
         self._upper = None
         self._colors = None
+        self._coverage = None
+        self._rate_correct = None
+        self._support = None
         if lower:
             assert len(values) == len(lower)
             self._lower = lower
@@ -109,6 +123,61 @@ class BoxData(object):
     def has_ci(self):
         return bool(self.lower) and bool(self.upper)
 
+    def _get_coverage(self):
+        return self._coverage
+    coverage = property(_get_coverage)
+
+    def _get_rate_correct(self):
+        return self._rate_correct
+    rate_correct = property(_get_rate_correct)
+
+    def _get_support(self):
+        return self._support
+    support = property(_get_support)
+
+    def _get_mean_support(self):
+        mean_true_model_prob = []
+        for post_probs in self.support:
+            mean_true_model_prob.append(
+                    sum(post_probs) / len(post_probs))
+        return mean_true_model_prob
+    mean_support = property(_get_mean_support)
+
+    def _get_median_support(self):
+        median_true_model_prob = []
+        for post_probs in self.support:
+            median_true_model_prob.append(
+                    pycoevolity.stats.median(post_probs))
+        return median_true_model_prob
+    median_support = property(_get_median_support)
+
+    def _calc_model_summary(self, results):
+        if not results:
+            return
+        self._coverage = []
+        self._rate_correct = []
+        for res in results:
+            true_model = tuple(x for x in res["true_model"])
+            map_model = tuple(x for x in res["map_model"])
+            true_model_cred_levels = tuple(float(x) for x in res["true_model_cred_level"])
+            assert len(true_model) == len(true_model_cred_levels)
+            assert len(true_model) == len(map_model)
+
+            true_model_probs = tuple(float(x) for x in res["true_model_p"])
+            assert len(true_model) == len(true_model_probs)
+
+            model_within_95_cred = 0
+            ncorrect = 0
+            for i in range(len(true_model)):
+                if true_model_cred_levels[i] <= 0.95:
+                    model_within_95_cred += 1
+                if true_model[i] == map_model[i]:
+                    ncorrect += 1
+            p_model_within_95_cred = model_within_95_cred / float(len(true_model))
+            p_correct = ncorrect /  float(len(true_model))
+            self._coverage.append(p_model_within_95_cred)
+            self._rate_correct.append(p_correct)
+
     @classmethod
     def init_model_distance_v_nevents(cls, results,
             estimator_prefix = "mean",
@@ -121,22 +190,27 @@ class BoxData(object):
         vals = [[] for l in labels]
         lower = [[] for l in labels]
         upper = [[] for l in labels]
+        support = [[] for l in labels]
 
         for sim_index in range(nreplicates):
             v = float(results["{0}_model_distance".format(estimator_prefix)][sim_index])
             ci_lower = float(results["eti_95_lower_model_distance"][sim_index])
             ci_upper = float(results["eti_95_upper_model_distance"][sim_index])
             nevents = int(results["true_num_events"][sim_index])
+            pp = float(results["true_model_p"][sim_index])
             vals[nevents - 1].append(v)
             lower[nevents - 1].append(ci_lower)
             upper[nevents - 1].append(ci_upper)
+            support[nevents - 1].append(pp)
         bd._labels = labels
         bd._values = vals
         bd._lower = lower
         bd._upper = upper
+        bd._support = support
         if colors:
             assert len(self._values) == len(colors)
             self._colors = colors
+        bd._calc_model_summary([results])
         return bd
 
     @classmethod
@@ -151,6 +225,7 @@ class BoxData(object):
         vals = [[] for l in labels]
         lower = [[] for l in labels]
         upper = [[] for l in labels]
+        support = [[] for l in labels]
 
         for label_index, res in enumerate(results):
             nreplicates = len(res["true_model"])
@@ -158,13 +233,17 @@ class BoxData(object):
                 v = float(res["{0}_model_distance".format(estimator_prefix)][sim_index])
                 ci_lower = float(res["eti_95_lower_model_distance"][sim_index])
                 ci_upper = float(res["eti_95_upper_model_distance"][sim_index])
+                pp = float(res["true_model_p"][sim_index])
                 vals[label_index].append(v)
                 lower[label_index].append(ci_lower)
                 upper[label_index].append(ci_upper)
+                support[label_index].append(pp)
+
         bd._labels = labels
         bd._values = vals
         bd._lower = lower
         bd._upper = upper
+        bd._support = support
         if colors:
             assert len(bd._values) == len(colors)
             bd._colors = colors
@@ -172,6 +251,7 @@ class BoxData(object):
             bd._legend_colors = legend_colors
         if legend_labels:
             bd._legend_labels = legend_labels
+        bd._calc_model_summary(results)
         return bd
 
     @classmethod
@@ -1600,7 +1680,334 @@ def generate_violin_grid(
 
     plot_path = os.path.join(plot_dir,
             "{0}-violin.pdf".format(plot_file_prefix))
-    plt.savefig(plot_path, dpi=600)
+    plt.savefig(plot_path) # , dpi=600)
+    _LOG.info("Violin plots written to {0!r}".format(plot_path))
+
+
+def generate_model_performance_grid(
+        data_grid,
+        plot_file_prefix,
+        column_labels = None,
+        column_label_size = 18.0,
+        plot_width = 1.9,
+        plot_height = 1.8,
+        pad_left = 0.12,
+        pad_right = 0.995,
+        pad_bottom = 0.04,
+        pad_top = 0.96,
+        y_label_size = 18.0,
+        force_shared_y_range = True,
+        force_shared_spines = True,
+        x_tick_rotation = None,
+        show_means = True,
+        show_mean_bars = False,
+        show_sample_sizes = False,
+        show_support_summary = True,
+        show_point_summaries = True,
+        show_legend = False,
+        use_medians = True,
+        plot_dir = project_util.PLOT_DIR
+        ):
+    if force_shared_spines:
+        force_shared_y_range = True
+
+    if column_labels:
+        assert len(column_labels) == len(data_grid[0])
+
+    nrows = len(data_grid)
+    assert nrows == 1
+    data_list = data_grid[0]
+    for b in (show_support_summary, show_point_summaries):
+        if b:
+            nrows += 1
+    ncols = len(data_list)
+
+    plt.close('all')
+    w = plot_width
+    h = plot_height
+    fig_width = (ncols * w)
+    fig_height = (nrows * (h * 1.17))
+    fig = plt.figure(figsize = (fig_width, fig_height))
+    if force_shared_spines:
+        gs = gridspec.GridSpec(nrows, ncols,
+                wspace = 0.0,
+                hspace = 0.17)
+    else:
+        gs = gridspec.GridSpec(nrows, ncols)
+
+    point_sum_attributes = ["coverage", "rate_correct"]
+    point_sum_labels = [
+            "{{\\Large $\\bullet$}} $p(\\mathcal{{T}} \\in \\textrm{{\\sffamily 95\% CS}})$",
+            "$\\bigstar$ $p(\\hat{{\\mathcal{{T}}}} = \\mathcal{{T}})$",
+            ]
+    point_sum_markers = [".", "*"]
+    attributes = ["values"]
+    y_labels = ["Mean $\\mathcal{{T}}$ error"]
+    if show_support_summary:
+        attributes.append("support")
+        y_labels.append("$p(\\mathcal{{T}}|\\mathbf{{D}})$")
+    if show_point_summaries:
+        attributes.append(point_sum_attributes[0])
+        y_labels.append(point_sum_labels[0])
+    using_colors = False
+    legend_colors = None
+    legend_labels = None
+    for row_index, attribute in enumerate(attributes):
+        plotting_violin = True 
+        if attribute in point_sum_attributes:
+            plotting_violin = False
+        y_min = 0.0 
+        y_max = 1.0 
+        if attribute == "values":
+            y_max = float('-inf')
+            for d in data_list:
+                y_max = max(y_max, max(max(x) for x in getattr(d, attribute)))
+        buff = 0.05
+        y_buffer = math.fabs(y_max - y_min) * buff
+        y_axis_min = y_min - y_buffer
+        y_axis_max = y_max + y_buffer
+        if show_sample_sizes:
+            y_axis_min = y_min - (2 * y_buffer)
+
+        for column_index, data in enumerate(data_list):
+            values = getattr(data, attribute)
+            y_label = y_labels[row_index]
+            ax = plt.subplot(gs[row_index, column_index])
+            sample_sizes = None
+            value_mean = None
+            if plotting_violin:
+                sample_sizes = [len(values[i]) for i in range(data.number_of_categories)]
+                summarizer = pycoevolity.stats.SampleSummarizer()
+                for vals in values:
+                    summarizer.update_samples(vals)
+                value_mean = summarizer.mean
+
+            positions = range(1, len(data.labels) + 1)
+            if plotting_violin:
+                v = ax.violinplot(values,
+                        positions = positions,
+                        vert = True,
+                        widths = 0.9,
+                        showmeans = False,
+                        showextrema = False,
+                        showmedians = False,
+                        points = 100,
+                        bw_method = None,
+                        )
+
+                colors = ["gray"] * len(data.labels)
+                if data.colors:
+                    colors = data.colors
+                    using_colors = True
+                    legend_colors = data.legend_colors
+                    legend_labels = data.legend_labels
+                for i in range(len(v["bodies"])):
+                    v["bodies"][i].set_alpha(1)
+                    v["bodies"][i].set_facecolor(colors[i])
+                    v["bodies"][i].set_edgecolor(colors[i])
+
+                means = []
+                ci_lower = []
+                ci_upper = []
+                for sample in values:
+                    summary = pycoevolity.stats.get_summary(sample)
+                    if use_medians:
+                        means.append(summary["median"])
+                    else:
+                        means.append(summary["mean"])
+                    ci_lower.append(summary["qi_95"][0])
+                    ci_upper.append(summary["qi_95"][1])
+                ax.vlines(positions, ci_lower, ci_upper,
+                        colors = "black",
+                        linestyle = "solid",
+                        zorder = 100)
+                ax.scatter(positions, ci_lower,
+                        marker = "_",
+                        color = "black",
+                        s = 120,
+                        zorder = 200,
+                        )
+                ax.scatter(positions, ci_upper,
+                        marker = "_",
+                        color = "black",
+                        s = 120,
+                        zorder = 200,
+                        )
+                ax.scatter(positions, means,
+                        marker = ".",
+                        color = "white",
+                        s = 50,
+                        zorder = 300,
+                        )
+                if show_mean_bars:
+                    for i in range(len(means)):
+                        ax.axhline(
+                                y = means[i],
+                                linewidth = 1,
+                                color = colors[i],
+                                zorder = 400,
+                                alpha = 0.6)
+            else:
+                means = values
+                v = ax.violinplot(data.support,
+                        positions = positions,
+                        vert = True,
+                        widths = 0.9,
+                        showmeans = False,
+                        showextrema = False,
+                        showmedians = False,
+                        points = 100,
+                        bw_method = None,
+                        )
+                for i in range(len(v["bodies"])):
+                    v["bodies"][i].set_alpha(0)
+                for pt_idx, pt_sum_attr in enumerate(point_sum_attributes):
+                    pt_values = getattr(data, pt_sum_attr)
+                    for i in range(len(positions)):
+                        ax.scatter(positions[i], pt_values[i],
+                                marker = point_sum_markers[pt_idx],
+                                color = colors[i],
+                                s = 70,
+                                zorder = 300,
+                                )
+                    if show_means:
+                        for i in range(len(pt_values)):
+                            ax.text(positions[i] + 0.12, pt_values[i],
+                                    "\\scriptsize {y:,.{ndigits}f}".format(
+                                        y = pt_values[i],
+                                        ndigits = 2),
+                                    horizontalalignment = "left",
+                                    verticalalignment = "center")
+                    # if column_index == 0:
+                    #     ax.text(-0.28 - (pt_idx * 0.11), 0.25,
+                    #             point_sum_labels[pt_idx],
+                    #             size = 10.0,
+                    #             horizontalalignment = "left",
+                    #             verticalalignment = "bottom",
+                    #             rotation = 90.0,
+                    #             transform = ax.transAxes)
+                if column_index == 0:
+                    ax.text(-0.35, 0.5,
+                            "\\ \\ ".join(point_sum_labels[::-1]),
+                            size = 10.0,
+                            horizontalalignment = "left",
+                            verticalalignment = "center",
+                            rotation = 90.0,
+                            transform = ax.transAxes)
+
+            ax.xaxis.set_ticks(range(1, len(data.labels) + 1))
+            xtick_labels = [item for item in ax.get_xticklabels()]
+            assert(len(xtick_labels) == len(data.labels))
+            for i in range(len(xtick_labels)):
+                xtick_labels[i].set_text(data.labels[i])
+            ax.set_xticklabels(xtick_labels)
+
+            # if force_shared_y_range:
+            ax.set_ylim(y_axis_min, y_axis_max)
+            # else:
+            #     y_mn = min(min(x) for x in data.values)
+            #     y_mx = max(max(x) for x in data.values)
+            #     y_buf = math.fabs(y_mx - y_mn) * buff
+            #     y_ax_mn = y_mn - y_buf
+            #     y_ax_mx = y_mx + y_buf
+            #     if show_sample_sizes:
+            #         y_ax_mn = y_mn - (y_buf * 2)
+            #     ax.set_ylim(y_ax_mn, y_ax_mx)
+
+            if column_labels and (row_index == 0):
+                col_header = column_labels[column_index]
+                ax.text(0.5, 1.005,
+                        col_header,
+                        size = column_label_size,
+                        horizontalalignment = "center",
+                        verticalalignment = "bottom",
+                        transform = ax.transAxes)
+            if show_sample_sizes and plotting_violin:
+                y_min, y_max = ax.get_ylim()
+                y_n = y_min + ((y_max - y_min) * 0.001)
+                for i in range(len(sample_sizes)):
+                    ax.text(i + 1, y_n,
+                            "\\scriptsize {ss}".format(
+                                ss = sample_sizes[i]),
+                            horizontalalignment = "center",
+                            verticalalignment = "bottom")
+            if show_means and plotting_violin:
+                for i in range(len(means)):
+                    ax.text(positions[i] + 0.08, means[i],
+                            "\\scriptsize {mean:,.{ndigits}f}".format(
+                                mean = means[i],
+                                ndigits = 2),
+                            horizontalalignment = "left",
+                            verticalalignment = "center")
+            if (column_index == 0) and plotting_violin:
+                ax.text(-0.36, 0.5,
+                        y_label,
+                        size = y_label_size,
+                        horizontalalignment = "left",
+                        verticalalignment = "center",
+                        rotation = 90.0,
+                        transform = ax.transAxes)
+
+    if force_shared_spines:
+        # show only the outside ticks
+        all_axes = fig.get_axes()
+        for ax in all_axes:
+            # if not ax.is_last_row():
+            #     ax.set_xticks([])
+            if not ax.is_first_col():
+                ax.set_yticks([])
+
+        # show tick labels only for lower-left plot 
+        all_axes = fig.get_axes()
+        for ax in all_axes:
+            # if ax.is_last_row() and ax.is_first_col():
+            if ax.is_first_col():
+                continue
+            # xtick_labels = ["" for item in ax.get_xticklabels()]
+            ytick_labels = ["" for item in ax.get_yticklabels()]
+            # ax.set_xticklabels(xtick_labels)
+            ax.set_yticklabels(ytick_labels)
+
+        # avoid doubled spines
+        all_axes = fig.get_axes()
+        for ax in all_axes:
+            for sp in ax.spines.values():
+                sp.set_visible(False)
+                sp.set_linewidth(2)
+            # if ax.is_first_row():
+            ax.spines['top'].set_visible(True)
+            ax.spines['bottom'].set_visible(True)
+            # else:
+            #     ax.spines['bottom'].set_visible(True)
+            if ax.is_first_col():
+                ax.spines['left'].set_visible(True)
+                ax.spines['right'].set_visible(True)
+            else:
+                ax.spines['right'].set_visible(True)
+
+    if x_tick_rotation:
+        all_axes = fig.get_axes()
+        for ax in all_axes:
+            for tick in ax.get_xticklabels():
+                tick.set_rotation(x_tick_rotation)
+
+    if using_colors and show_legend:
+        fig.legend(legend_colors,
+                labels = legend_labels,
+                loc = "upper center",
+                mode = "expand",
+                ncol = len(legend_colors),
+                # borderaxespad = -0.5,
+                title = None)
+
+    gs.update(left = pad_left,
+            right = pad_right,
+            bottom = pad_bottom,
+            top = pad_top)
+
+    plot_path = os.path.join(plot_dir,
+            "{0}-violin.pdf".format(plot_file_prefix))
+    plt.savefig(plot_path) #, dpi=600)
     _LOG.info("Violin plots written to {0!r}".format(plot_path))
 
 
@@ -1911,6 +2318,7 @@ def generate_model_plot_grid(
         plot_as_histogram = False,
         histogram_correct_values = [],
         show_coverage = True,
+        use_model_annotations = False,
         plot_file_prefix = None,
         plot_dir = project_util.PLOT_DIR
         ):
@@ -1951,10 +2359,14 @@ def generate_model_plot_grid(
             true_nevents = tuple(int(x) for x in results["true_num_events"])
             map_nevents = tuple(int(x) for x in results["map_num_events"])
             true_nevents_cred_levels = tuple(float(x) for x in results["true_num_events_cred_level"])
-            # true_model_cred_levels = tuple(float(x) for x in results["true_model_cred_level"])
+            true_model = tuple(x for x in results["true_model"])
+            map_model = tuple(x for x in results["map_model"])
+            true_model_cred_levels = tuple(float(x) for x in results["true_model_cred_level"])
             assert(len(true_nevents) == len(map_nevents))
             assert(len(true_nevents) == len(true_nevents_cred_levels))
-            # assert(len(true_nevents) == len(true_model_cred_levels))
+            assert(len(true_nevents) == len(true_model_cred_levels))
+            assert(len(true_nevents) == len(true_model))
+            assert(len(true_nevents) == len(map_model))
 
             true_nevents_probs = []
             map_nevents_probs = []
@@ -1969,24 +2381,35 @@ def generate_model_plot_grid(
             mean_true_nevents_prob = sum(true_nevents_probs) / len(true_nevents_probs)
             median_true_nevents_prob = pycoevolity.stats.median(true_nevents_probs)
 
+            true_model_probs = tuple(float(x) for x in results["true_model_p"])
+            assert(len(true_nevents) == len(true_model_probs))
+
+            mean_true_model_prob = sum(true_model_probs) / len(true_model_probs)
+            median_true_model_prob = pycoevolity.stats.median(true_model_probs)
+
             nevents_within_95_cred = 0
-            # model_within_95_cred = 0
+            model_within_95_cred = 0
             ncorrect = 0
+            model_ncorrect = 0
             for i in range(len(true_nevents)):
                 true_map_nevents[map_nevents[i] - 1][true_nevents[i] - 1] += 1
                 true_map_nevents_probs[map_nevents[i] - 1][true_nevents[i] - 1].append(map_nevents_probs[i])
                 if true_nevents_cred_levels[i] <= 0.95:
                     nevents_within_95_cred += 1
-                # if true_model_cred_levels[i] <= 0.95:
-                #     model_within_95_cred += 1
+                if true_model_cred_levels[i] <= 0.95:
+                    model_within_95_cred += 1
                 if true_nevents[i] == map_nevents[i]:
                     ncorrect += 1
+                if true_model[i] == map_model[i]:
+                    model_ncorrect += 1
             p_nevents_within_95_cred = nevents_within_95_cred / float(len(true_nevents))
-            # p_model_within_95_cred = model_within_95_cred / float(len(true_nevents))
+            p_model_within_95_cred = model_within_95_cred / float(len(true_nevents))
             p_correct = ncorrect / float(len(true_nevents))
+            p_model_correct = model_ncorrect /  float(len(true_nevents))
 
             _LOG.info("p(nevents within CS) = {0:.4f}".format(p_nevents_within_95_cred))
-            # _LOG.info("p(model within CS) = {0:.4f}".format(p_model_within_95_cred))
+            _LOG.info("p(model within CS) = {0:.4f}".format(p_model_within_95_cred))
+
             ax = plt.subplot(gs[row_index, column_index])
 
             if plot_as_histogram:
@@ -2049,11 +2472,22 @@ def generate_model_plot_grid(
                 upper_text_valign = "top"
                 lower_text_valign = "bottom"
 
+            symbol = "K"
+            coverage = p_nevents_within_95_cred
+            freq_correct = p_correct
+            support_summary = median_true_nevents_prob
+            if use_model_annotations:
+                symbol = "\\mathcal{{T}}"
+                coverage = p_model_within_95_cred
+                freq_correct = p_model_correct
+                support_summary = median_true_model_prob
+
             if force_shared_spines:
                 if show_coverage:
                     ax.text(0.98, lower_text_y,
-                            "\\scriptsize$p(K \\in \\textrm{{\\sffamily CS}}) = {0:.3f}$".format(
-                                    p_nevents_within_95_cred),
+                            "\\scriptsize$p({symbol} \\in \\textrm{{\\sffamily CS}}) = {val:.3f}$".format(
+                                    symbol = symbol,
+                                    val = coverage),
                             horizontalalignment = "right",
                             verticalalignment = lower_text_valign,
                             transform = ax.transAxes,
@@ -2064,8 +2498,9 @@ def generate_model_plot_grid(
                                 'pad': 2}
                             )
                 ax.text(0.03, upper_text_y,
-                        "\\scriptsize$p(\\hat{{K}} = K) = {0:.3f}$".format(
-                                p_correct),
+                        "\\scriptsize$p(\\hat{{{symbol}}} = {symbol}) = {val:.3f}$".format(
+                                symbol = symbol,
+                                val = freq_correct),
                         horizontalalignment = "left",
                         verticalalignment = upper_text_valign,
                         transform = ax.transAxes,
@@ -2077,8 +2512,9 @@ def generate_model_plot_grid(
                         )
                 # ax.text(0.98, upper_text_y,
                 ax.text(0.03, upper_text_y - 0.125,
-                        "\\scriptsize$\\widetilde{{p(K|\\mathbf{{D}})}} = {0:.3f}$".format(
-                                median_true_nevents_prob),
+                        "\\scriptsize$\\widetilde{{p({symbol}|\\mathbf{{D}})}} = {val:.3f}$".format(
+                                symbol = symbol,
+                                val = support_summary),
                         horizontalalignment = "left",
                         verticalalignment = upper_text_valign,
                         transform = ax.transAxes,
@@ -2091,8 +2527,9 @@ def generate_model_plot_grid(
             else:
                 if show_coverage:
                     ax.text(0.02, lower_text_y,
-                            "\\scriptsize$p(K \\in \\textrm{{\\sffamily CS}}) = {0:.3f}$".format(
-                                    p_nevents_within_95_cred),
+                            "\\scriptsize$p({symbol} \\in \\textrm{{\\sffamily CS}}) = {val:.3f}$".format(
+                                    symbol = symbol,
+                                    val = coverage),
                             horizontalalignment = "left",
                             verticalalignment = lower_text_valign,
                             transform = ax.transAxes,
@@ -2103,8 +2540,9 @@ def generate_model_plot_grid(
                             #     'pad': 0}
                             )
                 ax.text(0.02, upper_text_y,
-                        "\\scriptsize$p(\\hat{{K}} = K) = {0:.3f}$".format(
-                                p_correct),
+                        "\\scriptsize$p(\\hat{{{symbol}}} = {symbol}) = {val:.3f}$".format(
+                                symbol = symbol,
+                                val = freq_correct),
                         horizontalalignment = "left",
                         verticalalignment = upper_text_valign,
                         transform = ax.transAxes,
@@ -2115,8 +2553,9 @@ def generate_model_plot_grid(
                         #     'pad': 0}
                         )
                 ax.text(0.98, upper_text_y,
-                        "\\scriptsize$\\widetilde{{p(K|\\mathbf{{D}})}} = {0:.3f}$".format(
-                                median_true_nevents_prob),
+                        "\\scriptsize$\\widetilde{{p({symbol}|\\mathbf{{D}})}} = {val:.3f}$".format(
+                                symbol = symbol,
+                                val = support_summary),
                         horizontalalignment = "right",
                         verticalalignment = upper_text_valign,
                         transform = ax.transAxes,
@@ -2653,6 +3092,11 @@ def main_cli(argv = sys.argv):
             "fixed-pairs-10-independent-time-1_0-0_05-chars-100000"     : "100k",
             "fixed-pairs-10-independent-time-1_0-0_05"                  : "500k",
             }
+    cfg_to_color = {
+            "pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05"                  : color_dp,
+            "pairs-10-pyp-conc-2_0-1_79-disc-1_0-4_0-time-1_0-0_05"     : color_pyp,
+            "pairs-10-unif-sw-0_55-7_32-time-1_0-0_05"                  : color_wu,
+            }
     
     cfg_grid = tuple(
             tuple((row, col) for col in analysis_config_names 
@@ -2669,6 +3113,9 @@ def main_cli(argv = sys.argv):
     poster_nchars_cfg_grid = tuple(
             tuple((row, col) for col in analysis_config_names 
                 ) for row in poster_nchars_sim_config_names)
+    dist_cfg_grid = tuple(
+            tuple(("dummy", col) for col in sim_config_names[1:] + sim_config_names[0:1]
+                ) for i in range(1))
     dist_nchars_cfg_grid = tuple(
             tuple(("dummy", col) for col in nchars_sim_config_names 
                 ) for i in range(1))
@@ -2680,6 +3127,7 @@ def main_cli(argv = sys.argv):
                 ) for i in range(1))
     
     column_labels = tuple(cfg_to_label[c] for c in analysis_config_names)
+    dist_column_labels = tuple(cfg_to_label[c] for c in sim_config_names[1:] + sim_config_names[0:1])
     row_labels = tuple(cfg_to_label[c] for c in sim_config_names)
     fixed_row_labels = tuple(cfg_to_label[c] for c in sim_config_names[0:2])
     nchars_row_labels = tuple(nchars_cfg_to_label[c] for c in nchars_sim_config_names)
@@ -3050,6 +3498,7 @@ def main_cli(argv = sys.argv):
             force_shared_spines = False,
             plot_as_histogram = False,
             histogram_correct_values = [],
+            use_model_annotations = True,
             plot_file_prefix = prefix,
             plot_dir = project_util.PLOT_DIR)
     generate_model_plot_grid(
@@ -3068,6 +3517,7 @@ def main_cli(argv = sys.argv):
             number_font_size = 10.0,
             force_shared_spines = False,
             plot_as_histogram = False,
+            use_model_annotations = True,
             plot_file_prefix = "var-only-" + prefix,
             plot_dir = project_util.PLOT_DIR)
 
@@ -3089,6 +3539,7 @@ def main_cli(argv = sys.argv):
             force_shared_spines = False,
             plot_as_histogram = True,
             histogram_correct_values = fixed_correct_nevents_grid,
+            use_model_annotations = True,
             plot_file_prefix = prefix,
             plot_dir = project_util.PLOT_DIR)
     generate_model_plot_grid(
@@ -3108,6 +3559,7 @@ def main_cli(argv = sys.argv):
             force_shared_spines = False,
             plot_as_histogram = True,
             histogram_correct_values = fixed_correct_nevents_grid,
+            use_model_annotations = True,
             plot_file_prefix = "var-only-" + prefix,
             plot_dir = project_util.PLOT_DIR)
 
@@ -3131,6 +3583,7 @@ def main_cli(argv = sys.argv):
             plot_as_histogram = False,
             histogram_correct_values = [],
             show_coverage = False,
+            use_model_annotations = True,
             plot_file_prefix = prefix,
             plot_dir = project_util.PLOT_DIR)
 
@@ -3153,6 +3606,7 @@ def main_cli(argv = sys.argv):
             force_shared_spines = False,
             plot_as_histogram = True,
             histogram_correct_values = nchars_correct_nevents_grid,
+            use_model_annotations = True,
             plot_file_prefix = prefix,
             plot_dir = project_util.PLOT_DIR)
     generate_model_plot_grid(
@@ -3172,6 +3626,7 @@ def main_cli(argv = sys.argv):
             force_shared_spines = False,
             plot_as_histogram = True,
             histogram_correct_values = nchars_correct_nevents_grid,
+            use_model_annotations = True,
             plot_file_prefix = "var-only-" + prefix,
             plot_dir = project_util.PLOT_DIR)
     prefix = "poster-nchars"
@@ -3193,6 +3648,7 @@ def main_cli(argv = sys.argv):
             plot_as_histogram = True,
             histogram_correct_values = poster_nchars_correct_nevents_grid,
             show_coverage = False,
+            use_model_annotations = True,
             plot_file_prefix = prefix,
             plot_dir = project_util.PLOT_DIR)
 
@@ -3356,6 +3812,83 @@ def main_cli(argv = sys.argv):
         rasterized = True,
         plot_dir = project_util.PLOT_DIR)
 
+
+    # Model performance grids
+    data = {}
+    data["dummy"] = {}
+    var_only_data = {}
+    var_only_data["dummy"] = {}
+    for sim_cfg in sim_config_names:
+        l = [cfg_to_label[c] for c in analysis_config_names]
+        r = [results[sim_cfg][c] for c in analysis_config_names]
+        colors = [cfg_to_color[c] for c in analysis_config_names]
+        var_only_r = [var_only_results[sim_cfg][c] for c in analysis_config_names]
+        data["dummy"][sim_cfg] = BoxData.init_model_distance(
+                results = r,
+                labels = l,
+                estimator_prefix = "mean",
+                colors = colors,
+                legend_colors = colors,
+                legend_labels = l)
+        var_only_data["dummy"][sim_cfg] = BoxData.init_model_distance(
+                results = var_only_r,
+                labels = l,
+                estimator_prefix = "mean",
+                colors = colors,
+                legend_colors = colors,
+                legend_labels = l)
+
+    data_grid = get_data_grid(data, dist_cfg_grid)
+    var_only_data_grid = get_data_grid(var_only_data, dist_cfg_grid)
+
+    prefix = "model-performance"
+    generate_model_performance_grid(
+        data_grid = data_grid,
+        plot_file_prefix = prefix,
+        column_labels = dist_column_labels,
+        plot_width = 1.9,
+        plot_height = 1.8,
+        pad_left = 0.12,
+        pad_right = 0.995,
+        pad_bottom = 0.04,
+        pad_top = 0.96,
+        y_label_size = 18.0,
+        force_shared_y_range = True,
+        force_shared_spines = True,
+        x_tick_rotation = None,
+        show_means = True,
+        show_mean_bars = False,
+        show_sample_sizes = False,
+        show_support_summary = True,
+        show_point_summaries = True,
+        show_legend = False,
+        use_medians = True,
+        plot_dir = project_util.PLOT_DIR)
+    prefix = "var-only-model-performance"
+    generate_model_performance_grid(
+        data_grid = var_only_data_grid,
+        plot_file_prefix = prefix,
+        column_labels = dist_column_labels,
+        plot_width = 1.9,
+        plot_height = 1.8,
+        pad_left = 0.12,
+        pad_right = 0.995,
+        pad_bottom = 0.04,
+        pad_top = 0.96,
+        y_label_size = 18.0,
+        force_shared_y_range = True,
+        force_shared_spines = True,
+        x_tick_rotation = None,
+        show_means = True,
+        show_mean_bars = False,
+        show_sample_sizes = False,
+        show_support_summary = True,
+        show_point_summaries = True,
+        show_legend = False,
+        use_medians = True,
+        plot_dir = project_util.PLOT_DIR)
+
+
     # Model distances by nchars
     data = {}
     data["dummy"] = {}
@@ -3364,15 +3897,73 @@ def main_cli(argv = sys.argv):
     for sim_cfg in nchars_sim_config_names:
         l = [cfg_to_label[c] for c in analysis_config_names]
         r = [results[sim_cfg][c] for c in analysis_config_names]
+        colors = [cfg_to_color[c] for c in analysis_config_names]
         var_only_r = [var_only_results[sim_cfg][c] for c in analysis_config_names]
         data["dummy"][sim_cfg] = BoxData.init_model_distance(
                 results = r,
                 labels = l,
-                estimator_prefix = "mean")
+                estimator_prefix = "mean",
+                colors = colors,
+                legend_colors = colors,
+                legend_labels = l)
         var_only_data["dummy"][sim_cfg] = BoxData.init_model_distance(
                 results = var_only_r,
                 labels = l,
-                estimator_prefix = "mean")
+                estimator_prefix = "mean",
+                colors = colors,
+                legend_colors = colors,
+                legend_labels = l)
+
+    data_grid = get_data_grid(data, dist_nchars_cfg_grid)
+    var_only_data_grid = get_data_grid(var_only_data, dist_nchars_cfg_grid)
+
+    prefix = "nchars-model-performance"
+    generate_model_performance_grid(
+        data_grid = data_grid,
+        plot_file_prefix = prefix,
+        column_labels = nchars_row_labels,
+        plot_width = 1.9,
+        plot_height = 1.8,
+        pad_left = 0.12,
+        pad_right = 0.995,
+        pad_bottom = 0.04,
+        pad_top = 0.96,
+        y_label_size = 18.0,
+        force_shared_y_range = True,
+        force_shared_spines = True,
+        x_tick_rotation = None,
+        show_means = True,
+        show_mean_bars = False,
+        show_sample_sizes = False,
+        show_support_summary = True,
+        show_point_summaries = True,
+        show_legend = False,
+        use_medians = True,
+        plot_dir = project_util.PLOT_DIR)
+
+    prefix = "var-only-nchars-model-performance"
+    generate_model_performance_grid(
+        data_grid = var_only_data_grid,
+        plot_file_prefix = prefix,
+        column_labels = nchars_row_labels,
+        plot_width = 1.9,
+        plot_height = 1.8,
+        pad_left = 0.12,
+        pad_right = 0.995,
+        pad_bottom = 0.04,
+        pad_top = 0.96,
+        y_label_size = 18.0,
+        force_shared_y_range = True,
+        force_shared_spines = True,
+        x_tick_rotation = None,
+        show_means = True,
+        show_mean_bars = False,
+        show_sample_sizes = False,
+        show_support_summary = True,
+        show_point_summaries = True,
+        show_legend = False,
+        use_medians = True,
+        plot_dir = project_util.PLOT_DIR)
 
     y_label = "Model error"
 
@@ -3475,6 +4066,51 @@ def main_cli(argv = sys.argv):
         force_shared_spines = True,
         x_tick_rotation = 60.0,
         show_means = True,
+        plot_dir = project_util.PLOT_DIR)
+
+    # Model distances by nchars for only 3 dataset sizes
+    data = {}
+    data["dummy"] = {}
+    for sim_cfg in poster_nchars_sim_config_names:
+        l = []
+        r = []
+        colors = []
+        for c in analysis_config_names:
+            l.append(cfg_to_label[c])
+            r.append(results[sim_cfg][c])
+            colors.append(cfg_to_color[c])
+        data["dummy"][sim_cfg] = BoxData.init_model_distance(
+                results = r,
+                labels = l,
+                estimator_prefix = "mean",
+                colors = colors,
+                legend_colors = colors,
+                legend_labels = l,
+                )
+
+    data_grid = get_data_grid(data, poster_dist_nchars_cfg_grid)
+    prefix = "nchars-model-performance-reduced"
+    generate_model_performance_grid(
+        data_grid = data_grid,
+        plot_file_prefix = prefix,
+        column_labels = poster_nchars_row_labels,
+        plot_width = 1.9,
+        plot_height = 1.8,
+        pad_left = 0.12,
+        pad_right = 0.995,
+        pad_bottom = 0.04,
+        pad_top = 0.96,
+        y_label_size = 18.0,
+        force_shared_y_range = True,
+        force_shared_spines = True,
+        x_tick_rotation = None,
+        show_means = True,
+        show_mean_bars = False,
+        show_sample_sizes = False,
+        show_support_summary = True,
+        show_point_summaries = True,
+        show_legend = False,
+        use_medians = True,
         plot_dir = project_util.PLOT_DIR)
 
 
