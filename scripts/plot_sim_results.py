@@ -3046,11 +3046,15 @@ def main_cli(argv = sys.argv):
             "pairs-10-unif-sw-0_55-7_32-time-1_0-0_05",
             )
     sim_config_names = (
-            "fixed-pairs-10-independent-time-1_0-0_05",
             "fixed-pairs-10-simultaneous-time-1_0-0_05",
             "pairs-10-dpp-conc-2_0-2_71-time-1_0-0_05",
             "pairs-10-pyp-conc-2_0-1_79-disc-1_0-4_0-time-1_0-0_05",
             "pairs-10-unif-sw-0_55-7_32-time-1_0-0_05",
+            "fixed-pairs-10-independent-time-1_0-0_05",
+            )
+    fixed_sim_config_names = (
+            "fixed-pairs-10-independent-time-1_0-0_05",
+            "fixed-pairs-10-simultaneous-time-1_0-0_05",
             )
     nchars_sim_config_names = (
             "fixed-pairs-10-independent-time-1_0-0_05-chars-5000",
@@ -3106,7 +3110,7 @@ def main_cli(argv = sys.argv):
                 ) for row in analysis_config_names)
     fixed_cfg_grid = tuple(
             tuple((row, col) for col in analysis_config_names 
-                ) for row in sim_config_names[0:2])
+                ) for row in fixed_sim_config_names)
     nchars_cfg_grid = tuple(
             tuple((row, col) for col in analysis_config_names 
                 ) for row in nchars_sim_config_names)
@@ -3114,7 +3118,7 @@ def main_cli(argv = sys.argv):
             tuple((row, col) for col in analysis_config_names 
                 ) for row in poster_nchars_sim_config_names)
     dist_cfg_grid = tuple(
-            tuple(("dummy", col) for col in sim_config_names[1:] + sim_config_names[0:1]
+            tuple(("dummy", col) for col in sim_config_names
                 ) for i in range(1))
     dist_nchars_cfg_grid = tuple(
             tuple(("dummy", col) for col in nchars_sim_config_names 
@@ -3127,9 +3131,9 @@ def main_cli(argv = sys.argv):
                 ) for i in range(1))
     
     column_labels = tuple(cfg_to_label[c] for c in analysis_config_names)
-    dist_column_labels = tuple(cfg_to_label[c] for c in sim_config_names[1:] + sim_config_names[0:1])
+    dist_column_labels = tuple(cfg_to_label[c] for c in sim_config_names)
     row_labels = tuple(cfg_to_label[c] for c in sim_config_names)
-    fixed_row_labels = tuple(cfg_to_label[c] for c in sim_config_names[0:2])
+    fixed_row_labels = tuple(cfg_to_label[c] for c in fixed_sim_config_names)
     nchars_row_labels = tuple(nchars_cfg_to_label[c] for c in nchars_sim_config_names)
     poster_nchars_row_labels = tuple(nchars_cfg_to_label[c] for c in poster_nchars_sim_config_names)
 
@@ -3217,7 +3221,8 @@ def main_cli(argv = sys.argv):
                     "short_label": "time",
                     "symbol": "t",
                     "xy_limits": None,
-                    "pad_left": pad_left,
+                    "pad_left": 0.08,
+                    "pad_bottom": 0.06,
             },
             "ancestor-size": {
                     "headers": root_size_parameters,
@@ -3225,7 +3230,8 @@ def main_cli(argv = sys.argv):
                     "short_label": "size",
                     "symbol": "N_e\\mu",
                     "xy_limits": None,
-                    "pad_left": pad_left + 0.01,
+                    "pad_left": 0.1,
+                    "pad_bottom": 0.06,
             },
             "descendant-size": {
                     "headers": leaf_size_parameters,
@@ -3233,7 +3239,8 @@ def main_cli(argv = sys.argv):
                     "short_label": "size",
                     "symbol": "N_e\\mu",
                     "xy_limits": None,
-                    "pad_left": pad_left,
+                    "pad_left": 0.1,
+                    "pad_bottom": 0.06,
             },
     }
 
@@ -3281,7 +3288,7 @@ def main_cli(argv = sys.argv):
                 plot_height = plot_height,
                 pad_left = p_info["pad_left"],
                 pad_right = pad_right,
-                pad_bottom = pad_bottom,
+                pad_bottom = p_info["pad_bottom"],
                 pad_top = pad_top,
                 x_label = x_label,
                 x_label_size = 18.0,
@@ -3306,7 +3313,7 @@ def main_cli(argv = sys.argv):
                 plot_height = plot_height,
                 pad_left = p_info["pad_left"],
                 pad_right = pad_right,
-                pad_bottom = pad_bottom,
+                pad_bottom = p_info["pad_bottom"],
                 pad_top = pad_top,
                 x_label = x_label,
                 x_label_size = 18.0,
@@ -3365,7 +3372,7 @@ def main_cli(argv = sys.argv):
                 plot_height = plot_height,
                 pad_left = p_info["pad_left"],
                 pad_right = pad_right,
-                pad_bottom = pad_bottom,
+                pad_bottom = p_info["pad_bottom"],
                 pad_top = pad_top,
                 x_label = x_label,
                 x_label_size = 18.0,
@@ -3390,7 +3397,7 @@ def main_cli(argv = sys.argv):
                 plot_height = plot_height,
                 pad_left = p_info["pad_left"],
                 pad_right = pad_right,
-                pad_bottom = pad_bottom,
+                pad_bottom = p_info["pad_bottom"],
                 pad_top = pad_top,
                 x_label = x_label,
                 x_label_size = 18.0,
@@ -3498,7 +3505,7 @@ def main_cli(argv = sys.argv):
             force_shared_spines = False,
             plot_as_histogram = False,
             histogram_correct_values = [],
-            use_model_annotations = True,
+            use_model_annotations = False,
             plot_file_prefix = prefix,
             plot_dir = project_util.PLOT_DIR)
     generate_model_plot_grid(
@@ -3517,7 +3524,7 @@ def main_cli(argv = sys.argv):
             number_font_size = 10.0,
             force_shared_spines = False,
             plot_as_histogram = False,
-            use_model_annotations = True,
+            use_model_annotations = False,
             plot_file_prefix = "var-only-" + prefix,
             plot_dir = project_util.PLOT_DIR)
 
@@ -3539,7 +3546,7 @@ def main_cli(argv = sys.argv):
             force_shared_spines = False,
             plot_as_histogram = True,
             histogram_correct_values = fixed_correct_nevents_grid,
-            use_model_annotations = True,
+            use_model_annotations = False,
             plot_file_prefix = prefix,
             plot_dir = project_util.PLOT_DIR)
     generate_model_plot_grid(
@@ -3559,7 +3566,7 @@ def main_cli(argv = sys.argv):
             force_shared_spines = False,
             plot_as_histogram = True,
             histogram_correct_values = fixed_correct_nevents_grid,
-            use_model_annotations = True,
+            use_model_annotations = False,
             plot_file_prefix = "var-only-" + prefix,
             plot_dir = project_util.PLOT_DIR)
 
@@ -3583,7 +3590,7 @@ def main_cli(argv = sys.argv):
             plot_as_histogram = False,
             histogram_correct_values = [],
             show_coverage = False,
-            use_model_annotations = True,
+            use_model_annotations = False,
             plot_file_prefix = prefix,
             plot_dir = project_util.PLOT_DIR)
 
@@ -3606,7 +3613,7 @@ def main_cli(argv = sys.argv):
             force_shared_spines = False,
             plot_as_histogram = True,
             histogram_correct_values = nchars_correct_nevents_grid,
-            use_model_annotations = True,
+            use_model_annotations = False,
             plot_file_prefix = prefix,
             plot_dir = project_util.PLOT_DIR)
     generate_model_plot_grid(
@@ -3626,7 +3633,7 @@ def main_cli(argv = sys.argv):
             force_shared_spines = False,
             plot_as_histogram = True,
             histogram_correct_values = nchars_correct_nevents_grid,
-            use_model_annotations = True,
+            use_model_annotations = False,
             plot_file_prefix = "var-only-" + prefix,
             plot_dir = project_util.PLOT_DIR)
     prefix = "poster-nchars"
@@ -3648,7 +3655,7 @@ def main_cli(argv = sys.argv):
             plot_as_histogram = True,
             histogram_correct_values = poster_nchars_correct_nevents_grid,
             show_coverage = False,
-            use_model_annotations = True,
+            use_model_annotations = False,
             plot_file_prefix = prefix,
             plot_dir = project_util.PLOT_DIR)
 
