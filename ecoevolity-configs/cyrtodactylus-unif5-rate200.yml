@@ -81,18 +81,18 @@ global_comparison_settings:
 
 comparisons:
 - comparison:
-    path: "../alignments/C-annulatus-annulatus-Bohol-CamiguinSur.yml"
+    path: "../data/C-annulatus-annulatus-Bohol-CamiguinSur.yml"
 - comparison:
-    path: "../alignments/C-baluensis-redimiculus-Kinabalu-Palawan.yml"
+    path: "../data/C-baluensis-redimiculus-Kinabalu-Palawan.yml"
 - comparison:
-    path: "../alignments/C-gubaot-sumuroi-Leyte-Samar.yml"
+    path: "../data/C-gubaot-sumuroi-Leyte-Samar.yml"
 - comparison:
-    path: "../alignments/C-philippinicus-philippinicus-BabuyanClaro-Luzon.yml"
+    path: "../data/C-philippinicus-philippinicus-BabuyanClaro-Luzon.yml"
 - comparison:
-    path: "../alignments/C-philippinicus-philippinicus-CamiguinNorte-Luzon.yml"
+    path: "../data/C-philippinicus-philippinicus-CamiguinNorte-Luzon.yml"
 - comparison:
-    path: "../alignments/C-philippinicus-philippinicus-Luzon-Polillo.yml"
+    path: "../data/C-philippinicus-philippinicus-Luzon-Polillo.yml"
 - comparison:
-    path: "../alignments/C-philippinicus-philippinicus-Negros-Panay.yml"
+    path: "../data/C-philippinicus-philippinicus-Negros-Panay.yml"
 - comparison:
-    path: "../alignments/C-philippinicus-philippinicus-Sibuyan-Tablas.yml"
+    path: "../data/C-philippinicus-philippinicus-Sibuyan-Tablas.yml"
