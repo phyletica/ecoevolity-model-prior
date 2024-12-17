@@ -1,0 +1,110 @@
+---
+event_model_prior:
+    # Mean number of categories ~ 4.477
+    pitman_yor_process:
+        parameters:
+            concentration:
+                estimate: true
+                prior:
+                    gamma_distribution:
+                        shape: 1.5
+                        scale: 2.023
+            discount:
+                value: 0.2
+                estimate: true
+                prior:
+                    beta_distribution:
+                        alpha: 1.0
+                        beta: 4.0
+
+event_time_prior:
+    exponential_distribution:
+        rate: 200.0
+
+mcmc_settings:
+    chain_length: 150000
+    sample_frequency: 100
+
+operator_settings:
+    auto_optimize: true
+    auto_optimize_delay: 1000
+    operators:
+        ConcentrationScaler:
+            weight: 3.0
+            scale: 1.5
+        DiscountMover:
+            weight: 1.5
+            window: 0.8
+        DiscountMixer:
+            weight: 1.5
+            scale: 3.0
+        ModelOperator:
+            weight: 12.0
+            number_of_auxiliary_categories: 4
+        TimeSizeRateMixer:
+            weight: 6.0
+            scale: 0.04
+        TimeSizeRateScaler:
+            weight: 0.0
+            scale: 0.02
+        EventTimeScaler:
+            weight: 1.0
+            scale: 0.04
+
+global_comparison_settings:
+    ploidy: 2
+    genotypes_are_diploid: true
+    markers_are_dominant: false
+    population_name_delimiter: " "
+    population_name_is_prefix: false
+    constant_sites_removed: false
+    equal_population_sizes: false
+    parameters:
+        population_size:
+            estimate: true
+            prior:
+                gamma_distribution:
+                    shape: 4.0
+                    scale: 0.001
+        root_relative_population_size:
+            estimate: true
+            prior:
+                gamma_distribution:
+                    shape: 100.0
+                    scale: 0.01
+                    offset: 0.0
+        freq_1:
+            value: 0.5
+            estimate: false
+
+        mutation_rate:
+            value: 1.0
+            estimate: false
+    operators:
+        RootPopulationSizeScaler:
+            weight: 1.0
+            scale: 0.05
+        LeafPopulationSizeScaler:
+            weight: 1.0
+            scale: 0.05
+        TimeRootSizeMixer:
+            weight: 3.0
+            scale: 0.05
+
+comparisons:
+- comparison:
+    path: "../alignments/C-annulatus-annulatus-Bohol-CamiguinSur.yml"
+- comparison:
+    path: "../alignments/C-baluensis-redimiculus-Kinabalu-Palawan.yml"
+- comparison:
+    path: "../alignments/C-gubaot-sumuroi-Leyte-Samar.yml"
+- comparison:
+    path: "../alignments/C-philippinicus-philippinicus-BabuyanClaro-Luzon.yml"
+- comparison:
+    path: "../alignments/C-philippinicus-philippinicus-CamiguinNorte-Luzon.yml"
+- comparison:
+    path: "../alignments/C-philippinicus-philippinicus-Luzon-Polillo.yml"
+- comparison:
+    path: "../alignments/C-philippinicus-philippinicus-Negros-Panay.yml"
+- comparison:
+    path: "../alignments/C-philippinicus-philippinicus-Sibuyan-Tablas.yml"
