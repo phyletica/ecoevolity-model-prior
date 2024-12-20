@@ -18,7 +18,7 @@ function run_summary_tools () {
         sumco_seed=7
     fi
     "$sumco_exe_path" --seed "$sumco_seed" -b $burnin -n 1000000 -p "${plot_dir}/sumcoevolity-${ecoevolity_config_prefix}-" -c "${config_dir}/${ecoevolity_config_prefix}.yml" run-?-${ecoevolity_config_prefix}-state-run-1.log
-    pyco-sumevents -f -w "$plot_width" --bf-font-size $bf_font_size -p "${plot_dir}/pyco-sumevents-${ecoevolity_config_prefix}-" --no-legend "${plot_dir}/sumcoevolity-${ecoevolity_config_prefix}-sumcoevolity-results-nevents.txt"
+    pyco-sumevents -f -w "$plot_width" --bf-font-size $bf_font_size -p "${plot_dir}/pyco-sumevents-${ecoevolity_config_prefix}-" --full-prob-axis --legend-in-plot "${plot_dir}/sumcoevolity-${ecoevolity_config_prefix}-sumcoevolity-results-nevents.txt"
     rm run-?-${ecoevolity_config_prefix}-state-run-1.log
 }
 
@@ -79,7 +79,7 @@ config_dir="${project_dir}/ecoevolity-configs"
 sumco_exe_path="${project_dir}/bin/sumcoevolity"
 sumco_seed=7
 
-plot_base_dir="${project_dir}/results/empirical-plots"
+plot_base_dir="${project_dir}/results/gekkonid-plots"
 if [ ! -d "$plot_base_dir" ]
 then
     mkdir -p "$plot_base_dir"
