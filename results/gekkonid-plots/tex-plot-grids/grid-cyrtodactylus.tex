@@ -1,0 +1,55 @@
+\documentclass[border=10pt,varwidth=30cm]{standalone}
+\usepackage{graphicx,capt-of}
+\usepackage{rotating}
+\usepackage{multirow}
+\usepackage[cm]{sfmath}
+\usepackage[T1]{fontenc}
+\usepackage{xspace}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\newcounter{subfloat}
+\renewcommand{\thesubfloat}{\Alph{subfloat}}
+\newcommand{\insertlabel}{%
+    \huge%
+    \stepcounter{subfloat}%
+    \textbf{\thesubfloat}}
+
+% \newcommand{\wunif}{WU\xspace}
+% \newcommand{\dirp}{\ensuremath{\textrm{DP}}\xspace}
+\newcommand{\concentration}{\ensuremath{\alpha}\xspace}
+\newcommand{\discount}{\ensuremath{d}\xspace}
+\newcommand{\splitweight}{\ensuremath{s}\xspace}
+\newcommand{\basedistribution}{\ensuremath{H}\xspace}
+\newcommand{\gshape}{\ensuremath{k}\xspace}
+\newcommand{\gscale}{\ensuremath{\theta}\xspace}
+\newcommand{\distgamma}{\ensuremath{\textrm{\sffamily Gamma}}\xspace}
+\newcommand{\distexponential}{\ensuremath{\textrm{\sffamily Exponential}}\xspace}
+\newcommand{\distbeta}{\ensuremath{\textrm{\sffamily Beta}}\xspace}
+\newcommand{\dgamma}[2]{\ensuremath{\distgamma(\alpha = #1, \textrm{\sffamily mean} = #2)}}
+\newcommand{\dexponential}[1]{\ensuremath{\distexponential(\textrm{\sffamily mean} = #1)}}
+\newcommand{\dbeta}[2]{\ensuremath{\distbeta(\alpha = #1, \beta = #2)}}
+
+\begin{document}
+
+\begin{figure}
+    \setlength{\tabcolsep}{3pt} % Default value: 6pt
+    % \renewcommand{\arraystretch}{1.5} % Default value: 1
+    \centering
+    \begin{tabular}{@{}cc@{}}
+        \multicolumn{2}{c}{\LARGE \textbf{Pitman-Yor process}, $\concentration \sim \dgamma{1.5}{3.0}$, $\discount \sim \dbeta{1}{4}$} \\[0.7ex]
+        \includegraphics[width=0.5\textwidth]{../cyrtodactylus-pyp5-rate200/pyco-sumevents-cyrtodactylus-pyp5-rate200-pycoevolity-nevents.pdf}
+        &
+        \includegraphics[width=0.5\textwidth]{../cyrtodactylus-pyp5-rate200/pyco-sumtimes-cyrtodactylus-pyp5-rate200-pycoevolity-times.pdf} \\[1ex]
+        \multicolumn{2}{c}{\LARGE \textbf{Dirichlet process}, $\concentration \sim \dgamma{1.5}{4.7}$} \\[0.7ex]
+        \includegraphics[width=0.5\textwidth]{../cyrtodactylus-conc5-rate200/pyco-sumevents-cyrtodactylus-conc5-rate200-pycoevolity-nevents.pdf}
+        &
+        \includegraphics[width=0.5\textwidth]{../cyrtodactylus-conc5-rate200/pyco-sumtimes-cyrtodactylus-conc5-rate200-pycoevolity-times.pdf} \\[1ex]
+        \multicolumn{2}{c}{\LARGE \textbf{Weighted uniform}, $\splitweight \sim \dgamma{0.55}{3.4}$} \\[0.7ex]
+        \includegraphics[width=0.5\textwidth]{../cyrtodactylus-unif5-rate200/pyco-sumevents-cyrtodactylus-unif5-rate200-pycoevolity-nevents.pdf}
+        &
+        \includegraphics[width=0.5\textwidth]{../cyrtodactylus-unif5-rate200/pyco-sumtimes-cyrtodactylus-unif5-rate200-pycoevolity-times.pdf} \\
+    \end{tabular}
+\end{figure}
+
+\end{document}
