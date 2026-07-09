@@ -87,9 +87,7 @@ def sort_models(models):
         sorted_models.extend(sorted(k_to_models[k]))
     return tuple(sorted_models)
 
-def plot_rj_test_results(tsv_path):
-    path_prefix = os.path.splitext(tsv_path)[0]
-    plot_path = f"{path_prefix}.pdf"
+def plot_rj_test_results(ax, tsv_path):
     data = parse_results_tsv(tsv_path)
     models = sort_models(data.keys())
     expected_probs = [data[m]["expected_prob"] for m in models]
@@ -111,13 +109,6 @@ def plot_rj_test_results(tsv_path):
     assert abs(sample_cdf[-1] - 1.0) < 1e-8
     models_to_probs = {m : data[m]["expected_prob"] for m in models}
 
-    plt.close('all')
-    # fig = plt.figure(figsize = (plot_width, plot_height))
-    fig = plt.figure()
-    gs = gridspec.GridSpec(1, 1,
-            wspace = 0.0,
-            hspace = 0.0)
-    ax = plt.subplot(gs[0, 0])
     ax.plot(
         [''] + list(models),
         expected_cdf,
@@ -172,13 +163,6 @@ def plot_rj_test_results(tsv_path):
     )
     # ax.legend(bbox_to_anchor = (1.01, 0.5), loc = "center left")
     ax.legend(loc = "lower right")
-    # gs.update(
-    #     left = 0.02,
-    #     right = 1.0,
-    #     bottom = 0.05,
-    #     top = 1.0,
-    # )
-    plt.savefig(plot_path, bbox_inches = 'tight', pad_inches = 0.02)
 
 
 def parse_cli_args():
@@ -202,8 +186,65 @@ def parse_cli_args():
 def main_cli():
     args = parse_cli_args()
 
-    for tsv_path in args.tsv_paths:
-        plot_rj_test_results(tsv_path)
+    # Create individual plots
+    for i, tsv_path in enumerate(args.tsv_paths):
+        plt.close('all')
+        path_prefix = os.path.splitext(tsv_path)[0]
+        plot_path = f"{path_prefix}.pdf"
+
+        plot_title = None
+        if path_prefix.endswith("split-weight-1"):
+            plot_title = "Split weight = 1"
+        elif path_prefix.endswith("split-weight-3"):
+            plot_title = "Split weight = 3"
+        elif path_prefix.endswith("split-weight-1_3"):
+            plot_title = "Split weight = $1/3$"
+
+        fig = mpl.figure.Figure()
+        gs = fig.add_gridspec(
+            1, 1,
+            wspace = 0.0,
+            hspace = 0.0,
+        )
+        ax = fig.add_subplot(gs[0, 0])
+        plot_rj_test_results(ax, tsv_path)
+        if plot_title:
+            ax.set_title(plot_title)
+
+        fig.savefig(plot_path, bbox_inches = 'tight', pad_inches = 0.02)
+
+    # Create panel of plots
+    plt.close('all')
+    fig = mpl.figure.Figure(
+        figsize = (6.4 * 3, 4.8),
+    )
+    gs = fig.add_gridspec(
+        nrows = 1,
+        ncols = 3,
+        wspace = 0.14,
+        # hspace = 0.0,
+    )
+    plot_dir = os.getcwd()
+    for i, tsv_path in enumerate(args.tsv_paths):
+        path_prefix = os.path.splitext(tsv_path)[0]
+        plot_path = f"{path_prefix}.pdf"
+        plot_dir = os.path.dirname(tsv_path)
+
+        plot_title = None
+        if path_prefix.endswith("split-weight-1"):
+            plot_title = "Split weight = 1"
+        elif path_prefix.endswith("split-weight-3"):
+            plot_title = "Split weight = 3"
+        elif path_prefix.endswith("split-weight-1_3"):
+            plot_title = "Split weight = $1/3$"
+
+        ax = fig.add_subplot(gs[0, i])
+        plot_rj_test_results(ax, tsv_path)
+        if plot_title:
+            ax.set_title(plot_title)
+
+    plot_path = os.path.join(plot_dir, "rev-jump-sampler-test-results.pdf")
+    fig.savefig(plot_path, bbox_inches = 'tight', pad_inches = 0.02)
 
 if __name__ == "__main__":
     plt.style.use('tableau-colorblind10')
